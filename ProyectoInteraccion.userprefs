@@ -1,8 +1,20 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GameManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Game Managment\TeamManagment.cs">
     <Files>
-      <File FileName="Assets\Scripts\GameManager.cs" Line="19" Column="1" />
+      <File FileName="Assets\Scripts\MapGenerator.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Tile.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Game Managment\GameManager.cs" Line="12" Column="1" />
+      <File FileName="Assets\Scripts\Game Managment\IManagment.cs" Line="7" Column="18" />
+      <File FileName="Assets\Scripts\Game Managment\MenuManagment.cs" Line="11" Column="23" />
+      <File FileName="Assets\Scripts\Game Managment\ModeManagment.cs" Line="42" Column="3" />
+      <File FileName="Assets\Scripts\Game Managment\TeamManagment.cs" Line="44" Column="1" />
+      <File FileName="Assets\Scripts\Unit.cs" Line="8" Column="14" />
+      <File FileName="Assets\Scripts\Unit\IRol.cs" Line="5" Column="19" />
+      <File FileName="Assets\Scripts\Unit\Healer.cs" Line="5" Column="22" />
+      <File FileName="Assets\Scripts\Unit\Tank.cs" Line="13" Column="1" />
+      <File FileName="Assets\Scripts\Unit\DA.cs" Line="5" Column="24" />
+      <File FileName="Assets\Scripts\Unit\BA.cs" Line="5" Column="24" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

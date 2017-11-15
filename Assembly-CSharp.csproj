@@ -51,7 +51,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\Game Managment\GameManager.cs" />
+     <Compile Include="Assets\Scripts\Game Managment\IManagment.cs" />
+     <Compile Include="Assets\Scripts\Game Managment\MenuManagment.cs" />
+     <Compile Include="Assets\Scripts\Game Managment\ModeManagment.cs" />
+     <Compile Include="Assets\Scripts\Game Managment\TeamManagment.cs" />
+     <Compile Include="Assets\Scripts\MapGenerator.cs" />
+     <Compile Include="Assets\Scripts\Tile.cs" />
+     <Compile Include="Assets\Scripts\Unit.cs" />
+     <Compile Include="Assets\Scripts\Unit\BA.cs" />
+     <Compile Include="Assets\Scripts\Unit\DA.cs" />
+     <Compile Include="Assets\Scripts\Unit\Healer.cs" />
+     <Compile Include="Assets\Scripts\Unit\IRol.cs" />
+     <Compile Include="Assets\Scripts\Unit\Tank.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
