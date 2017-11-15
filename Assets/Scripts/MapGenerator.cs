@@ -24,8 +24,8 @@ public class MapGenerator : MonoBehaviour {
 	void Start(){
 
 		map = new int[]{
-			1, 1, 1,	1, 1, 1,	1, 4, 1,	
-			1, 1/2, 1, 	1, 2, 1, 	1, 1, 1, 
+			1, 1, 1,	1, 1, 1,	1, 1, 1,	
+			1, 1, 1, 	1, 1, 1, 	1, 1, 1, 
 			1, 1, 1, 	1, 1, 1, 	1, 1, 1
 		};
 
