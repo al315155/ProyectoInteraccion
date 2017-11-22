@@ -6,17 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Menu.unity
+    path: Assets/Resources/Scenes/Menu.unity
     guid: b8d09bc259f8a2541bf6d752efd97649
   - enabled: 1
-    path: Assets/Scenes/Selection.unity
-    guid: a62c7f1a20190ed47bc25c4607352101
-  - enabled: 1
-    path: Assets/Scenes/Team.unity
-    guid: 47431aa2eded4494f9d6ae87d52d94a7
-  - enabled: 0
-    path: Assets/Scenes/Game Team/BF Team.unity
-    guid: 8413de25f71b95149a8164c7e13d4d6b
-  - enabled: 0
-    path: Assets/Scenes/Game Team/OK Team.unity
-    guid: c10bef0f63cd5974a8883303b8d0a946
+    path: Assets/Resources/Scenes/Game.unity
+    guid: 1db37c2558b7a864686dddd246fbd0bf
