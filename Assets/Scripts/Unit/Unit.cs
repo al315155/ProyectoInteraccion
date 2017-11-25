@@ -24,6 +24,7 @@ public class Unit {
 	private int movement;
 	private int critic;
 	private int agility;
+	private Vector2 position;
 
 	public Unit (int life, int damage, int velocity, int movement, int critic, int agility){
 		this.life = life;
@@ -32,9 +33,16 @@ public class Unit {
 		this.movement = movement;
 		this.critic = critic;
 		this.agility = agility;
+
+		//position = null;
 	}
 
 	public virtual void Hablity(){
+	}
+
+	public Vector2 Position{
+		get{ return position; }
+		set{ position = value; }
 	}
 
 	public int Life{

@@ -14,9 +14,7 @@ public class CanvasManager : MonoBehaviour {
 
     private void OnMouseDown()
     {
-        canvas.enabled = true;
-        Debug.Log("Click");
-    
+        canvas.enabled = true;    
     }
     private void OnMouseOver()
     {

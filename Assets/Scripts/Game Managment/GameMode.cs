@@ -46,22 +46,21 @@ namespace AssemblyCSharp
 			get{ return members; }
 		}
 
-//		public List<Unit> GetEnemyTeam(){
-//			List<Unit> enemies = new List<Unit> ();
-//			if (this.type.Equals (GameType.Team_vs_Team) || this.type.Equals (GameType.One_Kill)) {
-//				//Los miembros son 6
-//				enemies.Add (new Healer ());
-//				enemies.Add (new Tank ());
-//				enemies.Add (new Tank ());
-//				enemies.Add (new DistDamage ());
-//				enemies.Add (new MeleDamage ());
-//				enemies.Add (new MeleDamage ());
-//			} else {
-//				enemies.Add (new Boss ());
-//			}
-//
-//			return enemies;
-//		}
+		public List<string> GetEnemyTeam(){
+			List<string> enemies = new List<string> ();
+			if (this.type.Equals (GameType.Team_vs_Team) || this.type.Equals (GameType.One_Kill)) {
+				//Los miembros son 6
+				enemies.Add ("Healer");
+				enemies.Add ("Tank");
+				enemies.Add ("Tank");
+				enemies.Add ("Distance Damage");
+				enemies.Add ("Mele Damage");
+				enemies.Add ("Mele Damage");
+			} else {
+				enemies.Add ("Boss");
+			}
+			return enemies;
+		}
 
 		public Vector2[] GetReferences(int dimension, string team){
 			int sideMargin, topMargin, botMargin;
@@ -70,20 +69,23 @@ namespace AssemblyCSharp
 			Vector2 topLeft;
 			Vector2 botRight;
 
-			if (team.Equals ("Enemy")) {
+			if (team.Equals ("Player")) {
 				topLeft = new Vector2 (sideMargin, topMargin);
-				botRight = new Vector2 (dimension / 2 - sideMargin, dimension / 4 - botMargin);
+				botRight = new Vector2 ((int) Math.Sqrt(dimension) - sideMargin, (int) Math.Sqrt(dimension) / 2 - botMargin);
 			} else {
-				topLeft = new Vector2 (sideMargin, dimension / 4 + botMargin);
-				botRight = new Vector2 (dimension / 2 - sideMargin, dimension / 2 - topMargin);
+				topLeft = new Vector2 (sideMargin, (int) Math.Sqrt(dimension) / 2 + botMargin);
+				botRight = new Vector2 ((int) Math.Sqrt(dimension) - sideMargin, (int) Math.Sqrt(dimension) - topMargin);
 			}
 			return new Vector2[]{ topLeft, botRight };
 		}
 
 		private void CalculateMargins(int dimension, out int sideMargin, out int topMargin, out int botMargin){
-			int normalMargin = dimension / 2 * 20 / 100;
-			sideMargin = topMargin = normalMargin;
-			botMargin = 2 * normalMargin;
+
+			int normalMargin = (int) Math.Sqrt(dimension) * 20 / 100;
+			//Debug.Log ("normal margin" + normalMargin);
+			sideMargin = normalMargin;
+			topMargin = normalMargin / 2;
+			botMargin = normalMargin;
 		}
 	}
 

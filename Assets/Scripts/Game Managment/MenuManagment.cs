@@ -168,6 +168,7 @@ public class MenuManagment : MonoBehaviour {
 	// MÉTODOS DEL MENÚ DE SELECCIÓN DE EQUIPO
 	public void StartGame(){
 		//Iniciamos una partida.
+		gameManager.SetGameMode(gameMode);
 		gameManager.SetTeamConfiguration (teamList);
 		SceneManager.LoadScene (nextSceneName);
 	}

@@ -10,6 +10,7 @@ using System.IO;
 
 public class GameManager : MonoBehaviour {
 
+	private GameMode gameMode;
 	private String archiveName; 
 
 	public List<string> TeamMembers;
@@ -67,14 +68,13 @@ public class GameManager : MonoBehaviour {
 		return BossFight;
 	}
 //
-//	public void SetGameMode(int value){
-//		currentGameMode = value;
-//		SaveGameMode ();
-//	}
+	public void SetGameMode(GameMode gameMode){
+		this.gameMode = gameMode;
+	}
 
-//	public int GetGameMode(){
-//		return currentGameMode;
-//	}
+	public GameMode GetGameMode(){
+		return gameMode;
+	}
 
 	public void SetTeamConfiguration(List<string> team){
 		TeamMembers = team;
@@ -86,6 +86,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void SaveTeamConfiguration(){
+		Debug.Log ("entro");
 		BinaryFormatter bf = new BinaryFormatter ();
 		FileStream file = File.Create (teamrute);
 
