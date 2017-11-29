@@ -86,13 +86,12 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void SaveTeamConfiguration(){
-		Debug.Log ("entro");
 		BinaryFormatter bf = new BinaryFormatter ();
 		FileStream file = File.Create (teamrute);
 
-		KeepData fgfdgwedf = new KeepData (this.TeamMembers);
+		KeepData data = new KeepData (this.TeamMembers);
 
-		bf.Serialize (file, fgfdgwedf);
+		bf.Serialize (file, data);
 
 		file.Close ();
 	}

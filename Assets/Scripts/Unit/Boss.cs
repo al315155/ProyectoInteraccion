@@ -11,7 +11,7 @@ namespace AssemblyCSharp
 		static int agility = 5;
 		static int critic = 10;
 
-		public Boss () : base (life, damage, velocity, movement, critic, agility)
+		public Boss () : base (life, damage, velocity, movement, critic, agility, Rol.Boss)
 		{
 		}
 

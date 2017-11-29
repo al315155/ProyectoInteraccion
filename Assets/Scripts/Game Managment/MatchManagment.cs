@@ -28,6 +28,11 @@ public class MatchManagment : MonoBehaviour
 
 	private List<GameObject> enemies;
 	private List<GameObject> players;
+	private List<Unit> round;
+	private int turn;
+
+	public GameObject enemyCanvas;
+	public GameObject playerCanvas;
 
 	void Awake(){
 		
@@ -65,13 +70,53 @@ public class MatchManagment : MonoBehaviour
 
 		CharactersInScene (playerTeam, players);
 		CharactersInScene (enemyTeam, enemies);
+
+		round = GetTurns ();
+		turn = 0;
+		NextTurn ();
+	}
+
+	private void NextTurn(){
+
+		if (enemyTeam.Contains (round [turn])) {
+
+			Debug.Log ("soy enemigo");
+			enemyCanvas.gameObject.SetActive (true);
+			playerCanvas.gameObject.SetActive (false);
+
+			enemyCanvas.transform.GetChild(0).transform.Find ("Unit Icon").GetComponent<Image> ().color = enemies[enemyTeam.IndexOf(round[turn])].GetComponent<Renderer>().material.color;
+		
+			enemyCanvas.transform.GetChild(0).transform.Find ("Unit Rol Name").GetComponent<Text> ().text = round [turn].UnitRol.ToString();
+
+			//cambio la vida (scrollbar)
+			//cambio el número de vida
+		} 
+		else {
+			Debug.Log ("soy amigo");
+
+			enemyCanvas.gameObject.SetActive (false);
+			playerCanvas.gameObject.SetActive (true);
+
+			playerCanvas.transform.GetChild(0).transform.Find ("Unit Icon").GetComponent<Image> ().color = players[playerTeam.IndexOf(round[turn])].GetComponent<Renderer>().material.color;
+
+			playerCanvas.transform.GetChild(0).transform.Find ("Unit Rol Name").GetComponent<Text> ().text = round [turn].UnitRol.ToString();
+
+			//cambio la vida (scrollbar)
+			//cambio el número de vida
+		}
+
+		turn++;
+
+		if (turn >= round.Count) {
+			turn = 0;
+		}
 	}
 
 	private void DrawArea(Vector2[] area){
 		for (int i = (int) area [0].x; i < (int)area [1].x; i++) {
 
 			for (int j = (int) area [0].y; j < (int) area [1].y; j++) {
-				map [i, j].GetComponent<Renderer>().material.color = Color.blue;
+				map [i, j].GetComponent<Renderer>().material.color = Color.cyan;
 			}
 		}
 	}
@@ -94,32 +139,154 @@ public class MatchManagment : MonoBehaviour
 		}
 	}
 
+	private List<GameObject> AllowMovement(Unit unit, int maxR){
+
+		List<GameObject> cubes = new List<GameObject> ();
+
+		Vector2 pos = unit.Position;
+
+		int minX = (int) unit.Position.x - maxR;
+		if (minX < 0) {
+			minX = 0;
+		}
+
+		int maxX = (int) unit.Position.x + maxR;
+		if (maxX >= map.GetLength (0)) {
+			maxX = map.GetLength (0);
+		}
+
+		int minY = (int) unit.Position.y - maxR;
+		if (minY < 0) {
+			minY = 0;
+		}
+
+		int maxY = (int) unit.Position.y + maxR;
+		if (maxY >= map.GetLength (0)) {
+			maxY = map.GetLength (0);
+		}
+
+		for (int i = minX; i < maxX; i++) {
+			for (int j = minY; j < maxY; j++) {
+
+				if (i < (int) unit.Position.x) {
+					if (j + i == (int) unit.Position.x) {
+						cubes.Add (map [i, j]);
+					}
+				}
+
+				if (i > (int) unit.Position.x) {
+					if (j - i == (int) unit.Position.x) {
+						cubes.Add (map [i, j]);
+					}
+				}
+			}
+		}
+
+		return cubes;
+	}
+
+	private void DrawMovement(List<GameObject> cubes){
+
+		foreach (GameObject cube in cubes) {
+			cube.GetComponent<Renderer> ().material.color = new Vector4 (0.5f, 0.3f, 0.75f, 1f);
+		}
+
+	}
+
 	private void CharactersInScene(List<Unit> team, List<GameObject> teamInScene){
 
+		GameObject obj;
+
 		if (team.Equals (enemyTeam)) {
-			EnemyPrefab.gameObject.SetActive (true);
-			foreach (Unit unit in team) {
-				GameObject obj = Instantiate (EnemyPrefab);
-				teamInScene.Add (obj);
-
-				Vector3 positionInScene = map [(int) unit.Position.x, (int) unit.Position.y].transform.position;
-				positionInScene += Vector3.up * 1.5f;
-				obj.transform.position = positionInScene;
-			}
-			EnemyPrefab.gameObject.SetActive (false);
-		} 
-		else {
-			PlayerPrefab.gameObject.SetActive (true);
-			foreach (Unit unit in team) {
-				GameObject obj = Instantiate (PlayerPrefab);
-				teamInScene.Add (obj);
-
-				Vector3 positionInScene = map [(int) unit.Position.x, (int) unit.Position.y].transform.position;
-				positionInScene += Vector3.up * 1.5f;
-				obj.transform.position = positionInScene;
-			}
-			PlayerPrefab.gameObject.SetActive (false);
+			obj = EnemyPrefab;
+		} else {
+			obj = PlayerPrefab;
 		}
+
+		foreach (Unit unit in team) {
+
+			GameObject copy = Instantiate (obj);
+			teamInScene.Add (copy);
+			
+			Vector3 positionInScene = map [(int)unit.Position.x, (int)unit.Position.y].transform.position;
+			positionInScene += Vector3.up * 1.5f;
+			copy.transform.position = positionInScene;
+
+			switch (unit.UnitRol) {
+			case Rol.Boss:
+				copy.GetComponent<Renderer> ().material.color = Color.gray;
+			
+				break;
+			case Rol.Distance:
+				copy.GetComponent<Renderer> ().material.color = Color.yellow;
+				break;
+			
+			case Rol.Healer:
+				copy.GetComponent<Renderer> ().material.color = Color.green;
+				break;
+			
+			case Rol.Mele:
+				copy.GetComponent<Renderer> ().material.color = Color.red;
+				break;
+			
+			case Rol.Tank:					
+				copy.GetComponent<Renderer> ().material.color = Color.blue;
+				break;
+			}
+		}
+	}
+
+	public List<Unit> GetTurns(){
+
+		List<Unit> turns = new List<Unit> ();
+
+		for (int i = 0; i < enemyTeam.Count; i++) {
+			turns.Add (enemyTeam [i]);
+		}
+
+		for (int i = 0; i < playerTeam.Count; i++) {
+			turns.Add (playerTeam [i]);
+		}
+
+		for (int i = 0; i < turns.Count; i++) {
+			int max = i;
+
+			for (int j = i; j < turns.Count; j++) {
+
+				if (turns [j].Velocity > turns [max].Velocity) {
+					max = j;
+				}
+			}
+
+			Unit aux = turns [i];
+			turns [i] = turns [max];
+			turns [max] = aux;
+		}
+
+		return turns;
+	}
+
+	private void DrawRange(int max){
+
+
+	}
+
+	public void Move(){
+
+		List<GameObject> lista = AllowMovement (round [turn], round [turn].Movement);
+		DrawMovement (lista);
+	}
+
+	public void Attack(){
+		NextTurn ();
+	}
+
+	public void Hability(){		
+		NextTurn ();	
+	}
+
+	public void EndTurn(){
+		NextTurn ();
 	}
 }
 

@@ -53,11 +53,13 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\CanvasManager.cs" />
      <Compile Include="Assets\Scripts\CubeOverManager.cs" />
+     <Compile Include="Assets\Scripts\Flow.cs" />
      <Compile Include="Assets\Scripts\Game Managment\GameManager.cs" />
      <Compile Include="Assets\Scripts\Game Managment\GameMode.cs" />
      <Compile Include="Assets\Scripts\Game Managment\MatchManagment.cs" />
      <Compile Include="Assets\Scripts\Game Managment\MenuManagment.cs" />
      <Compile Include="Assets\Scripts\MapGenerator.cs" />
+     <Compile Include="Assets\Scripts\SelectionManager.cs" />
      <Compile Include="Assets\Scripts\Tile.cs" />
      <Compile Include="Assets\Scripts\Unit\Boss.cs" />
      <Compile Include="Assets\Scripts\Unit\DistDamage.cs" />

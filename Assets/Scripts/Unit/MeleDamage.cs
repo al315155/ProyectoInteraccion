@@ -11,7 +11,7 @@ namespace AssemblyCSharp
 		static int agility = 20;
 		static int critic = 25;
 
-		public MeleDamage () : base (life, damage, velocity, movement, critic, agility)
+		public MeleDamage () : base (life, damage, velocity, movement, critic, agility, Rol.Mele)
 		{
 		}
 

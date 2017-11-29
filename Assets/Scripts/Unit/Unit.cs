@@ -18,6 +18,7 @@ public class Unit {
 	public static string MeleDamageDetails = 
 		"Daño cuerpo a cuepro moderado y aguante moderado también.";
 
+	private Rol rol;
 	private int life;
 	private int damage;
 	private int velocity;
@@ -26,18 +27,25 @@ public class Unit {
 	private int agility;
 	private Vector2 position;
 
-	public Unit (int life, int damage, int velocity, int movement, int critic, int agility){
+	public Unit (int life, int damage, int velocity, int movement, int critic, int agility, Rol rol){
 		this.life = life;
 		this.damage = damage;
 		this.velocity = velocity;
 		this.movement = movement;
 		this.critic = critic;
 		this.agility = agility;
-
+		this.rol = rol;
 		//position = null;
 	}
 
+
+
 	public virtual void Hablity(){
+	}
+
+	public Rol UnitRol{
+		get{ return rol; }
+		set{ rol = value; }
 	}
 
 	public Vector2 Position{
@@ -89,3 +97,5 @@ public class Unit {
 		return team;
 	}
 }
+
+public enum Rol{ Healer, Tank, Mele, Distance, Boss}
