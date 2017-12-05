@@ -1,4 +1,12 @@
-﻿using System;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using AssemblyCSharp;
+using System;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace AssemblyCSharp
 {
@@ -10,12 +18,14 @@ namespace AssemblyCSharp
 		static int movement = 3;
 		static int agility = 20;
 		static int critic = 25;
+		static int habilityRange = 2;
+		static int attackRange = 1;
+		static int minVelocity = 10;
+		static int maxVelocity = 30;		
+		static int habilityCritic = 30;
 
-		public MeleDamage () : base (life, damage, velocity, movement, critic, agility, Rol.Mele)
+		public MeleDamage () : base (life, damage, velocity, movement, critic, agility, habilityRange, attackRange, Rol.Mele, minVelocity, maxVelocity, habilityCritic)
 		{
-		}
-
-		public override void Hablity(){
 		}
 	}
 }

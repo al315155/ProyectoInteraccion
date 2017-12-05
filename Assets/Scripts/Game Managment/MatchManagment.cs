@@ -4,16 +4,25 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using AssemblyCSharp;
-using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System;
+using UnityEngine.EventSystems;
+
 
 public class MatchManagment : MonoBehaviour
 {
+	public AssemblyCSharp.Action currentAction;
+	public Drawer drawer;
+
+	public GameObject target;
+
+	public List<Vector2> allowedBoxes;
+
+	public Material originalGround;
+
 	public GameObject EnemyPrefab;
 	public GameObject PlayerPrefab;
-
-	public GameObject sphere;
 
 	private GameManager gameManager;
 
@@ -21,18 +30,19 @@ public class MatchManagment : MonoBehaviour
 	private List<Unit> playerTeam;
 	private List<Unit> enemyTeam;
 
-	public GameObject groud_unit;
 	public GameObject grid_unit;
 	public int dimension;
 	private GameObject[,] map;
 
 	private List<GameObject> enemies;
 	private List<GameObject> players;
-	private List<Unit> round;
-	private int turn;
+	public List<Unit> round;
+	public int turn;
 
 	public GameObject enemyCanvas;
 	public GameObject playerCanvas;
+
+	public GameObject focusedIcon;
 
 	void Awake(){
 		
@@ -45,12 +55,21 @@ public class MatchManagment : MonoBehaviour
 					new Vector3 (-(int) Mathf.Sqrt(dimension) + i * newCube.transform.localScale.x, 
 						0, -(int) Mathf.Sqrt(dimension) + j * newCube.transform.localScale.z);
 				map [i, j] = newCube;
+
 			}
 		} 
+			
+		Destroy (grid_unit);
 	}
 
 
 	void Start(){
+
+		drawer = GetComponent<Drawer> ();
+
+		currentAction = AssemblyCSharp.Action.None;
+		allowedBoxes = new List<Vector2> ();
+
 		enemies = new List<GameObject> ();
 		players = new List<GameObject> ();
 
@@ -62,9 +81,6 @@ public class MatchManagment : MonoBehaviour
 		enemyTeam = Unit.GenerateTeam (gameManager.GetGameMode ().GetEnemyTeam ());
 		Vector2[] enemyArea = gameManager.GetGameMode().GetReferences(dimension, "Enemy");
 
-		DrawArea (playerArea);
-		DrawArea (enemyArea);
-
 		PlaceCharacters (playerTeam, playerArea);
 		PlaceCharacters (enemyTeam, enemyArea);
 
@@ -72,24 +88,71 @@ public class MatchManagment : MonoBehaviour
 		CharactersInScene (enemyTeam, enemies);
 
 		round = GetTurns ();
-		turn = 0;
+		turn = -1;
+
+
 		NextTurn ();
 	}
 
 	private void NextTurn(){
 
+
+		turn++;
+
+		if (turn >= round.Count) {
+			turn = 0;
+		}	
+
+		Debug.Log (round [turn].UnitRol);
+		Debug.Log (round [turn].Movement);
+
+		foreach (Unit unit in enemyTeam) {
+			if (unit.Focused) {
+				Debug.Log (unit.FocusedCount);
+				unit.FocusedCount = unit.FocusedCount - 1;
+
+				if (unit.FocusedCount <= 0) {
+					unit.Focused = false;
+
+					Destroy(enemies [enemyTeam.IndexOf (unit)].transform.GetChild (0).gameObject);
+				}
+			}
+		}
+
+		foreach (Unit unit in playerTeam) {
+			if (unit.Focused) {
+				unit.FocusedCount = unit.FocusedCount - 1;
+
+				if (unit.FocusedCount <= 0) {
+					unit.Focused = false;
+
+					Destroy(players [playerTeam.IndexOf (unit)].transform.GetChild (0).gameObject);
+				}
+			}
+		}
+
+		drawer.UnDrawBoxes (map, allowedBoxes);
+		currentAction = AssemblyCSharp.Action.None;
+
 		if (enemyTeam.Contains (round [turn])) {
 
-			Debug.Log ("soy enemigo");
-			enemyCanvas.gameObject.SetActive (true);
+			Debug.Log ("Soy enemigo");
+
+			enemyCanvas.SetActive (true);
 			playerCanvas.gameObject.SetActive (false);
 
-			enemyCanvas.transform.GetChild(0).transform.Find ("Unit Icon").GetComponent<Image> ().color = enemies[enemyTeam.IndexOf(round[turn])].GetComponent<Renderer>().material.color;
-		
-			enemyCanvas.transform.GetChild(0).transform.Find ("Unit Rol Name").GetComponent<Text> ().text = round [turn].UnitRol.ToString();
 
-			//cambio la vida (scrollbar)
-			//cambio el número de vida
+			Unit enemy = round [turn];
+			GameObject enemyInScene = enemies[enemyTeam.IndexOf (enemy)];
+		
+			enemyCanvas.transform.GetChild(0).transform.Find ("Unit Icon").GetComponent<Image> ().color = enemyInScene.GetComponent<Renderer>().material.color;
+			enemyCanvas.transform.GetChild(0).transform.Find ("Unit Rol Name").GetComponent<Text> ().text = enemy.UnitRol.ToString();
+
+			float value = (float) round [turn].CurrentLife / (float) round [turn].Life;
+			enemyCanvas.transform.GetChild (0).transform.Find ("Unit Scrollbar Life").GetComponent<Scrollbar> ().size = value;
+			enemyCanvas.transform.GetChild (0).transform.Find ("Life Label").GetComponent<Text> ().text = round [turn].CurrentLife + "/" + round [turn].Life;
+
+			target.transform.position = new Vector3 (enemyInScene.transform.position.x, enemyInScene.transform.position.y + 5f, enemyInScene.transform.position.z);
 		} 
 		else {
 			Debug.Log ("soy amigo");
@@ -97,27 +160,21 @@ public class MatchManagment : MonoBehaviour
 			enemyCanvas.gameObject.SetActive (false);
 			playerCanvas.gameObject.SetActive (true);
 
-			playerCanvas.transform.GetChild(0).transform.Find ("Unit Icon").GetComponent<Image> ().color = players[playerTeam.IndexOf(round[turn])].GetComponent<Renderer>().material.color;
 
-			playerCanvas.transform.GetChild(0).transform.Find ("Unit Rol Name").GetComponent<Text> ().text = round [turn].UnitRol.ToString();
+			Unit player = round [turn];
+			GameObject playerInScene = players[playerTeam.IndexOf (player)];
 
-			//cambio la vida (scrollbar)
-			//cambio el número de vida
-		}
 
-		turn++;
+			playerCanvas.transform.GetChild(0).transform.Find ("Unit Icon").GetComponent<Image> ().color = playerInScene.GetComponent<Renderer>().material.color;
 
-		if (turn >= round.Count) {
-			turn = 0;
-		}
-	}
+			playerCanvas.transform.GetChild(0).transform.Find ("Unit Rol Name").GetComponent<Text> ().text = player.UnitRol.ToString();
 
-	private void DrawArea(Vector2[] area){
-		for (int i = (int) area [0].x; i < (int)area [1].x; i++) {
 
-			for (int j = (int) area [0].y; j < (int) area [1].y; j++) {
-				map [i, j].GetComponent<Renderer>().material.color = Color.cyan;
-			}
+			float value = (float) round [turn].CurrentLife / (float) round [turn].Life;
+			playerCanvas.transform.GetChild (0).transform.Find ("Unit Scrollbar Life").GetComponent<Scrollbar> ().size = value;
+			playerCanvas.transform.GetChild (0).transform.Find ("Life Label").GetComponent<Text> ().text = round [turn].CurrentLife + "/" + round [turn].Life;
+
+			target.transform.position = new Vector3 (playerInScene.transform.position.x, playerInScene.transform.position.y + 5f, playerInScene.transform.position.z);
 		}
 	}
 
@@ -139,58 +196,75 @@ public class MatchManagment : MonoBehaviour
 		}
 	}
 
-	private List<GameObject> AllowMovement(Unit unit, int maxR){
+	private List<Vector2> allowMovement(List<Vector2> positions){
 
-		List<GameObject> cubes = new List<GameObject> ();
-
-		Vector2 pos = unit.Position;
-
-		int minX = (int) unit.Position.x - maxR;
-		if (minX < 0) {
-			minX = 0;
+		List<Unit> units = new List<Unit> ();
+		foreach (Unit unit in playerTeam) {
+			units.Add (unit);
+		}
+		foreach (Unit unit in enemyTeam) {
+			units.Add (unit);
 		}
 
-		int maxX = (int) unit.Position.x + maxR;
-		if (maxX >= map.GetLength (0)) {
-			maxX = map.GetLength (0);
+		List<Vector2> finalPositions = new List<Vector2>();
+		foreach (Vector2 position in positions) {
+			finalPositions.Add (position);
 		}
 
-		int minY = (int) unit.Position.y - maxR;
-		if (minY < 0) {
-			minY = 0;
-		}
-
-		int maxY = (int) unit.Position.y + maxR;
-		if (maxY >= map.GetLength (0)) {
-			maxY = map.GetLength (0);
-		}
-
-		for (int i = minX; i < maxX; i++) {
-			for (int j = minY; j < maxY; j++) {
-
-				if (i < (int) unit.Position.x) {
-					if (j + i == (int) unit.Position.x) {
-						cubes.Add (map [i, j]);
-					}
-				}
-
-				if (i > (int) unit.Position.x) {
-					if (j - i == (int) unit.Position.x) {
-						cubes.Add (map [i, j]);
-					}
+		foreach (Vector2 position in positions) {
+			foreach (Unit unit in units) {
+				if (unit.Position.Equals (position)) {
+					finalPositions.Remove (position);
+					break;
 				}
 			}
 		}
 
-		return cubes;
+		return finalPositions;
 	}
+		
+	private List<Vector2> getBoxesInsideRange(Unit unit, int range){
+		List<Vector2> positions = new List<Vector2> ();
+		Vector2 pos = unit.Position;
 
-	private void DrawMovement(List<GameObject> cubes){
+		int minX = (int)unit.Position.x - range;
+		int maxX = (int)unit.Position.x + range;
+		int minY = (int)unit.Position.y - range;
+		int maxY = (int)unit.Position.y + range;
 
-		foreach (GameObject cube in cubes) {
-			cube.GetComponent<Renderer> ().material.color = new Vector4 (0.5f, 0.3f, 0.75f, 1f);
+		if (minX < 0)
+			minX = 0;
+		if (maxX >= map.GetLength (0))
+			maxX = map.GetLength (0);
+
+		if (minY < 0)
+			minY = 0;
+		if (maxY >= map.GetLength (1))
+			maxY = map.GetLength (1);
+
+		int aux = 0;
+		for (int i = minX; i < maxX; i++) {
+			for (int j = 0; j < aux; j++) {
+				Vector2 newPosition = Vector2.one;
+
+				if ((pos.y + j) < maxY) {
+					newPosition = new Vector2 (i, (int)pos.y + j);
+					positions.Add (newPosition);
+				}
+				if ((pos.y - j) >= minY) {
+					newPosition = new Vector2 (i, (int)pos.y - j);
+					positions.Add (newPosition);
+				}
+			}
+
+			if (i < (int)pos.x) {
+				aux++;
+			} else {
+				aux--;
+			}
 		}
 
+		return positions;
 	}
 
 	private void CharactersInScene(List<Unit> team, List<GameObject> teamInScene){
@@ -204,6 +278,9 @@ public class MatchManagment : MonoBehaviour
 		}
 
 		foreach (Unit unit in team) {
+
+			Debug.Log (unit.UnitRol);
+			Debug.Log (unit.Movement);
 
 			GameObject copy = Instantiate (obj);
 			teamInScene.Add (copy);
@@ -238,16 +315,20 @@ public class MatchManagment : MonoBehaviour
 
 	public List<Unit> GetTurns(){
 
+		//Creo lista vacía
 		List<Unit> turns = new List<Unit> ();
 
+		//La lleno con las unidades del equipo enemigo
 		for (int i = 0; i < enemyTeam.Count; i++) {
 			turns.Add (enemyTeam [i]);
 		}
 
+		//Y con las del equipo del jugador
 		for (int i = 0; i < playerTeam.Count; i++) {
 			turns.Add (playerTeam [i]);
 		}
 
+		//Ordeno la lista de mayor a menor con búsqueda binaria
 		for (int i = 0; i < turns.Count; i++) {
 			int max = i;
 
@@ -266,28 +347,283 @@ public class MatchManagment : MonoBehaviour
 		return turns;
 	}
 
-	private void DrawRange(int max){
+	void Update(){
 
 
+		if (currentAction.Equals(AssemblyCSharp.Action.Move) && Input.GetMouseButton(0)) {
+			DoMove ();
+		}
+
+		if (currentAction.Equals (AssemblyCSharp.Action.Attack) && Input.GetMouseButton (0)) {
+			DoAttack ();
+		}
+
+		if (currentAction.Equals (AssemblyCSharp.Action.Hability) && Input.GetMouseButton (0)) {
+
+			switch (round [turn].UnitRol) {
+			case Rol.Healer:
+				Heal ();
+
+				break;
+			case Rol.Distance:
+				Focus ();
+
+				break;
+			case Rol.Mele:
+				Area ();
+
+				break;
+			case Rol.Tank:
+				Agro ();
+
+				break;
+			}
+		}
 	}
 
 	public void Move(){
 
-		List<GameObject> lista = AllowMovement (round [turn], round [turn].Movement);
-		DrawMovement (lista);
+		drawer.UnDrawBoxes (map, allowedBoxes);
+
+		allowedBoxes = allowMovement(getBoxesInsideRange(round[turn], round[turn].Movement + 1));
+		drawer.DrawBoxes (map, allowedBoxes, new Vector4(1.0f, 0.2f, 0.7f, 1.0f));
+		currentAction = AssemblyCSharp.Action.Move;
+	}
+
+	public void DoMove(){
+		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+		RaycastHit hitInfo;
+		Vector2 newPosition = new Vector2 (-1, -1);
+
+		if (Physics.Raycast (ray, out hitInfo)) {
+			if (hitInfo.collider.tag.Equals ("Ground")) {
+
+				//Look for position inside map
+				for (int i = 0; i < map.GetLength (0); i++) {
+					for (int j = 0; j < map.GetLength (1); j++) {
+
+						if (map [i, j].Equals (hitInfo.collider.gameObject)) {
+							newPosition = new Vector2 (i, j);
+						}
+					}
+				}
+			}
+		}
+
+		if (newPosition != new Vector2 (-1, -1) && allowedBoxes.Contains(newPosition)) {
+			round [turn].Position = newPosition;
+
+			GameObject unitInScene;
+			if (enemyTeam.Contains (round [turn])) {
+				unitInScene = enemies [enemyTeam.IndexOf (round [turn])];	
+			} else {
+				unitInScene = players [playerTeam.IndexOf (round [turn])];
+			}
+
+			Vector3 positionInScene = map [(int)round [turn].Position.x, (int)round [turn].Position.y].transform.position;
+			positionInScene += Vector3.up * 1.5f;
+			unitInScene.transform.position = positionInScene;
+
+			NextTurn ();
+		}
 	}
 
 	public void Attack(){
-		NextTurn ();
+
+		drawer.UnDrawBoxes (map, allowedBoxes);
+
+		allowedBoxes = getBoxesInsideRange(round[turn], round[turn].AttackRange + 1);
+		drawer.DrawBoxes (map, allowedBoxes, new Vector4(0.5f, 0.5f, 0.8f, 1f));
+		currentAction = AssemblyCSharp.Action.Attack;
+	}
+
+	public void DoAttack(){
+		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+		RaycastHit hitInfo;
+
+		if (Physics.Raycast (ray, out hitInfo)) {
+			if (hitInfo.collider.tag.Equals ("Enemy") || hitInfo.collider.tag.Equals ("Player")) {
+
+				GameObject unitInScene = hitInfo.collider.gameObject;
+				Unit unit;
+				if (unitInScene.tag.Equals ("Enemy")) {
+					unit = enemyTeam [enemies.IndexOf (unitInScene)];
+				} else {
+					unit = playerTeam [players.IndexOf (unitInScene)];
+				}
+
+				if (allowedBoxes.Contains(unit.Position) && allowedAttack(round[turn], unit)){
+
+					//Agilidad del atacado (si hay o no ataque)
+					//La precisión por delante es de 20, por el lado de 70, y po detras de 90
+					//Lo de la precisión segun por delante o detrás vamos a esperar xDDDDDD
+
+					float probability = UnityEngine.Random.Range (0, 100);
+					if (unit.Focused) {
+						if (probability < 100 - unit.Agility) {
+							Debug.Log ("fallo");
+							NextTurn ();
+
+						} else {
+							Debug.Log ("ataco");
+							//critico??
+							probability = UnityEngine.Random.Range (0, 100);
+							if (probability > round [turn].Critic / 2) {
+								//critico
+								Debug.Log ("critico");
+								unit.CurrentLife -= round [turn].Damage * 2;
+							} else {
+								Debug.Log ("ataqueNormal");
+								unit.CurrentLife -= round [turn].Damage;
+							}
+							NextTurn ();
+						}
+					} else {
+						if (probability < 100 - unit.Agility) {
+							Debug.Log ("fallo");
+							NextTurn ();
+
+						} else {
+							Debug.Log ("ataco");
+							//critico??
+							probability = UnityEngine.Random.Range (0, 100);
+							if (probability > round [turn].Critic) {
+								//critico
+								Debug.Log ("critico");
+								unit.CurrentLife -= round [turn].Damage * 2;
+							} else {
+								Debug.Log ("ataqueNormal");
+								unit.CurrentLife -= round [turn].Damage;
+							}
+							NextTurn ();
+						}
+					}
+				
+				}
+
+			}
+		}
+	}
+
+	private bool allowedAttack(Unit attacker, Unit victim){
+		if (enemyTeam.Contains (attacker) && playerTeam.Contains (victim) ||
+		    playerTeam.Contains (attacker) && enemyTeam.Contains (victim)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void Hability(){		
-		NextTurn ();	
+
+		drawer.UnDrawBoxes (map, allowedBoxes);
+
+		switch (round [turn].UnitRol) {
+		case Rol.Healer:
+			allowedBoxes = getBoxesInsideRange (round [turn], round [turn].HabilityRange + 1);
+			drawer.DrawBoxes (map, allowedBoxes, new Vector4(0.7f, 0.3f, 0.8f, 1f));
+			currentAction = AssemblyCSharp.Action.Hability;
+
+			break;
+		case Rol.Distance:
+			allowedBoxes = getBoxesInsideRange (round [turn], round [turn].HabilityRange + 1);
+			drawer.DrawBoxes (map, allowedBoxes, new Vector4(0.2f, 0.3f, 0.2f, 1f));
+			currentAction = AssemblyCSharp.Action.Hability;
+
+			break;
+		case Rol.Mele:
+			break;
+		case Rol.Tank:
+			break;
+		}
+
 	}
 
 	public void EndTurn(){
 		NextTurn ();
 	}
+
+	private void Heal(){
+		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+		RaycastHit hitInfo;
+
+		if (Physics.Raycast (ray, out hitInfo)) {
+			if (hitInfo.collider.tag.Equals ("Enemy") || hitInfo.collider.tag.Equals ("Player")) {
+
+				GameObject unitInScene = hitInfo.collider.gameObject;
+				Unit unit;
+				if (unitInScene.tag.Equals ("Enemy")) {
+					unit = enemyTeam [enemies.IndexOf (unitInScene)];
+				} else {
+					unit = playerTeam [players.IndexOf (unitInScene)];
+				}
+
+				if (allowedBoxes.Contains(unit.Position) && !allowedAttack(round[turn], unit)){
+
+					float probability = UnityEngine.Random.Range (0, 100);
+					if (probability < round [turn].HabilityCritic) {
+						Debug.Log ("cura critica");
+						unit.CurrentLife += round [turn].GetHeal (unit) * 2;
+
+					} else {
+						Debug.Log ("cura normal");
+						unit.CurrentLife += round [turn].GetHeal (unit);
+					}
+					NextTurn ();
+				}
+			}
+		}
+	}
+
+	private void Focus(){
+		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+		RaycastHit hitInfo;
+
+		if (Physics.Raycast (ray, out hitInfo)) {
+			if (hitInfo.collider.tag.Equals ("Enemy") || hitInfo.collider.tag.Equals ("Player")) {
+
+				GameObject unitInScene = hitInfo.collider.gameObject;
+				Unit unit;
+				if (unitInScene.tag.Equals ("Enemy")) {
+					unit = enemyTeam [enemies.IndexOf (unitInScene)];
+				} else {
+					unit = playerTeam [players.IndexOf (unitInScene)];
+				}
+
+				if (allowedBoxes.Contains(unit.Position) && allowedAttack(round[turn], unit)){
+
+					if (!unit.Focused) {
+						float probability = UnityEngine.Random.Range (0, 100);
+						if (probability > 100 - unit.Agility) {
+							Debug.Log ("fallo focus");
+							NextTurn ();
+
+						} else {
+							Debug.Log ("acierto focus");
+							unit.Focused = true;
+							unit.FocusedCount = 3;
+
+							focusedIcon.SetActive (true);
+							GameObject focusedUnit = Instantiate (focusedIcon);
+							focusedIcon.SetActive (false);
+
+							focusedUnit.transform.position = unitInScene.transform.position + Vector3.up * 2;
+							focusedUnit.transform.SetParent (unitInScene.transform);
+						}
+					
+						NextTurn ();
+					}
+				}
+			}
+		}
+	}
+
+	private void Agro(){
+	}
+
+	private void Area(){
+	}
+
 }
 
 
