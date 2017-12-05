@@ -46,46 +46,32 @@ namespace AssemblyCSharp
 			get{ return members; }
 		}
 
-		public List<string> GetEnemyTeam(){
-			List<string> enemies = new List<string> ();
+		public List<string> GetBasicTeam(){
+			List<string> units = new List<string> ();
 			if (this.type.Equals (GameType.Team_vs_Team) || this.type.Equals (GameType.One_Kill)) {
 				//Los miembros son 6
-				enemies.Add ("Healer");
-				enemies.Add ("Tank");
-				enemies.Add ("Tank");
-				enemies.Add ("Distance Damage");
-				enemies.Add ("Mele Damage");
-				enemies.Add ("Mele Damage");
+				units.Add ("Healer");
+				units.Add ("Tank");
+				units.Add ("Tank");
+				units.Add ("Distance Damage");
+				units.Add ("Mele Damage");
+				units.Add ("Mele Damage");
 			} else {
-				enemies.Add ("Boss");
+				units.Add ("Boss");
 			}
-			return enemies;
+			return units;
 		}
 
-		public Vector2[] GetReferences(int dimension, string team){
-			int sideMargin, topMargin, botMargin;
-			CalculateMargins (dimension, out sideMargin, out topMargin, out botMargin);
+		public List<string> GetQLearningTeam(){
+			// Un miembro de cada rol para QLearning
+			List<string> units = new List<string> ();
 
-			Vector2 topLeft;
-			Vector2 botRight;
+			units.Add ("Healer");
+			units.Add ("Tank");
+			units.Add ("Distance Damage");
+			units.Add ("Mele Damage");
 
-			if (team.Equals ("Player")) {
-				topLeft = new Vector2 (sideMargin, topMargin);
-				botRight = new Vector2 ((int) Math.Sqrt(dimension) - sideMargin, (int) Math.Sqrt(dimension) / 2 - botMargin);
-			} else {
-				topLeft = new Vector2 (sideMargin, (int) Math.Sqrt(dimension) / 2 + botMargin);
-				botRight = new Vector2 ((int) Math.Sqrt(dimension) - sideMargin, (int) Math.Sqrt(dimension) - topMargin);
-			}
-			return new Vector2[]{ topLeft, botRight };
-		}
-
-		private void CalculateMargins(int dimension, out int sideMargin, out int topMargin, out int botMargin){
-
-			int normalMargin = (int) Math.Sqrt(dimension) * 20 / 100;
-			//Debug.Log ("normal margin" + normalMargin);
-			sideMargin = normalMargin;
-			topMargin = normalMargin / 2;
-			botMargin = normalMargin;
+			return units;
 		}
 	}
 

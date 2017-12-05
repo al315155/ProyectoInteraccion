@@ -864,6 +864,78 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 574880143}
+--- !u!1 &581316441
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 581316444}
+  - component: {fileID: 581316443}
+  - component: {fileID: 581316442}
+  m_Layer: 5
+  m_Name: Agro
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!23 &581316442
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 581316441}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: c202786884c39a44d98ff8a93a816b1a, type: 2}
+  - {fileID: 2100000, guid: c202786884c39a44d98ff8a93a816b1a, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &581316443
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 581316441}
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &581316444
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 581316441}
+  m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 3, y: 5, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
 --- !u!1 &617388770
 GameObject:
   m_ObjectHideFlags: 0
@@ -941,7 +1013,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 767945945}
-        m_MethodName: Attack
+        m_MethodName: ActivateAttack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1097,9 +1169,11 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 767945946}
+  - component: {fileID: 767945948}
   - component: {fileID: 767945945}
   - component: {fileID: 767945947}
-  - component: {fileID: 767945948}
+  - component: {fileID: 767945950}
+  - component: {fileID: 767945949}
   m_Layer: 0
   m_Name: Scene Manager
   m_TagString: Untagged
@@ -1118,21 +1192,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43069b81f771b93478a2eb7c2066b09d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentAction: 3
-  drawer: {fileID: 0}
+  focused: {fileID: 1461875430}
+  agro: {fileID: 581316441}
   target: {fileID: 644917057}
+  drawer: {fileID: 0}
+  calculator: {fileID: 0}
+  functions: {fileID: 0}
+  team_1_AgroCount: 0
+  team_2_AgroCount: 0
+  currentAction: 3
   allowedBoxes: []
-  originalGround: {fileID: 2100000, guid: 80a522fd7b9deaf48ab6fb9a0ebc7663, type: 2}
-  EnemyPrefab: {fileID: 1008627278176500, guid: 4b6fce6065853d144a3960b389b103df,
-    type: 2}
-  PlayerPrefab: {fileID: 1143431593626908, guid: 195039398f1e7384e996d5519590d52b,
-    type: 2}
+  unitTurn: 0
   grid_unit: {fileID: 1323916453}
   dimension: 324
-  turn: 0
-  enemyCanvas: {fileID: 1612493792}
-  playerCanvas: {fileID: 1832672482}
-  focusedIcon: {fileID: 1461875430}
+  Team_1_Prefab: {fileID: 1008627278176500, guid: 4b6fce6065853d144a3960b389b103df,
+    type: 2}
+  Team_2_Prefab: {fileID: 1143431593626908, guid: 195039398f1e7384e996d5519590d52b,
+    type: 2}
+  team_1_Canvas: {fileID: 1832672482}
+  team_2_Canvas: {fileID: 1612493792}
 --- !u!4 &767945946
 Transform:
   m_ObjectHideFlags: 0
@@ -1241,6 +1319,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &767945949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 767945944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f82ecc3d1fcdfa94597255d33d76f87b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &767945950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 767945944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2239612e303cbcc40bb19b7547b217b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &828441450
 Prefab:
   m_ObjectHideFlags: 0
@@ -1550,7 +1650,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 767945945}
-        m_MethodName: Attack
+        m_MethodName: ActivateAttack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1904,7 +2004,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 767945945}
-        m_MethodName: Move
+        m_MethodName: ActivateMovement
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2348,7 +2448,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 767945945}
-        m_MethodName: Move
+        m_MethodName: ActivateMovement
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2470,7 +2570,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 767945945}
-        m_MethodName: Hability
+        m_MethodName: ActivateHability
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2527,7 +2627,7 @@ GameObject:
   - component: {fileID: 1461875432}
   m_Layer: 5
   m_Name: Focused
-  m_TagString: Target
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3591,7 +3691,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 767945945}
-        m_MethodName: Hability
+        m_MethodName: ActivateHability
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
