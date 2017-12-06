@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using AssemblyCSharp;
-
-public class QLearning : MonoBehaviour {
+﻿//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
+//using AssemblyCSharp;
+//
+//public class QLearning : MonoBehaviour {
 //
 //	QSceneManagment sceneManagment;
 //
@@ -232,5 +232,5 @@ public class QLearning : MonoBehaviour {
 //
 //
 //
-
-}
+//
+//}

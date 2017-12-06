@@ -219,27 +219,36 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\CanvasManager.cs" />
-    <Compile Include="Assets\CubeOverManager.cs" />
+    <Compile Include="Assets\IAvsIA.cs" />
+    <Compile Include="Assets\Scripts\CanvasManager.cs" />
+    <Compile Include="Assets\Scripts\CubeOverManager.cs" />
+    <Compile Include="Assets\Scripts\Flow.cs" />
+    <Compile Include="Assets\Scripts\Game Managment\Action.cs" />
+    <Compile Include="Assets\Scripts\Game Managment\Drawer.cs" />
     <Compile Include="Assets\Scripts\Game Managment\GameManager.cs" />
-    <Compile Include="Assets\Scripts\Game Managment\IManagment.cs" />
+    <Compile Include="Assets\Scripts\Game Managment\GameMode.cs" />
+    <Compile Include="Assets\Scripts\Game Managment\MatchManagment.cs" />
     <Compile Include="Assets\Scripts\Game Managment\MenuManagment.cs" />
-    <Compile Include="Assets\Scripts\Game Managment\ModeManagment.cs" />
-    <Compile Include="Assets\Scripts\Game Managment\TeamManagment.cs" />
+    <Compile Include="Assets\Scripts\IAvsIA\Functions.cs" />
+    <Compile Include="Assets\Scripts\IAvsIA\IaVsIa.cs" />
     <Compile Include="Assets\Scripts\MapGenerator.cs" />
+    <Compile Include="Assets\Scripts\QLearning.cs" />
+    <Compile Include="Assets\Scripts\QSceneManagment.cs" />
+    <Compile Include="Assets\Scripts\SelectionManager.cs" />
+    <Compile Include="Assets\Scripts\Target.cs" />
     <Compile Include="Assets\Scripts\Tile.cs" />
-    <Compile Include="Assets\Scripts\Unit.cs" />
-    <Compile Include="Assets\Scripts\Unit\BA.cs" />
-    <Compile Include="Assets\Scripts\Unit\DA.cs" />
+    <Compile Include="Assets\Scripts\Unit\Boss.cs" />
+    <Compile Include="Assets\Scripts\Unit\DistDamage.cs" />
     <Compile Include="Assets\Scripts\Unit\Healer.cs" />
-    <Compile Include="Assets\Scripts\Unit\IRol.cs" />
+    <Compile Include="Assets\Scripts\Unit\MeleDamage.cs" />
     <Compile Include="Assets\Scripts\Unit\Tank.cs" />
+    <Compile Include="Assets\Scripts\Unit\Unit.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasic.shader" />
-    <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasicOutline.shader" />
-    <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLit.shader" />
-    <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
+    <None Include="Assets\Resources\Effects\ToonShading\Shaders\ToonBasic.shader" />
+    <None Include="Assets\Resources\Effects\ToonShading\Shaders\ToonBasicOutline.shader" />
+    <None Include="Assets\Resources\Effects\ToonShading\Shaders\ToonLit.shader" />
+    <None Include="Assets\Resources\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
