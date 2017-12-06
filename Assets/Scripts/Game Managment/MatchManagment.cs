@@ -186,10 +186,7 @@ public class MatchManagment : MonoBehaviour
 			if (unitTurn >= round.Count) {
 				unitTurn = 0;
 			}	
-
-			Debug.Log (round [unitTurn].UnitRol);
-			Debug.Log (round [unitTurn].Movement);
-
+				
 			if (team_1_Agro != null) {
 				team_1_AgroCount -= 1;
 				if (team_1_AgroCount <= 0) {

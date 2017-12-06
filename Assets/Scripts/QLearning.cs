@@ -4,233 +4,181 @@ using UnityEngine;
 using AssemblyCSharp;
 
 public class QLearning : MonoBehaviour {
-//
-//	QSceneManagment sceneManagment;
-//
-//	// Use this for initialization
-//	void Start () {
-//		sceneManagment = GameObject.Find ("Scene Managment").GetComponent<QSceneManagment> ();
-//	}
-//	
-//	// Update is called once per frame
-//	void Update () {
-//		
-//	}
-//
-//	private bool isHurted(Unit unit){
-//		if (/*unit.currentLife < unit.minLife*/){
-//			return true;
-//		}
-//		return false;
-//	}
-//
-//	private void GetState(Unit unit){
-//
-//		//GetTeam(unit, "Rival") devuelve el equipo contrario a unit
-//		//GetTeam(unit, "Ally") devuelve el equipo al que pertenece unit
-//
-//		//En idioma de Álvaro, ESTADOS
-//		bool[] conditions = new bool[4];
-//		bool isSomeoneHurted;
-//
-//		switch (/*unit.Rol*/){
-//		case /*Rol.Tank*/:
-//
-//			//Primera condición: el estado de la vida de la propia unidad.
-//			if (!isHurted(unit)){
-//				conditions[0] = true;
-//			} else {
-//				conditions[0] = false;
-//			}
-//
-//
-//			//Segunda condicion: el estado de la vida de sus aliados
-//			isSomeoneHurted = false;
-//			foreach (Unit partner in sceneManagment.GetTeam(unit, "Ally")){
-//				if (!unit.Equals(partner)){
-//					if (isHurted(partner)){
-//						isSomeoneHurted = true;
-//					}
-//				}
-//			}
-//			if (isSomeoneHurted) conditions[1] = false;
-//			else conditions[1] = true;	
-//
-//			//Second condition
-//			//Habrá que guardar quién está herido
-//			//Si hay varios heridos, checkear quién está mas herido
-//
-//			//Quizá haya que separar el buscar al aliado más herido
-//			//de ver si hay algun aliado herido (?)
-////			bool IsSomeoneHurted = false;
-////			int hurtedPartners = 0;
-////			Unit hurtedPartner;
-////			foreach(Unit partner in sceneManagment.GetTeam(unit)){
-////				if (!unit.Equals(partner)){
-////					if (isHurted(partner))
-////					{
-////						hurtedPartners += 1;
-////						hurtedPartner = partner;
-////					}
-////				}
-////			}
-////
-////			if (hurtedPartner == 0){
-////				conditions[1] = false;
-////			} else {
-////				conditions[1] = true;
-////
-////				if (hurtedPartners > 1){
-////
-////				Unit weakest = hurtedPartner;
-////
-////				foreach (Unit partner in sceneManagment.GetTeam(unit)){
-////
-////					if (!unit.Equals(partner)){
-////						if (isHurted(partner)){
-////							if (/*partner.currentLife < weakest.currentLife*/){
-////								weakest = partner;
-////							}
-////						}
-////					}
-////				}
-////				hurtedPartner = weakest;
-////				}
-////			}
-//
-//			//Tercera condición: Existe un enemigo dentro del rango de ataque
-//			if (sceneManagment.IsSomeoneNear(unit, sceneManager.GetTeam(unit, "Rival"), /*unit.attackRange*/))){
-//				conditions[2] = true;
-//			} else {conditions[2] = false;}
-//			
-//
-//			//Cuarta condicion: Existe un aliado Focused
-//			if (sceneManagment.IsSomeoneFocused(unit)){
-//				conditions[3] = true;
-//			} else {
-//				conditions[3] = false;
-//			}
-//
-//			break;
-//
-//
-//
-//
-//		case /*Rol.Healer*/:
-//
-//			//Primera condición: el estado de la vida de la propia unidad.
-//			if (!isHurted(unit)){
-//				conditions[0] = true;
-//			} else {
-//				conditions[0] = false;
-//			}
-//
-//			//Segunda condicion: tener dentro de su rango de movimiento a sus aliados
-//			isSomeoneHurted = false;
-//			foreach (Unit partner in sceneManagment.GetTeam(unit, "Ally")){
-//				if (!unit.Equals(partner)){
-//					if (isHurted(partner)){
-//						isSomeoneHurted = true;
-//					}
-//				}
-//			}
-//			if (isSomeoneHurted) conditions[1] = false;
-//			else conditions[1] = true;
-//
-//			//Tercera condición: tener un enemigo dentro de su rango de ataque
-//			if (sceneManagment.IsSomeoneNear(unit, sceneManager.GetTeam(unit, "Rival"), /*unit.attackRange*/)){
-//				conditions[2] = true;
-//			} else {conditions[2] = false;}
-//
-//			//Cuarta condicion: tener un aliado dentro del rango de uso de habilidad
-//			if (sceneManagment.IsSomeoneNear(unit, sceneManager.GetTeam(unit,"Ally"), /*unit.habilityRange*/)){
-//				conditions[3] = true;
-//			} else {
-//				conditions[3] = false;
-//			}
-//
-//			break;
-//
-//
-//
-//
-//		case /*Rol.Mele Damage*/:
-//
-//			//Primera condición: el estado de la vida de la propia unidad.
-//			if (!isHurted(unit)){
-//				conditions[0] = true;
-//			} else {
-//				conditions[0] = false;
-//			}
-//
-//			//Segunda condición: tener un enemigo dentro de su rango de ataque
-//				if (sceneManagment.IsSomeoneNear(unit, sceneManager.GetTeam(unit, "Rival"), /*unit.attackRange*/)){
-//				conditions[1] = true;
-//			} else {conditions[1] = false;}
-//
-//			//Tercera condicion: tener 1 enemigo dentro del rango de habilidad
-//			if (sceneManagment.IsSomeoneNear(unit, sceneManager.GetTeam(unit, "Rival"), /*unit.habilityRange*/)){
-//				conditions[2] = true;
-//			} else {
-//				conditions[2] = false;
-//			}
-//		
-//			//Cuarta condición: tener VARIOS enemigos dentro del rango de habilidad
-//					if (sceneManagment.IsSomeoneNear(unit, sceneManagment.GetTeam(unit, "Rival"), /*unit.habilityRange*/)){
-//				if(sceneManagment.ALotOfRivalsInMeleDamageArea(unit, sceneManagment.GetTeam(unit, "Rival"), /*unit.habilityRange*/){
-//					conditions[3] = true;
-//				}
-//				else {conditions[3] = false;}
-//			}
-//			else {conditions[3] = false;}
-//				
-//
-//			break;
-//
-//
-//
-//
-//		case /*Rol.Distance Damage*/:
-//
-//			//Primera condición: el estado de la vida de la propia unidad.
-//			if (!isHurted(unit)){
-//				conditions[0] = true;
-//			} else {
-//				conditions[0] = false;
-//			}
-//
-//			//Segunda condición: tener un enemigo dentro de su rango de ataque
-//			if (sceneManagment.IsSomeoneNear(unit, sceneManager.GetTeam(unit, "Rival", /*unit.attackRange*/)){
-//				conditions[1] = true;
-//			} else {conditions[1] = false;}
-//
-//			//Tercera condición: contemplar el estado de vida de los enemigos (quién es más débil)
-//			isSomeoneHurted = false;
-//			foreach (Unit rival in sceneManagment.GetTeam(unit, "Rival")){
-//				if (!unit.Equals(rival)){
-//					if (isHurted(rival)){
-//						isSomeoneHurted = true;
-//					}
-//				}
-//			}
-//			if (isSomeoneHurted) conditions[2] = true;
-//			else conditions[2] = false;	
-//
-//			//Cuarta condición: enemigo dentro del rango de habilidad
-//			if (sceneManagment.IsSomeoneNear(unit, sceneManager.GetTeam(unit,"Rival"), /*unit.habilityRange*/)){
-//				conditions[3] = true;
-//			} else {
-//				conditions[3] = false;
-//			}
-//
-//
-//			break;
-//		}
-//
-//		return conditions;
-//	}
-//
-//
-//
 
+	public List<Unit> team_1;
+	public List<Unit> team_2;
+
+	private object[,] map;
+	private int dimension = 15;
+
+	void Start () {
+		QSceneManagment.CreateTeams (team_1, team_2);
+
+		// Generación del mapa
+		map = new GameObject[(int) Mathf.Sqrt(dimension), (int) Mathf.Sqrt(dimension)];
+		for (int i = 0; i < (int)Mathf.Sqrt (dimension); i++) {
+			for (int j = 0; j < (int)Mathf.Sqrt (dimension); j++) {
+				map [i, j] = new object();
+			}
+		}
+	}
+
+	void Update () {
+		
+	}
+
+	public bool[] GetTankState(Unit tank){
+		bool[] conditions = new bool[4];
+
+		// Primera condición: ¿Estoy herido? ------------------------------------------------------------------
+		if (!QSceneManagment.IsHurted (tank)) {
+			conditions [0] = true;
+		} else {
+			conditions [0] = false;
+		}
+
+		// Segunda condición: ¿Alguién de mi equipo está herido? ----------------------------------------------
+		bool isSomeoneHurted = false;
+		foreach (Unit ally in QSceneManagment.GetUnitTeam(tank, team_1, team_2)) {
+			if (!tank.Equals (ally)) {
+				if (QSceneManagment.IsHurted (ally)) {
+					isSomeoneHurted = true;
+				}
+			}
+		}
+		if (isSomeoneHurted)
+			conditions [1] = false;
+		else
+			conditions [1] = true;	
+
+		//Tercera condición: ¿Existe un enemigo dentro del rango de ataque? -----------------------------------
+		if (QSceneManagment.SomeoneInRange (map, tank, QSceneManagment.GetEnemyTeam (tank, team_1, team_2), tank.AttackRange)) {
+			conditions [2] = true;
+		} else {
+			conditions [2] = false;
+		}
+			
+		//Cuarta condicion: ¿Algún aliado está siendo Focused? ------------------------------------------------
+		if (QSceneManagment.IsSomeoneFocused (tank, team_1, team_2)) {
+			conditions [3] = true;
+		} else {
+			conditions [3] = false;
+		}
+
+		return conditions;
+	}
+
+	public bool[] GetHealerState(Unit healer){
+		bool[] conditions = new bool[4];
+
+		// Primera condición: ¿Estoy herido? ------------------------------------------------------------------
+		if (!QSceneManagment.IsHurted (healer)) {
+			conditions [0] = true;
+		} else {
+			conditions [0] = false;
+		}
+
+		// Segunda condición: ¿Alguién de mi equipo está herido? ----------------------------------------------
+		bool isAllyHurted = false;
+		foreach (Unit ally in QSceneManagment.GetUnitTeam(healer, team_1, team_2)) {
+			if (!healer.Equals (ally)) {
+				if (QSceneManagment.IsHurted (ally)) {
+					isAllyHurted = true;
+				}
+			}
+		}
+		if (isAllyHurted)
+			conditions [1] = false;
+		else
+			conditions [1] = true;	
+
+		//Tercera condición: ¿Existe un enemigo dentro del rango de ataque? ------------------------------------
+		if (QSceneManagment.SomeoneInRange (map, healer, QSceneManagment.GetEnemyTeam (healer, team_1, team_2), healer.AttackRange)) {
+			conditions [2] = true;
+		} else {
+			conditions [2] = false;
+		}
+
+		//Cuarta condicion: ¿Algún aliado está dentro de mi rango de habilidad? --------------------------------
+		if (QSceneManagment.SomeoneInRange (map, healer, QSceneManagment.GetUnitTeam (healer, team_1, team_2), healer.HabilityRange)) {
+			conditions [3] = true;
+		} else {
+			conditions [3] = false;
+		}
+
+		return conditions;
+	}
+
+	public bool[] GetDistanceConditions(Unit distance){
+		bool[] conditions = new bool[4];
+
+		// Primera condición: ¿Estoy herido? ------------------------------------------------------------------
+		if (!QSceneManagment.IsHurted (distance)) {
+			conditions [0] = true;
+		} else {
+			conditions [0] = false;
+		}
+
+		// Segunda condición: ¿Existe un enemigo dentro del rango de ataque? ------------------------------------
+		if (QSceneManagment.SomeoneInRange (map, distance, QSceneManagment.GetEnemyTeam (distance, team_1, team_2), distance.AttackRange)) {
+			conditions [1] = true;
+		} else {
+			conditions [1] = false;
+		}
+
+		// Tercera condición: ¿Existe algún enemigo herido? ----------------------------------------------------
+		bool isEnemyHurted = false;
+		foreach (Unit enemy in QSceneManagment.GetEnemyTeam(distance, team_1, team_2)) {
+			if (QSceneManagment.IsHurted (enemy)) {
+				isEnemyHurted = true;
+			}
+		}
+		if (isEnemyHurted)
+			conditions [2] = false;
+		else
+			conditions [2] = true;	
+
+		// Cuarta condicion: ¿Algún enemigo está dentro de mi rango de habilidad? --------------------------------
+		if (QSceneManagment.SomeoneInRange (map, distance, QSceneManagment.GetEnemyTeam (distance, team_1, team_2), distance.HabilityRange)) {
+			conditions [3] = true;
+		} else {
+			conditions [3] = false;
+		}
+
+		return conditions;
+	}
+
+	public bool[] GetMeleConditions(Unit mele){
+		bool[] conditions = new bool[4];
+
+		// Primera condición: ¿Estoy herido? -------------------------------------------------------------------
+		if (!QSceneManagment.IsHurted (mele)) {
+			conditions [0] = true;
+		} else {
+			conditions [0] = false;
+		}
+
+		// Segunda condición: ¿Existe un enemigo dentro del rango de ataque? ------------------------------------
+		if (QSceneManagment.SomeoneInRange (map, mele, QSceneManagment.GetEnemyTeam (mele, team_1, team_2), mele.AttackRange)) {
+			conditions [1] = true;
+		} else {
+			conditions [1] = false;
+		}
+
+		// Tercera condicion: ¿Algún enemigo está dentro de mi rango de habilidad? --------------------------------
+		if (QSceneManagment.SomeoneInMeleRange (map, mele, QSceneManagment.GetEnemyTeam (mele, team_1, team_2), mele.HabilityRange)) {
+			conditions [2] = true;
+		} else {
+			conditions [2] = false;
+		}
+
+		// Cuarta condición: ¿Existe MÁS DE UN enemigo dentro de mi rango de habilidad? --------------------------
+		if (QSceneManagment.CrowdInsideMeleRange(map, mele, QSceneManagment.GetEnemyTeam(mele, team_1, team_2), mele.HabilityRange)){
+			conditions [3] = true;
+		} else {
+			conditions [3] = false;
+		}
+
+		return conditions;
+	}
 }

@@ -4,338 +4,271 @@ using UnityEngine;
 using AssemblyCSharp;
 using System;
 
-public class QSceneManagment : MonoBehaviour {
+public static class QSceneManagment{
 
-//	public GameObject EnemyPrefab;
-//	public GameObject PlayerPrefab;
-//
-//	private List<Unit> playerTeam;
-//	private List<Unit> enemyTeam;
-//
-//	public GameObject grid_unit;
-//	public int dimension;
-//	private GameObject[,] map;
-//
-//	private List<GameObject> enemies;
-//	private List<GameObject> players;
-//
-//
-//	public bool IsSomeoneNear(Unit unit, List<Unit> team, int range){
-//
-//		List<Vector2> movementArea = new List<Vector2> ();
-//
-//		int minX = (int)unit.Position.x - range;
-//		if (minX < 0)
-//			minX = 0;
-//
-//		int maxX = (int)unit.Position.x + range;
-//		if (maxX > map.GetLength (0))
-//			maxX = map.GetLength (0);
-//
-//		int minY = (int)unit.Position.y - range;
-//		if (minY < 0)
-//			minY = 0;
-//
-//		int maxY = (int)unit.Position.y + range;
-//		if (maxX > map.GetLength (1))
-//			maxX = map.GetLength (1);
-//
-//
-//		for (int i = minX; i < maxX; i++) {
-//			for (int j = minY; j < maxY; j++) {
-//
-//				if (i % 2.0f != 0) {
-//					if ((i + j) % 2.0f == 0) {
-//
-//						movementArea.Add (new Vector2 (i, j));
-//					}
-//				}
-//
-//				if (i % 2.0f == 0) {
-//					if ((i + j) % 2.0f != 0) {
-//
-//						movementArea.Add (new Vector2 (i, j));
-//					}
-//				}
-//			}
-//		}
-//
-//		foreach (Vector2 position in movementArea) {
-//
-//			foreach (Unit u in team) {
-//
-//				if (u.Position.Equals (position)) {
-//
-//					return true;
-//				}
-//			}
-//		}
-//
-//		return false;
-//	}
-//
-//	public bool IsSomeoneFocused(Unit unit){
-//
-//		if (enemyTeam.Contains (unit)) {
-//			foreach (Unit partner in enemyTeam) {
-//				if (!unit.Equals (partner)) {
-//					if (/*partner.focused*/){
-//						return true;
-//					}
-//				}
-//			}
-//		} else {
-//			foreach (Unit partner in playerTeam) {
-//				if (!unit.Equals (partner)) {
-//					if (/*partner.focused*/){
-//						return true;
-//					}
-//				}
-//			}
-//		}
-//
-//		return false;
-//	}
-//
-//	public bool SomeoneInMeleDamageArea(Unit unit, List<Unit> team, int range){
-//
-//		List<Vector2> attackArea = new List<Vector2> ();
-//
-//		int minX = (int)unit.Position.x - range;
-//		if (minX < 0)
-//			minX = 0;
-//
-//		int maxX = (int)unit.Position.x + range;
-//		if (maxX > map.GetLength (0))
-//			maxX = map.GetLength (0);
-//
-//		int minY = (int)unit.Position.y - range;
-//		if (minY < 0)
-//			minY = 0;
-//
-//		int maxY = (int)unit.Position.y + range;
-//		if (maxX > map.GetLength (1))
-//			maxX = map.GetLength (1);
-//
-//		// el area es circular a su alrededor (bueno, cuadrado)
-//		for (int i = minX; i < maxX; i++){
-//			for (int j = minY; j < maxY; j++) {
-//				attackArea.Add (new Vector2 (i, j));
-//			}
-//		}
-//
-//		foreach (Vector2 position in attackArea) {
-//
-//			foreach (Unit u in team) {
-//
-//				if (u.Position.Equals (position)) {
-//
-//					return true;
-//				}
-//			}
-//		}
-//
-//		return false;
-//
-//	}
-//
-//	public int ALotOfRivalsInMeleDamageArea(Unit unit, List<Unit> team, int range){
-//		
-//		List<Vector2> attackArea = new List<Vector2> ();
-//
-//		int minX = (int)unit.Position.x - range;
-//		if (minX < 0)
-//			minX = 0;
-//
-//		int maxX = (int)unit.Position.x + range;
-//		if (maxX > map.GetLength (0))
-//			maxX = map.GetLength (0);
-//
-//		int minY = (int)unit.Position.y - range;
-//		if (minY < 0)
-//			minY = 0;
-//
-//		int maxY = (int)unit.Position.y + range;
-//		if (maxX > map.GetLength (1))
-//			maxX = map.GetLength (1);
-//
-//		// el area es circular a su alrededor (bueno, cuadrado)
-//		for (int i = minX; i < maxX; i++){
-//			for (int j = minY; j < maxY; j++) {
-//				attackArea.Add (new Vector2 (i, j));
-//			}
-//		}
-//
-//		int rivals = 0;
-//
-//		foreach (Vector2 position in attackArea) {
-//
-//			foreach (Unit u in team) {
-//
-//				if (u.Position.Equals (position)) {
-//
-//					rivals += 1;
-//				}
-//			}
-//		}
-//
-//		if (rivals > 1)
-//			return true;
-//		return false;
-//	}
-//
-//	public List<Unit> GetTeam(Unit unit, string LookInTeam){
-//
-//		//Si LookInTeam equivale a "Rival" devolverá
-//		//el equipo contrario al que la unidad pertenece.
-//		if (enemyTeam.Contains (unit)) {
-//			if (LookInTeam.Equals ("Rival")) {
-//				return playerTeam;
-//			} else {
-//				return enemyTeam;
-//			}
-//		} else {
-//			if (LookInTeam.Equals ("Rival")) {
-//				return enemyTeam;
-//			} else {
-//				return playerTeam;
-//			}
-//		}
-//	}
-//
-//	private void PlaceCharacters(List<Unit> team, Vector2[] area){
-//		List<Vector2> ocupedPositions = new List<Vector2>();
-//		int cont = 0;
-//
-//		while (ocupedPositions.Count < team.Count) {
-//			int x = UnityEngine.Random.Range ((int)area [0].x, (int)area [1].x);
-//			int y = UnityEngine.Random.Range ((int)area [0].y, (int)area [1].y);
-//
-//			Vector2 newPosition = new Vector2 (x, y);
-//
-//			if (!ocupedPositions.Contains (newPosition)){
-//				team [cont].Position = newPosition;
-//				ocupedPositions.Add (newPosition);
-//				cont++;
-//			}
-//		}
-//	}
-//
-//	private void CharactersInScene(List<Unit> team, List<GameObject> teamInScene){
-//
-//		if (team.Equals (enemyTeam)) {
-//			EnemyPrefab.gameObject.SetActive (true);
-//			foreach (Unit unit in team) {
-//				GameObject obj = Instantiate (EnemyPrefab);
-//				teamInScene.Add (obj);
-//
-//				Vector3 positionInScene = map [(int) unit.Position.x, (int) unit.Position.y].transform.position;
-//				positionInScene += Vector3.up * 1.5f;
-//				obj.transform.position = positionInScene;
-//
-//				//añadair color por rol
-//			}
-//			EnemyPrefab.gameObject.SetActive (false);
-//		} 
-//		else {
-//			PlayerPrefab.gameObject.SetActive (true);
-//			foreach (Unit unit in team) {
-//				GameObject obj = Instantiate (PlayerPrefab);
-//				teamInScene.Add (obj);
-//
-//				Vector3 positionInScene = map [(int) unit.Position.x, (int) unit.Position.y].transform.position;
-//				positionInScene += Vector3.up * 1.5f;
-//				obj.transform.position = positionInScene;
-//
-//				//añadair color por rol
-//			}
-//			PlayerPrefab.gameObject.SetActive (false);
-//		}
-//	}
-//
-//	private void DrawArea(Vector2[] area){
-//		for (int i = (int) area [0].x; i < (int)area [1].x; i++) {
-//
-//			for (int j = (int) area [0].y; j < (int) area [1].y; j++) {
-//				map [i, j].GetComponent<Renderer>().material.color = Color.blue;
-//			}
-//		}
-//	}
-//
-//	public Vector2[] GetReferences(int dimension, string team){
-//		int sideMargin, topMargin, botMargin;
-//		CalculateMargins (dimension, out sideMargin, out topMargin, out botMargin);
-//
-//		Vector2 topLeft;
-//		Vector2 botRight;
-//
-//		if (team.Equals ("Player")) {
-//			topLeft = new Vector2 (sideMargin, topMargin);
-//			botRight = new Vector2 ((int) Math.Sqrt(dimension) - sideMargin, (int) Math.Sqrt(dimension) / 2 - botMargin);
-//		} else {
-//			topLeft = new Vector2 (sideMargin, (int) Math.Sqrt(dimension) / 2 + botMargin);
-//			botRight = new Vector2 ((int) Math.Sqrt(dimension) - sideMargin, (int) Math.Sqrt(dimension) - topMargin);
-//		}
-//		return new Vector2[]{ topLeft, botRight };
-//	}
-//
-//	private void CalculateMargins(int dimension, out int sideMargin, out int topMargin, out int botMargin){
-//
-//		int normalMargin = (int) Math.Sqrt(dimension) * 20 / 100;
-//		sideMargin = normalMargin;
-//		topMargin = normalMargin / 2;
-//		botMargin = normalMargin;
-//	}
-//
-//	private void GenerateMap(){
-//		map = new GameObject[(int) Mathf.Sqrt(dimension), (int) Mathf.Sqrt(dimension)];
-//
-//		for (int i = 0; i < (int)Mathf.Sqrt (dimension); i++) {
-//			for (int j = 0; j < (int)Mathf.Sqrt (dimension); j++) {
-//				GameObject newCube = Instantiate (grid_unit);
-//				newCube.transform.position = 
-//					new Vector3 (-(int)Mathf.Sqrt (dimension) + i * newCube.transform.localScale.x, 
-//					0, -(int)Mathf.Sqrt (dimension) + j * newCube.transform.localScale.z);
-//				map [i, j] = newCube;
-//			}
-//		}
-//	}
-//
-//	// Use this for initialization
-//	void Start () {
-//		GenerateMap ();
-//
-//		enemyTeam = new List<Unit> ();
-//		enemyTeam.Add (new Healer());
-//		enemyTeam.Add (new Tank ());
-//		enemyTeam.Add (new DistDamage ());
-//		enemyTeam.Add (new MeleDamage ());
-//
-//		playerTeam = new List<Unit> ();
-//		playerTeam.Add (new Healer());
-//		playerTeam.Add (new Tank ());
-//		playerTeam.Add (new DistDamage ());
-//		playerTeam.Add (new MeleDamage ());
-//
-//		enemies = new List<GameObject> ();
-//		players = new List<GameObject> ();
-//
-//		Vector2[] playerArea = GetReferences(dimension, "Player");
-//		Vector2[] enemyArea = GetReferences(dimension, "Enemy");
-//
-//		DrawArea (playerArea);
-//		DrawArea (enemyArea);
-//
-//		PlaceCharacters (playerTeam, playerArea);
-//		PlaceCharacters (enemyTeam, enemyArea);
-//
-//		CharactersInScene (playerTeam, players);
-//		CharactersInScene (enemyTeam, enemies);
-//		
-//	}
-//	
-//	// Update is called once per frame
-//	void Update () {
-//		
-//	}
+	// Unit rols
+	static Unit tank = new Tank();
+	static Unit healer = new Healer();
+	static Unit distance = new DistDamage();
+	static Unit mele = new MeleDamage();
+
+	// Stats
+	static int Tank_minLife = (30 * tank.Life) / 100;
+	static int Mele_minLife = (40 * mele.Life) / 100;
+	static int Distance_minLife = (40 * healer.Life) / 100;
+	static int Healer_minLife = (50 * distance.Life) / 100;
+
+	// Método que inicializa los equipos de forma predeterminada
+	public static void CreateTeams(List<Unit> team1, List<Unit> team2){
+		team1 = new List<Unit> (4) { tank, healer, distance, mele};
+		team2 = new List<Unit> (4) { tank, healer, distance, mele};
+
+	}
+
+	// Método que usa el tanque para saber si alguien de su equipo está focuseado
+	public static bool IsSomeoneFocused(Unit unit, List<Unit> team1, List<Unit> team2){
+		List<Unit> team = GetUnitTeam (unit, team1, team2);
+		foreach (Unit ally in team) {
+			if (ally.Focused) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// Método que permite saber si una unidad está "herida"
+	public static bool IsHurted(Unit unit){
+		int minLife = 0;
+
+		switch (unit.UnitRol) {
+		case Rol.Tank:
+			minLife = Tank_minLife;
+			break;
+		case Rol.Distance:
+			minLife = Distance_minLife;
+			break;
+		case Rol.Mele:
+			minLife = Mele_minLife;
+			break;
+		case Rol.Healer:
+			minLife = Healer_minLife;
+			break;
+		}
+
+		if (unit.CurrentLife < minLife){
+			return true;
+		}
+		return false;
+	}
+
+	// Función que devuelve el equipo al que pertenece un Unit
+	public static List<Unit> GetUnitTeam(Unit unit, List<Unit> team1, List<Unit> team2){
+		if (team1.Contains (unit))
+			return team1;
+		return team2;
+	}
+
+	// Función que devuelve el equipo ENEMIGO al que pertenece un Unit
+	public static List<Unit> GetEnemyTeam(Unit unit, List<Unit> team1, List<Unit> team2){
+		if (team1.Contains (unit))
+			return team2;
+		return team1;
+	}
+
+	// Función que devuelve true si una unidad del equipo Team está en el rango Range de Unit
+	// Rango en forma de estrella gorda
+	public static bool SomeoneInRange(object[,] map, Unit unit, List<Unit> team, int range){
+		List<Vector2> positions = new List<Vector2> ();
+		Vector2 pos = unit.Position;
+
+		int minX = (int)unit.Position.x - range;
+		int maxX = (int)unit.Position.x + range;
+		int minY = (int)unit.Position.y - range;
+		int maxY = (int)unit.Position.y + range;
+
+		if (minX < 0)
+			minX = 0;
+		if (maxX >= map.GetLength (0))
+			maxX = map.GetLength (0) - 1;
+
+		if (minY < 0)
+			minY = 0;
+		if (maxY >= map.GetLength (1))
+			maxY = map.GetLength (1) - 1;
+
+		int aux = 0;
+		for (int i = minX; i <= maxX; i++) {
+			for (int j = 0; j <= aux; j++) {
+				Vector2 newPosition = Vector2.one;
+
+				if ((pos.y + j) <= maxY) {
+					newPosition = new Vector2 (i, (int)pos.y + j);
+					positions.Add (newPosition);
+				}
+				if ((pos.y - j) >= minY) {
+					newPosition = new Vector2 (i, (int)pos.y - j);
+					positions.Add (newPosition);
+				}
+			}
+
+			if (i < (int)pos.x) {
+				aux++;
+			} else {
+				aux--;
+			}
+		}
+			
+		// Con todas las posiciones que existen dentro del rango, reviso si en una
+		// de ellas existe una unidad del equipo Team. Si es así devuelvo true.
+		foreach (Vector2 position in positions) {
+			foreach (Unit u in team) {
+				if (u.Position.Equals (position)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static bool SomeoneInMeleRange(object[,] map, Unit unit, List<Unit> enemyTeam, int range){
+		List<Vector2> positions = new List<Vector2> ();
+		Vector2 pos = unit.Position;
+
+		int minX = (int)unit.Position.x - range;
+		int maxX = (int)unit.Position.x + range;
+		int minY = (int)unit.Position.y - range;
+		int maxY = (int)unit.Position.y + range;
+
+		if (minX < 0)
+			minX = 0;
+		if (maxX >= map.GetLength (0))
+			maxX = map.GetLength (0) - 1;
+
+		if (minY < 0)
+			minY = 0;
+		if (maxY >= map.GetLength (1))
+			maxY = map.GetLength (1) - 1;
+
+		for (int i = minX; i <= maxX; i++) {
+			for (int j = minY; j <= maxY; j++) {
+				Vector2 newPosition = Vector2.one;
+
+				if (i == (int)pos.x) {
+					newPosition = new Vector2 (i, j);
+					positions.Add (newPosition);
+				}
+
+				if (j == (int)pos.y) {
+					newPosition = new Vector2 (i, j);
+					positions.Add (newPosition);
+				}
+			}
+		}
+
+		// Con todas las posiciones que existen dentro del rango, reviso si en una
+		// de ellas existe una unidad del equipo Team. Si es así devuelvo true.
+		foreach (Vector2 position in positions) {
+			foreach (Unit u in enemyTeam) {
+				if (u.Position.Equals (position)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static bool CrowdInsideMeleRange(object[,] map, Unit unit, List<Unit> enemyTeam, int range){
+		List<Vector2> positions = new List<Vector2> ();
+		Vector2 pos = unit.Position;
+
+		int minX = (int)unit.Position.x - range;
+		int maxX = (int)unit.Position.x + range;
+		int minY = (int)unit.Position.y - range;
+		int maxY = (int)unit.Position.y + range;
+
+		if (minX < 0)
+			minX = 0;
+		if (maxX >= map.GetLength (0))
+			maxX = map.GetLength (0) - 1;
+
+		if (minY < 0)
+			minY = 0;
+		if (maxY >= map.GetLength (1))
+			maxY = map.GetLength (1) - 1;
+
+		for (int i = minX; i <= maxX; i++) {
+			for (int j = minY; j <= maxY; j++) {
+				Vector2 newPosition = Vector2.one;
+
+				if (i == (int)pos.x) {
+					newPosition = new Vector2 (i, j);
+					positions.Add (newPosition);
+				}
+
+				if (j == (int)pos.y) {
+					newPosition = new Vector2 (i, j);
+					positions.Add (newPosition);
+				}
+			}
+		}
+
+		// Contabilizo el total de enemigos dentro del área. Si es mayor que
+		// uno devuelvo true.
+		int enemies = 0;
+		foreach (Vector2 position in positions) {
+			foreach (Unit u in enemyTeam) {
+				if (u.Position.Equals (position)) {
+					enemies += 1;
+				}
+			}
+		}
+		if (enemies > 1)
+			return true;
+		return false;
+	}
+
+	// Colocar las unidades en el mapa
+	public static void PlaceCharacters(List<Unit> team, Vector2[] area){
+		List<Vector2> ocupedPositions = new List<Vector2>();
+		int cont = 0;
+
+		while (ocupedPositions.Count < team.Count) {
+			int x = UnityEngine.Random.Range ((int)area [0].x, (int)area [1].x);
+			int y = UnityEngine.Random.Range ((int)area [0].y, (int)area [1].y);
+
+			Vector2 newPosition = new Vector2 (x, y);
+
+			if (!ocupedPositions.Contains (newPosition)){
+				team [cont].Position = newPosition;
+				ocupedPositions.Add (newPosition);
+				cont++;
+			}
+		}
+	}
+
+	// Obtener el área inicial de las unidades
+	public static Vector2[] GetReferences(int dimension, string team){
+		int sideMargin, topMargin, botMargin;
+		CalculateMargins (dimension, out sideMargin, out topMargin, out botMargin);
+
+		Vector2 topLeft;
+		Vector2 botRight;
+
+		if (team.Equals ("Player")) {
+			topLeft = new Vector2 (sideMargin, topMargin);
+			botRight = new Vector2 ((int) Math.Sqrt(dimension) - sideMargin, (int) Math.Sqrt(dimension) / 2 - botMargin);
+		} else {
+			topLeft = new Vector2 (sideMargin, (int) Math.Sqrt(dimension) / 2 + botMargin);
+			botRight = new Vector2 ((int) Math.Sqrt(dimension) - sideMargin, (int) Math.Sqrt(dimension) - topMargin);
+		}
+		return new Vector2[]{ topLeft, botRight };
+	}
+
+	// Márgenes para el área de colocación de las unidades
+	private static void CalculateMargins(int dimension, out int sideMargin, out int topMargin, out int botMargin){
+		int normalMargin = (int) Math.Sqrt(dimension) * 20 / 100;
+		sideMargin = normalMargin;
+		topMargin = normalMargin / 2;
+		botMargin = normalMargin;
+	}
 }
