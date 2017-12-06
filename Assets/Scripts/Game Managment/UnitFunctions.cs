@@ -42,6 +42,44 @@ public class UnitFunctions : MonoBehaviour {
 		}
 	}
 
+	private void doAttack(Unit currentUnit, Unit victimUnit){
+		float probability = UnityEngine.Random.Range (0, 100);
+
+		if (probability > (100 - victimUnit.Agility)) {
+			Debug.Log ("fallo ataque basico");
+			matchManagment.NextTurn ();
+				
+		} else {
+			probability = UnityEngine.Random.Range (0, 100);
+			if (victimUnit.Focused) {
+				if (probability < currentUnit.Critic / 2) {
+					Debug.Log ("ataque basico critico");
+					victimUnit.CurrentLife -= currentUnit.Damage * 2;
+				}
+				else {
+					Debug.Log ("ataque basico normal");
+					victimUnit.CurrentLife -= currentUnit.Damage;
+				}
+			} else {
+				if (probability < currentUnit.Critic) {
+					Debug.Log ("ataque basico critico");
+					victimUnit.CurrentLife -= currentUnit.Damage * 2;
+
+				}
+				else {
+					Debug.Log ("ataque basico normal");
+					victimUnit.CurrentLife -= currentUnit.Damage;
+				}
+			}
+
+			if (victimUnit.CurrentLife <= 0) {
+				matchManagment.RemoveUnit (victimUnit);
+			}
+
+			matchManagment.NextTurn ();
+		}
+	}
+
 	public void Attack(Unit currentUnit, List<Vector2> allowedBoxes){
 		RaycastHit hit;
 
@@ -51,80 +89,12 @@ public class UnitFunctions : MonoBehaviour {
 
 				if (allowedBoxes.Contains (victimUnit.Position) && allowedAttack (currentUnit, victimUnit)) {
 
-					// Existe alguien con agro??
-					if (someoneIsAgro(victimUnit)){
-						// Hay alguien con agro, si le pego a quien está con agro bien sino ná
+					if (someoneIsAgro (victimUnit)){
 						if (isUnitAgro (victimUnit)) {
-							float probability = UnityEngine.Random.Range (0, 100);
-							if (victimUnit.Focused) {
-								if (probability < 100 - victimUnit.Agility) {
-									matchManagment.NextTurn ();
-
-								} else {
-									probability = UnityEngine.Random.Range (0, 100);
-									if (probability > currentUnit.Critic / 2) {
-										victimUnit.CurrentLife -= currentUnit.Damage * 2;
-									} else {
-										victimUnit.CurrentLife -= currentUnit.Damage;
-									}
-									matchManagment.NextTurn ();
-								}
-							} else {
-								if (probability < 100 - victimUnit.Agility) {
-									matchManagment.NextTurn ();
-
-								} else {
-									probability = UnityEngine.Random.Range (0, 100);
-									if (probability > currentUnit.Critic) {
-										victimUnit.CurrentLife -= currentUnit.Damage * 2;
-									} else {
-										victimUnit.CurrentLife -= currentUnit.Damage;
-									}
-									matchManagment.NextTurn ();
-								}
-							}
+							doAttack (currentUnit, victimUnit);
 						}
-					}
-					// No hay nadie con agro así que puedo pegar a cualquiera
-					else {
-
-						//Agilidad del atacado (si hay o no ataque)
-						//La precisión por delante es de 20, por el lado de 70, y po detras de 90
-						//Lo de la precisión segun por delante o detrás vamos a esperar xDDDDDD
-
-						float probability = UnityEngine.Random.Range (0, 100);
-						if (victimUnit.Focused) {
-							if (probability < 100 - victimUnit.Agility) {
-								matchManagment.NextTurn ();
-
-							} else {
-								probability = UnityEngine.Random.Range (0, 100);
-								if (probability > currentUnit.Critic / 2) {
-									victimUnit.CurrentLife -= currentUnit.Damage * 2;
-								} else {
-									victimUnit.CurrentLife -= currentUnit.Damage;
-								}
-								matchManagment.NextTurn ();
-							}
-						} else {
-							if (probability < 100 - victimUnit.Agility) {
-								matchManagment.NextTurn ();
-
-							} else {
-								probability = UnityEngine.Random.Range (0, 100);
-								if (probability > currentUnit.Critic) {
-									victimUnit.CurrentLife -= currentUnit.Damage * 2;
-								} else {
-									victimUnit.CurrentLife -= currentUnit.Damage;
-								}
-
-								if (victimUnit.CurrentLife <= 0) {
-									matchManagment.RemoveUnit (victimUnit);
-								}
-
-								matchManagment.NextTurn ();
-							}
-						}
+					} else {
+						doAttack (currentUnit, victimUnit);
 					}
 				}
 			}
@@ -173,7 +143,7 @@ public class UnitFunctions : MonoBehaviour {
 
 					if (!focusedUnit.Focused) {
 						float probability = UnityEngine.Random.Range (0, 100);
-						if (probability > 100 - focusedUnit.Agility) {
+						if (probability > (100 - focusedUnit.Agility)) {
 							Debug.Log ("fallo focus");
 							matchManagment.NextTurn ();
 
@@ -231,8 +201,6 @@ public class UnitFunctions : MonoBehaviour {
 	}
 
 	public void Area(Unit currentUnit, List<Vector2> allowedBoxes){
-
-		//falta meter lo de si está focuseado
 		RaycastHit hit;
 
 		if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit)) {
@@ -250,13 +218,13 @@ public class UnitFunctions : MonoBehaviour {
 							if (allowedBoxes.Contains (unit.Position)) {
 					
 								float probability = UnityEngine.Random.Range (0, 100);
-								if (probability < 100 - unit.Agility) {
+								if (probability > (100 - unit.Agility)) {
 									//acierto el área en esta unidad
 									int value = UnityEngine.Random.Range ((int)currentUnit.GetArea (unit).x, (int)currentUnit.GetArea (unit).y);
 									//critico??
 
 									probability = UnityEngine.Random.Range (0, 100);
-									if (probability > currentUnit.Critic / 2) {
+									if (probability < currentUnit.Critic / 2) {
 										//critico
 										unit.CurrentLife -= value * 2;
 									} else {
@@ -284,13 +252,13 @@ public class UnitFunctions : MonoBehaviour {
 						foreach (Unit unit in matchManagment.team_1_unitList) {
 							if (allowedBoxes.Contains (unit.Position)) {
 								float probability = UnityEngine.Random.Range (0, 100);
-								if (probability < 100 - unit.Agility) {
+								if (probability > (100 - unit.Agility)) {
 									//acierto el área en esta unidad
 									int value = UnityEngine.Random.Range ((int)currentUnit.GetArea (unit).x, (int)currentUnit.GetArea (unit).y);
 									//critico??
 
 									probability = UnityEngine.Random.Range (0, 100);
-									if (probability > currentUnit.Critic / 2) {
+									if (probability < currentUnit.Critic / 2) {
 										//critico
 										unit.CurrentLife -= value * 2;
 									} else {

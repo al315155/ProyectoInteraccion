@@ -46,22 +46,22 @@ public class CalculateBoxes : MonoBehaviour {
 		Vector2 pos = unit.Position;
 
 		int minX = (int)unit.Position.x - range;
-		int maxX = (int)unit.Position.x + range + 1;
+		int maxX = (int)unit.Position.x + range;
 		int minY = (int)unit.Position.y - range;
-		int maxY = (int)unit.Position.y + range + 1;
+		int maxY = (int)unit.Position.y + range;
 
 		if (minX < 0)
 			minX = 0;
 		if (maxX >= map.GetLength (0))
-			maxX = map.GetLength (0);
+			maxX = map.GetLength (0) - 1;
 
 		if (minY < 0)
 			minY = 0;
 		if (maxY >= map.GetLength (1))
-			maxY = map.GetLength (1);
+			maxY = map.GetLength (1) - 1;
 
-		for (int i = minX; i < maxX; i++) {
-			for (int j = minY; j < maxY; j++) {
+		for (int i = minX; i <= maxX; i++) {
+			for (int j = minY; j <= maxY; j++) {
 				Vector2 newPosition = Vector2.one;
 
 				if (i == (int)pos.x) {
@@ -92,19 +92,19 @@ public class CalculateBoxes : MonoBehaviour {
 		if (minX < 0)
 			minX = 0;
 		if (maxX >= map.GetLength (0))
-			maxX = map.GetLength (0);
+			maxX = map.GetLength (0) - 1;
 
 		if (minY < 0)
 			minY = 0;
 		if (maxY >= map.GetLength (1))
-			maxY = map.GetLength (1);
+			maxY = map.GetLength (1) - 1;
 
 		int aux = 0;
-		for (int i = minX; i < maxX; i++) {
-			for (int j = 0; j < aux; j++) {
+		for (int i = minX; i <= maxX; i++) {
+			for (int j = 0; j <= aux; j++) {
 				Vector2 newPosition = Vector2.one;
 
-				if ((pos.y + j) < maxY) {
+				if ((pos.y + j) <= maxY) {
 					newPosition = new Vector2 (i, (int)pos.y + j);
 					positions.Add (newPosition);
 				}

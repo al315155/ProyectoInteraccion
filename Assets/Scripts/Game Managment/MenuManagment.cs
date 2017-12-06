@@ -30,7 +30,7 @@ public class MenuManagment : MonoBehaviour {
 	public Text UnitDetailsLabel;
 	private Text numberOfMembers;
 	public Button StartButton;
-	private List<string> teamList;
+	public List<string> teamList;
 
 	void Start(){
 		//La siguiente escena contendrá la partida.
@@ -198,6 +198,8 @@ public class MenuManagment : MonoBehaviour {
 	}
 
 	public void AddUnit(Button b){
+		Debug.Log (teamList);
+
 		// Añadimos una unidad a la lista de miembros del equipo.
 		if (teamList.Count < gameMode.Members) {
 			switch (b.transform.parent.name) {

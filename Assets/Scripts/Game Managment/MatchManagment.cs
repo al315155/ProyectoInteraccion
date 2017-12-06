@@ -180,12 +180,15 @@ public class MatchManagment : MonoBehaviour
 
 			SceneManager.LoadScene ("Menu");
 		} else {
-
+						 
 			unitTurn++;
 
 			if (unitTurn >= round.Count) {
 				unitTurn = 0;
 			}	
+
+			Debug.Log (round [unitTurn].UnitRol);
+			Debug.Log (round [unitTurn].Movement);
 
 			if (team_1_Agro != null) {
 				team_1_AgroCount -= 1;
@@ -314,8 +317,6 @@ public class MatchManagment : MonoBehaviour
 			}
 		}
 	}
-		
-
 
 	public List<Unit> GetTurns(){
 
@@ -355,7 +356,7 @@ public class MatchManagment : MonoBehaviour
 	public void ActivateMovement(){
 		drawer.UnDrawBoxes (map, allowedBoxes);
 
-		allowedBoxes = calculator.AllowMovement(calculator.GetBoxesInsideRange(map, round[unitTurn], round[unitTurn].Movement + 1), team_1_unitList, team_2_unitList);
+		allowedBoxes = calculator.AllowMovement(calculator.GetBoxesInsideRange(map, round[unitTurn], round[unitTurn].Movement), team_1_unitList, team_2_unitList);
 		drawer.DrawBoxes (map, allowedBoxes, new Vector4(1.0f, 0.2f, 0.7f, 1.0f));
 		currentAction = AssemblyCSharp.Action.Move;
 	}
@@ -365,7 +366,7 @@ public class MatchManagment : MonoBehaviour
 
 		drawer.UnDrawBoxes (map, allowedBoxes);
 
-		allowedBoxes = calculator.GetBoxesInsideRange(map, round[unitTurn], round[unitTurn].AttackRange + 1);
+		allowedBoxes = calculator.GetBoxesInsideRange(map, round[unitTurn], round[unitTurn].AttackRange);
 		drawer.DrawBoxes (map, allowedBoxes, new Vector4(0.5f, 0.5f, 0.8f, 1f));
 		currentAction = AssemblyCSharp.Action.Attack;
 	}
@@ -377,19 +378,19 @@ public class MatchManagment : MonoBehaviour
 
 		switch (round [unitTurn].UnitRol) {
 		case Rol.Healer:
-			allowedBoxes = calculator.GetBoxesInsideRange (map, round [unitTurn], round [unitTurn].HabilityRange + 1);
+			allowedBoxes = calculator.GetBoxesInsideRange (map, round [unitTurn], round [unitTurn].HabilityRange);
 			drawer.DrawBoxes (map, allowedBoxes, new Vector4(0.7f, 0.3f, 0.8f, 1f));
 			currentAction = AssemblyCSharp.Action.Hability;
 			break;
 
 		case Rol.Distance:
-			allowedBoxes = calculator.GetBoxesInsideRange (map, round [unitTurn], round [unitTurn].HabilityRange + 1);
+			allowedBoxes = calculator.GetBoxesInsideRange (map, round [unitTurn], round [unitTurn].HabilityRange);
 			drawer.DrawBoxes (map, allowedBoxes, new Vector4(0.2f, 0.3f, 0.2f, 1f));
 			currentAction = AssemblyCSharp.Action.Hability;
 			break;
 
 		case Rol.Mele:
-			allowedBoxes = calculator.GetMeleHabilityBoxes (map, round [unitTurn], round [unitTurn].HabilityRange + 1);
+			allowedBoxes = calculator.GetMeleHabilityBoxes (map, round [unitTurn], round [unitTurn].HabilityRange);
 			drawer.DrawBoxes (map, allowedBoxes, new Vector4 (0.1f, 0.1f, 0.5f, 1f));
 			currentAction = AssemblyCSharp.Action.Hability;
 			break;
@@ -441,14 +442,21 @@ public class MatchManagment : MonoBehaviour
 	}
 
 	public void RemoveUnit(Unit unit){
+		unitTurn--;
 		round.Remove (unit);
 
 		if (GetUnitTeam (unit).Equals (team_1_unitList)) {
-			team_1_gameObjectList.Remove (GameObjectFromUnit (unit));
+			GameObject unitInScene = GameObjectFromUnit (unit);
+			team_1_gameObjectList.Remove (unitInScene);
 			team_1_unitList.Remove (unit);
+
+			Destroy (unitInScene.gameObject);
 		} else {
-			team_2_gameObjectList.Remove (GameObjectFromUnit (unit));
+			GameObject unitInScene = GameObjectFromUnit (unit);
+			team_2_gameObjectList.Remove (unitInScene);
 			team_2_unitList.Remove (unit);
+
+			Destroy (unitInScene.gameObject);
 		}
 	}
 }
