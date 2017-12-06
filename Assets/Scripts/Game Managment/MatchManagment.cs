@@ -64,6 +64,10 @@ public class MatchManagment : MonoBehaviour
 	public GameObject team_1_Canvas;
 	public GameObject team_2_Canvas;
 
+	// ATRIBUTOS FINAL DE PARTIDA -----------------------------------
+	private List<Unit> winner;
+	private List<Unit> looser;
+	public GameObject finalCanvas;
 
 	void Awake(){
 		map = new GameObject[(int) Mathf.Sqrt(dimension), (int) Mathf.Sqrt(dimension)];
@@ -101,7 +105,7 @@ public class MatchManagment : MonoBehaviour
 				break;
 
 			case Rol.Mele:
-				//Area ();
+				functions.Area (round[unitTurn], allowedBoxes);
 				break;
 			}
 		}
@@ -148,64 +152,90 @@ public class MatchManagment : MonoBehaviour
 		unitTurn = -1;
 	}
 
+	private bool isGameOver(){
+		if (team_1_unitList.Count == 0) {
+			winner = team_2_unitList;
+			looser = team_1_unitList;
+			return true;
+		}
 
+		if (team_2_unitList.Count == 0) {
+			winner = team_1_unitList;
+			looser = team_2_unitList;
+			return true;
+		}
+
+		return false;
+	}
 
 	public void NextTurn(){
 
-		unitTurn++;
-
-		if (unitTurn >= round.Count) {
-			unitTurn = 0;
-		}	
-
-		if (team_1_Agro != null) {
-			team_1_AgroCount -= 1;
-			if (team_1_AgroCount <= 0) {
-				Destroy(GameObjectFromUnit (team_1_Agro).transform.GetChild (0).gameObject);
-				team_1_Agro = null;
+		if (isGameOver ()) {
+			finalCanvas.SetActive (true);
+			if (winner.Equals (team_1_unitList)) {
+				finalCanvas.GetComponentInChildren<Text> ().text = "Congratulations TEAM 1, you win this time!";
+			} else {
+				finalCanvas.GetComponentInChildren<Text> ().text = "Congratulations TEAM 2, you win this time!";
 			}
-		}
 
-		if (team_2_Agro != null) {
-			team_2_AgroCount -= 1;
-			if (team_2_AgroCount <= 0) {
-				Destroy(GameObjectFromUnit (team_2_Agro).transform.GetChild (0).gameObject);
-				team_2_Agro = null;
-			}
-		}
-
-
-		foreach (Unit unit in team_2_unitList) {
-			if (unit.Focused) {
-				unit.FocusedCount = unit.FocusedCount - 1;
-
-				if (unit.FocusedCount <= 0) {
-					unit.Focused = false;
-
-					Destroy(team_2_gameObjectList [team_2_unitList.IndexOf (unit)].transform.GetChild (0).gameObject);
-				}
-			}
-		}
-
-		foreach (Unit unit in team_1_unitList) {
-			if (unit.Focused) {
-				unit.FocusedCount = unit.FocusedCount - 1;
-
-				if (unit.FocusedCount <= 0) {
-					unit.Focused = false;
-
-					Destroy(team_1_gameObjectList [team_1_unitList.IndexOf (unit)].transform.GetChild (0).gameObject);
-				}
-			}
-		}
-
-		drawer.UnDrawBoxes (map, allowedBoxes);
-		currentAction = AssemblyCSharp.Action.None;
-
-		if (GetUnitTeam (round [unitTurn]).Equals (team_1_unitList)) {
-			actualizeCanvas (team_1_Canvas, team_2_Canvas);
+			SceneManager.LoadScene ("Menu");
 		} else {
-			actualizeCanvas (team_2_Canvas, team_1_Canvas);
+
+			unitTurn++;
+
+			if (unitTurn >= round.Count) {
+				unitTurn = 0;
+			}	
+
+			if (team_1_Agro != null) {
+				team_1_AgroCount -= 1;
+				if (team_1_AgroCount <= 0) {
+					Destroy (GameObjectFromUnit (team_1_Agro).transform.GetChild (0).gameObject);
+					team_1_Agro = null;
+				}
+			}
+
+			if (team_2_Agro != null) {
+				team_2_AgroCount -= 1;
+				if (team_2_AgroCount <= 0) {
+					Destroy (GameObjectFromUnit (team_2_Agro).transform.GetChild (0).gameObject);
+					team_2_Agro = null;
+				}
+			}
+
+
+			foreach (Unit unit in team_2_unitList) {
+				if (unit.Focused) {
+					unit.FocusedCount = unit.FocusedCount - 1;
+
+					if (unit.FocusedCount <= 0) {
+						unit.Focused = false;
+
+						Destroy (team_2_gameObjectList [team_2_unitList.IndexOf (unit)].transform.GetChild (0).gameObject);
+					}
+				}
+			}
+
+			foreach (Unit unit in team_1_unitList) {
+				if (unit.Focused) {
+					unit.FocusedCount = unit.FocusedCount - 1;
+
+					if (unit.FocusedCount <= 0) {
+						unit.Focused = false;
+
+						Destroy (team_1_gameObjectList [team_1_unitList.IndexOf (unit)].transform.GetChild (0).gameObject);
+					}
+				}
+			}
+
+			drawer.UnDrawBoxes (map, allowedBoxes);
+			currentAction = AssemblyCSharp.Action.None;
+
+			if (GetUnitTeam (round [unitTurn]).Equals (team_1_unitList)) {
+				actualizeCanvas (team_1_Canvas, team_2_Canvas);
+			} else {
+				actualizeCanvas (team_2_Canvas, team_1_Canvas);
+			}
 		}
 	}
 
@@ -350,15 +380,18 @@ public class MatchManagment : MonoBehaviour
 			allowedBoxes = calculator.GetBoxesInsideRange (map, round [unitTurn], round [unitTurn].HabilityRange + 1);
 			drawer.DrawBoxes (map, allowedBoxes, new Vector4(0.7f, 0.3f, 0.8f, 1f));
 			currentAction = AssemblyCSharp.Action.Hability;
-
 			break;
+
 		case Rol.Distance:
 			allowedBoxes = calculator.GetBoxesInsideRange (map, round [unitTurn], round [unitTurn].HabilityRange + 1);
 			drawer.DrawBoxes (map, allowedBoxes, new Vector4(0.2f, 0.3f, 0.2f, 1f));
 			currentAction = AssemblyCSharp.Action.Hability;
-
 			break;
+
 		case Rol.Mele:
+			allowedBoxes = calculator.GetMeleHabilityBoxes (map, round [unitTurn], round [unitTurn].HabilityRange + 1);
+			drawer.DrawBoxes (map, allowedBoxes, new Vector4 (0.1f, 0.1f, 0.5f, 1f));
+			currentAction = AssemblyCSharp.Action.Hability;
 			break;
 
 		case Rol.Tank:
@@ -405,5 +438,17 @@ public class MatchManagment : MonoBehaviour
 			return team_1_unitList [team.IndexOf (obj)];
 		}
 		return team_2_unitList [team.IndexOf (obj)];
+	}
+
+	public void RemoveUnit(Unit unit){
+		round.Remove (unit);
+
+		if (GetUnitTeam (unit).Equals (team_1_unitList)) {
+			team_1_gameObjectList.Remove (GameObjectFromUnit (unit));
+			team_1_unitList.Remove (unit);
+		} else {
+			team_2_gameObjectList.Remove (GameObjectFromUnit (unit));
+			team_2_unitList.Remove (unit);
+		}
 	}
 }

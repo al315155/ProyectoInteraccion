@@ -18,7 +18,7 @@ namespace AssemblyCSharp
 		static int movement = 3;
 		static int agility = 20;
 		static int critic = 25;
-		static int habilityRange = 2;
+		static int habilityRange = 1;
 		static int attackRange = 1;
 		static int minVelocity = 10;
 		static int maxVelocity = 30;		

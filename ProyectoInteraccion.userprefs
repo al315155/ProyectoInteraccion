@@ -1,13 +1,9 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Game Managment\MenuManagment.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Game Managment\MatchManagment.cs">
     <Files>
-      <File FileName="Assets\Scripts\Game Managment\GameManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\MapGenerator.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Game Managment\GameMode.cs" Line="75" Column="4" />
-      <File FileName="Assets\Scripts\Game Managment\MatchManagment.cs" Line="408" Column="3" />
-      <File FileName="Assets\Scripts\QSceneManagment.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Game Managment\UnitFunctions.cs" Line="203" Column="32" />
+      <File FileName="Assets\Scripts\Game Managment\MatchManagment.cs" Line="183" Column="4" />
+      <File FileName="Assets\Scripts\Game Managment\UnitFunctions.cs" Line="235" Column="40" />
       <File FileName="Assets\Scripts\Game Managment\MenuManagment.cs" Line="252" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>

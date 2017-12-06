@@ -40,6 +40,45 @@ public class CalculateBoxes : MonoBehaviour {
 		return finalPositions;
 	}
 
+	// Función específica del rol Mele que obtiene las celdas para su habilidad Area
+	public List<Vector2> GetMeleHabilityBoxes(GameObject[,] map, Unit unit, int range){
+		List<Vector2> positions = new List<Vector2> ();
+		Vector2 pos = unit.Position;
+
+		int minX = (int)unit.Position.x - range;
+		int maxX = (int)unit.Position.x + range + 1;
+		int minY = (int)unit.Position.y - range;
+		int maxY = (int)unit.Position.y + range + 1;
+
+		if (minX < 0)
+			minX = 0;
+		if (maxX >= map.GetLength (0))
+			maxX = map.GetLength (0);
+
+		if (minY < 0)
+			minY = 0;
+		if (maxY >= map.GetLength (1))
+			maxY = map.GetLength (1);
+
+		for (int i = minX; i < maxX; i++) {
+			for (int j = minY; j < maxY; j++) {
+				Vector2 newPosition = Vector2.one;
+
+				if (i == (int)pos.x) {
+					newPosition = new Vector2 (i, j);
+					positions.Add (newPosition);
+				}
+
+				if (j == (int)pos.y) {
+					newPosition = new Vector2 (i, j);
+					positions.Add (newPosition);
+				}
+			}
+		}
+		return positions;
+
+	}
+
 	// Obtiene las celdas dentro de un rango determinado
 	public List<Vector2> GetBoxesInsideRange(GameObject[,] map, Unit unit, int range){
 		List<Vector2> positions = new List<Vector2> ();

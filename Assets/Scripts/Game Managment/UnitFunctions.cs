@@ -117,6 +117,11 @@ public class UnitFunctions : MonoBehaviour {
 								} else {
 									victimUnit.CurrentLife -= currentUnit.Damage;
 								}
+
+								if (victimUnit.CurrentLife <= 0) {
+									matchManagment.RemoveUnit (victimUnit);
+								}
+
 								matchManagment.NextTurn ();
 							}
 						}
@@ -145,6 +150,11 @@ public class UnitFunctions : MonoBehaviour {
 						Debug.Log ("cura normal");
 						healedUnit.CurrentLife += currentUnit.GetHeal (healedUnit);
 					}
+
+					if (healedUnit.CurrentLife > healedUnit.Life) {
+						healedUnit.CurrentLife = healedUnit.Life;
+					}
+
 					matchManagment.NextTurn ();
 				}
 			}
@@ -220,7 +230,94 @@ public class UnitFunctions : MonoBehaviour {
 		}
 	}
 
-	public void Area(){
+	public void Area(Unit currentUnit, List<Vector2> allowedBoxes){
+
+		//falta meter lo de si está focuseado
+		RaycastHit hit;
+
+		if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit)) {
+
+			if (hit.collider.tag.Equals ("Ground")) {
+
+				Vector2 position = worldToMap (hit.collider.gameObject);
+				if (allowedBoxes.Contains (position)) {
+
+					if (matchManagment.GetUnitTeam (currentUnit).Equals (matchManagment.team_1_unitList)) {
+
+						List<Unit> deadUnits = new List<Unit> ();
+
+						foreach (Unit unit in matchManagment.team_2_unitList) {
+							if (allowedBoxes.Contains (unit.Position)) {
+					
+								float probability = UnityEngine.Random.Range (0, 100);
+								if (probability < 100 - unit.Agility) {
+									//acierto el área en esta unidad
+									int value = UnityEngine.Random.Range ((int)currentUnit.GetArea (unit).x, (int)currentUnit.GetArea (unit).y);
+									//critico??
+
+									probability = UnityEngine.Random.Range (0, 100);
+									if (probability > currentUnit.Critic / 2) {
+										//critico
+										unit.CurrentLife -= value * 2;
+									} else {
+										//no critico
+										unit.CurrentLife -= value;
+									}
+
+									if (unit.CurrentLife <= 0) {
+										deadUnits.Add(unit);
+									}
+								}
+							}
+						}
+
+						foreach (Unit unit in deadUnits) {
+							if (unit.CurrentLife <= 0) {
+								matchManagment.RemoveUnit (unit);
+							}
+						}
+
+					} else {
+
+						List<Unit> deadUnits = new List<Unit> ();
+
+						foreach (Unit unit in matchManagment.team_1_unitList) {
+							if (allowedBoxes.Contains (unit.Position)) {
+								float probability = UnityEngine.Random.Range (0, 100);
+								if (probability < 100 - unit.Agility) {
+									//acierto el área en esta unidad
+									int value = UnityEngine.Random.Range ((int)currentUnit.GetArea (unit).x, (int)currentUnit.GetArea (unit).y);
+									//critico??
+
+									probability = UnityEngine.Random.Range (0, 100);
+									if (probability > currentUnit.Critic / 2) {
+										//critico
+										unit.CurrentLife -= value * 2;
+									} else {
+										//no critico
+										unit.CurrentLife -= value;
+									}
+
+									if (unit.CurrentLife <= 0) {
+										deadUnits.Add(unit);
+									}
+								}
+							}
+						}
+
+						foreach (Unit unit in deadUnits) {
+							if (unit.CurrentLife <= 0) {
+								matchManagment.RemoveUnit (unit);
+							}
+						}
+					}
+						
+
+					matchManagment.NextTurn ();
+				}
+			}
+		}
+		
 	}
 
 	private bool allowedAttack(Unit unit1, Unit unit2){
