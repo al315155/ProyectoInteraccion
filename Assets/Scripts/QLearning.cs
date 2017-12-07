@@ -15,7 +15,7 @@ public class QLearning : MonoBehaviour {
 		QSceneManagment.CreateTeams (team_1, team_2);
 
 		// Generación del mapa
-		map = new GameObject[(int) Mathf.Sqrt(dimension), (int) Mathf.Sqrt(dimension)];
+		map = new object[(int) Mathf.Sqrt(dimension), (int) Mathf.Sqrt(dimension)];
 		for (int i = 0; i < (int)Mathf.Sqrt (dimension); i++) {
 			for (int j = 0; j < (int)Mathf.Sqrt (dimension); j++) {
 				map [i, j] = new object();
