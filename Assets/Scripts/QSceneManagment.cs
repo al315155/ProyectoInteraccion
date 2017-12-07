@@ -9,6 +9,7 @@ public class QSceneManagment : MonoBehaviour {
 //	public GameObject EnemyPrefab;
 //	public GameObject PlayerPrefab;
 //
+////Make public 
 //	private List<Unit> playerTeam;
 //	private List<Unit> enemyTeam;
 //

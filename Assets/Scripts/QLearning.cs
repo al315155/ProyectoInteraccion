@@ -23,9 +23,9 @@
 //		}
 //		return false;
 //	}
-//
+// //Has to return List<bool>
 //	private void GetState(Unit unit){
-//
+//      //Usar esto en IAvsIA;
 //		//GetTeam(unit, "Rival") devuelve el equipo contrario a unit
 //		//GetTeam(unit, "Ally") devuelve el equipo al que pertenece unit
 //
