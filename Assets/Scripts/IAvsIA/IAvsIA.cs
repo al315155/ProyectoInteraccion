@@ -33,10 +33,12 @@ public class IAvsIA : MonoBehaviour {
 
     public Functions funciones;
 
+	QLearningGame qGame;
 
 
     void Start()
     {
+
         initializeQs();
         FillQ(QTanqueA);
         FillQ(QTanqueB);
@@ -47,14 +49,20 @@ public class IAvsIA : MonoBehaviour {
         FillQ(QDistanceA);
         FillQ(QDistanceB);
 
-//        TeamA = QSceneManagment.CreateTeam();
-//        TeamB = QSceneManagment.CreateTeam();
+		 qGame = gameObject.AddComponent<QLearningGame>();
+		 qGame.StartGame();
 
-		QSceneManagment.CreateTeams (TeamA, TeamB);
+		 TeamA = qGame.GetTeam_A();
+		 TeamB = qGame.GetTeam_B();
+
+		 states = new States(qGame.GetMap(), TeamA, TeamB);
+
+		 funciones = new Functions(qGame, states);
+
 
         for (int i = 0; i < nPartidas; i++)
         {
-            funciones.entrenamiento(QTanqueA, QTanqueB, QHealerA, QHealerB, QMeleA, QMeleB, QDistanceA, QDistanceB, learning_rate, discount_factor, politicaA, politicaB, TeamA, TeamB);
+			funciones.entrenamiento(QTanqueA, QTanqueB, QHealerA, QHealerB, QMeleA, QMeleB, QDistanceA, QDistanceB, learning_rate, discount_factor, politicaA, politicaB, TeamA, TeamB);
         }
 
 

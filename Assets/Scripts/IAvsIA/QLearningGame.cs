@@ -35,8 +35,6 @@ public class QLearningGame : MonoBehaviour
 
 
 	void Awake(){
-		QSceneManagment.CreateTeams (team_1, team_2);
-
 		// Generación del mapa
 		map = new object[(int)Mathf.Sqrt (dimension), (int)Mathf.Sqrt (dimension)];
 		for (int i = 0; i < (int)Mathf.Sqrt (dimension); i++) {
@@ -47,17 +45,6 @@ public class QLearningGame : MonoBehaviour
 
 		calculator = GetComponent<CalculateBoxes> ();
 		functions = GetComponent<UnitFunctions> ();
-		buildMatch ();
-	}
-
-	void Start(){
-
-		// Genero los turnos
-		round = getTurns();
-		unitTurn = -1;
-
-		// Comienzo con los turnos
-		NextTurn();
 	}
 
 	// Para el script de STATES //
@@ -65,8 +52,13 @@ public class QLearningGame : MonoBehaviour
 	public List<Unit> GetTeam_A(){return team_1;}
 	public List<Unit> GetTeam_B(){return team_2;}
 
+	// Para QLearning
+	public Unit GetCurrentPlayer(){return round[unitTurn];}
 
-	private void buildMatch(){
+	public void StartGame(){
+
+		QSceneManagment.CreateTeams (team_1, team_2);
+
 		team_1_AgroCount = 0;
 		team_2_AgroCount = 0;
 
@@ -81,6 +73,9 @@ public class QLearningGame : MonoBehaviour
 
 		round = getTurns ();
 		unitTurn = -1;
+
+		// Comienzo con los turnos
+		NextTurn();
 	}
 
 	private bool isGameOver(){
@@ -133,15 +128,11 @@ public class QLearningGame : MonoBehaviour
 		return turns;
 	}
 
-	private void NextTurn(){
-
-		// AQUI TIENE QUE PONERSE LA FORMA DE TOMAR ACCIONES (A VOLEO; TENIENDO EN CUENTA Q; ETC)
-		// TAL UNIDAD QUE TIENE ESTE TURNO, REALIZAR ESTA ACCION: TIENE ESTADO ANTERIOR? ESTADO ACTUAL = ESTADO ANTERIOR
-		// CALCULO DE ALLOWEDBOXES SEGUN ACCION, ETC.
+	public bool NextTurn(){
 
 		if (isGameOver ()) {
 			
-			// llamar a la actualizacion de las matrices dependiendo del ganador??
+			return true;
 		} 
 		else {
 
@@ -188,6 +179,8 @@ public class QLearningGame : MonoBehaviour
 				
 			currentAction = AssemblyCSharp.Action.None;
 		}
+
+		return false;
 	}
 
 	private void placeCharacters(List<Unit> team, Vector2[] area){
