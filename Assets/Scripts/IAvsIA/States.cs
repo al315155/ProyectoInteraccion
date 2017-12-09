@@ -3,28 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using AssemblyCSharp;
 
-public class QLearning : MonoBehaviour {
+public class States {
 
-	public List<Unit> team_1;
-	public List<Unit> team_2;
+	object[,] map;
+	List<Unit> team1;
+	List<Unit> team2;
 
-	private object[,] map;
-	private int dimension = 15;
-
-	void Start () {
-		QSceneManagment.CreateTeams (team_1, team_2);
-
-		// Generación del mapa
-		map = new object[(int) Mathf.Sqrt(dimension), (int) Mathf.Sqrt(dimension)];
-		for (int i = 0; i < (int)Mathf.Sqrt (dimension); i++) {
-			for (int j = 0; j < (int)Mathf.Sqrt (dimension); j++) {
-				map [i, j] = new object();
-			}
-		}
-	}
-
-	void Update () {
-		
+	public States(object[,] map, List<Unit> team1, List<Unit> team2){
+		this.map = map;
+		this.team1 = team1;
+		this.team2 = team2;
 	}
 
 	public bool[] GetTankState(Unit tank){
@@ -39,7 +27,7 @@ public class QLearning : MonoBehaviour {
 
 		// Segunda condición: ¿Alguién de mi equipo está herido? ----------------------------------------------
 		bool isSomeoneHurted = false;
-		foreach (Unit ally in QSceneManagment.GetUnitTeam(tank, team_1, team_2)) {
+		foreach (Unit ally in QSceneManagment.GetUnitTeam(tank, team1, team2)) {
 			if (!tank.Equals (ally)) {
 				if (QSceneManagment.IsHurted (ally)) {
 					isSomeoneHurted = true;
@@ -52,14 +40,14 @@ public class QLearning : MonoBehaviour {
 			conditions [1] = true;	
 
 		//Tercera condición: ¿Existe un enemigo dentro del rango de ataque? -----------------------------------
-		if (QSceneManagment.SomeoneInRange (map, tank, QSceneManagment.GetEnemyTeam (tank, team_1, team_2), tank.AttackRange)) {
+		if (QSceneManagment.SomeoneInRange (map, tank, QSceneManagment.GetEnemyTeam (tank, team1, team2), tank.AttackRange)) {
 			conditions [2] = true;
 		} else {
 			conditions [2] = false;
 		}
 			
 		//Cuarta condicion: ¿Algún aliado está siendo Focused? ------------------------------------------------
-		if (QSceneManagment.IsSomeoneFocused (tank, team_1, team_2)) {
+		if (QSceneManagment.IsSomeoneFocused (tank, team1, team2)) {
 			conditions [3] = true;
 		} else {
 			conditions [3] = false;
@@ -80,7 +68,7 @@ public class QLearning : MonoBehaviour {
 
 		// Segunda condición: ¿Alguién de mi equipo está herido? ----------------------------------------------
 		bool isAllyHurted = false;
-		foreach (Unit ally in QSceneManagment.GetUnitTeam(healer, team_1, team_2)) {
+		foreach (Unit ally in QSceneManagment.GetUnitTeam(healer, team1, team2)) {
 			if (!healer.Equals (ally)) {
 				if (QSceneManagment.IsHurted (ally)) {
 					isAllyHurted = true;
@@ -93,14 +81,14 @@ public class QLearning : MonoBehaviour {
 			conditions [1] = true;	
 
 		//Tercera condición: ¿Existe un enemigo dentro del rango de ataque? ------------------------------------
-		if (QSceneManagment.SomeoneInRange (map, healer, QSceneManagment.GetEnemyTeam (healer, team_1, team_2), healer.AttackRange)) {
+		if (QSceneManagment.SomeoneInRange (map, healer, QSceneManagment.GetEnemyTeam (healer, team1, team2), healer.AttackRange)) {
 			conditions [2] = true;
 		} else {
 			conditions [2] = false;
 		}
 
 		//Cuarta condicion: ¿Algún aliado está dentro de mi rango de habilidad? --------------------------------
-		if (QSceneManagment.SomeoneInRange (map, healer, QSceneManagment.GetUnitTeam (healer, team_1, team_2), healer.HabilityRange)) {
+		if (QSceneManagment.SomeoneInRange (map, healer, QSceneManagment.GetUnitTeam (healer, team1, team2), healer.HabilityRange)) {
 			conditions [3] = true;
 		} else {
 			conditions [3] = false;
@@ -120,7 +108,7 @@ public class QLearning : MonoBehaviour {
 		}
 
 		// Segunda condición: ¿Existe un enemigo dentro del rango de ataque? ------------------------------------
-		if (QSceneManagment.SomeoneInRange (map, distance, QSceneManagment.GetEnemyTeam (distance, team_1, team_2), distance.AttackRange)) {
+		if (QSceneManagment.SomeoneInRange (map, distance, QSceneManagment.GetEnemyTeam (distance, team1, team2), distance.AttackRange)) {
 			conditions [1] = true;
 		} else {
 			conditions [1] = false;
@@ -128,7 +116,7 @@ public class QLearning : MonoBehaviour {
 
 		// Tercera condición: ¿Existe algún enemigo herido? ----------------------------------------------------
 		bool isEnemyHurted = false;
-		foreach (Unit enemy in QSceneManagment.GetEnemyTeam(distance, team_1, team_2)) {
+		foreach (Unit enemy in QSceneManagment.GetEnemyTeam(distance, team1, team2)) {
 			if (QSceneManagment.IsHurted (enemy)) {
 				isEnemyHurted = true;
 			}
@@ -139,7 +127,7 @@ public class QLearning : MonoBehaviour {
 			conditions [2] = true;	
 
 		// Cuarta condicion: ¿Algún enemigo está dentro de mi rango de habilidad? --------------------------------
-		if (QSceneManagment.SomeoneInRange (map, distance, QSceneManagment.GetEnemyTeam (distance, team_1, team_2), distance.HabilityRange)) {
+		if (QSceneManagment.SomeoneInRange (map, distance, QSceneManagment.GetEnemyTeam (distance, team1, team2), distance.HabilityRange)) {
 			conditions [3] = true;
 		} else {
 			conditions [3] = false;
@@ -159,21 +147,21 @@ public class QLearning : MonoBehaviour {
 		}
 
 		// Segunda condición: ¿Existe un enemigo dentro del rango de ataque? ------------------------------------
-		if (QSceneManagment.SomeoneInRange (map, mele, QSceneManagment.GetEnemyTeam (mele, team_1, team_2), mele.AttackRange)) {
+		if (QSceneManagment.SomeoneInRange (map, mele, QSceneManagment.GetEnemyTeam (mele, team1, team2), mele.AttackRange)) {
 			conditions [1] = true;
 		} else {
 			conditions [1] = false;
 		}
 
 		// Tercera condicion: ¿Algún enemigo está dentro de mi rango de habilidad? --------------------------------
-		if (QSceneManagment.SomeoneInMeleRange (map, mele, QSceneManagment.GetEnemyTeam (mele, team_1, team_2), mele.HabilityRange)) {
+		if (QSceneManagment.SomeoneInMeleRange (map, mele, QSceneManagment.GetEnemyTeam (mele, team1, team2), mele.HabilityRange)) {
 			conditions [2] = true;
 		} else {
 			conditions [2] = false;
 		}
 
 		// Cuarta condición: ¿Existe MÁS DE UN enemigo dentro de mi rango de habilidad? --------------------------
-		if (QSceneManagment.CrowdInsideMeleRange(map, mele, QSceneManagment.GetEnemyTeam(mele, team_1, team_2), mele.HabilityRange)){
+		if (QSceneManagment.CrowdInsideMeleRange(map, mele, QSceneManagment.GetEnemyTeam(mele, team1, team2), mele.HabilityRange)){
 			conditions [3] = true;
 		} else {
 			conditions [3] = false;

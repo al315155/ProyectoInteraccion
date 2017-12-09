@@ -25,12 +25,6 @@ public static class QSceneManagment{
 
 	}
 
-    public static List<Unit> CreateTeam()
-    {
-        List<Unit> team1 = new List<Unit>(4) { tank, healer, distance, mele };
-        return team1;
-    }
-
 	// Método que usa el tanque para saber si alguien de su equipo está focuseado
 	public static bool IsSomeoneFocused(Unit unit, List<Unit> team1, List<Unit> team2){
 		List<Unit> team = GetUnitTeam (unit, team1, team2);

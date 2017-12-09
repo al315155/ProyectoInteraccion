@@ -52,7 +52,6 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\CanvasManager.cs" />
-     <Compile Include="Assets\Scripts\CubeOverManager.cs" />
      <Compile Include="Assets\Scripts\Flow.cs" />
      <Compile Include="Assets\Scripts\Game Managment\Action.cs" />
      <Compile Include="Assets\Scripts\Game Managment\CalculateBoxes.cs" />
@@ -62,9 +61,13 @@
      <Compile Include="Assets\Scripts\Game Managment\MatchManagment.cs" />
      <Compile Include="Assets\Scripts\Game Managment\MenuManagment.cs" />
      <Compile Include="Assets\Scripts\Game Managment\UnitFunctions.cs" />
+     <Compile Include="Assets\Scripts\IAvsIA\CubeOverManager.cs" />
+     <Compile Include="Assets\Scripts\IAvsIA\Functions.cs" />
+     <Compile Include="Assets\Scripts\IAvsIA\IAvsIA.cs" />
+     <Compile Include="Assets\Scripts\IAvsIA\QLearningGame.cs" />
+     <Compile Include="Assets\Scripts\IAvsIA\QSceneManagment.cs" />
+     <Compile Include="Assets\Scripts\IAvsIA\States.cs" />
      <Compile Include="Assets\Scripts\MapGenerator.cs" />
-     <Compile Include="Assets\Scripts\QLearning.cs" />
-     <Compile Include="Assets\Scripts\QSceneManagment.cs" />
      <Compile Include="Assets\Scripts\SelectionManager.cs" />
      <Compile Include="Assets\Scripts\Target.cs" />
      <Compile Include="Assets\Scripts\Tile.cs" />

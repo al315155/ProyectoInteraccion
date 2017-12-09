@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class IAvsIA : MonoBehaviour {
 
+	// primero crear game y después states con los parámetros de game
+	// (mapa, team1 y team2)
+	private States states;
+	private QLearningGame game;
+
+
+	//---//---//---//---//
+
     float[,] QTanqueA;
     float[,] QTanqueB;
     float[,] QMeleA;
@@ -12,6 +20,8 @@ public class IAvsIA : MonoBehaviour {
     float[,] QHealerB;
     float[,] QDistanceA;
     float[,] QDistanceB;
+
+
     public List<Unit> TeamA;
     public List<Unit> TeamB;
 
@@ -37,9 +47,10 @@ public class IAvsIA : MonoBehaviour {
         FillQ(QDistanceA);
         FillQ(QDistanceB);
 
-        TeamA = QSceneManagment.CreateTeam();
-        TeamB = QSceneManagment.CreateTeam();
+//        TeamA = QSceneManagment.CreateTeam();
+//        TeamB = QSceneManagment.CreateTeam();
 
+		QSceneManagment.CreateTeams (TeamA, TeamB);
 
         for (int i = 0; i < nPartidas; i++)
         {

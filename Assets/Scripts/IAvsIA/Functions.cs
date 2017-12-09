@@ -8,7 +8,7 @@ public class Functions {
 
     //Declarar QSceneMagager;
     int action;
-    public QLearning QLear;
+    public States QLear;
   
         
     //Tendremos un estado para cada rol.
@@ -19,7 +19,7 @@ public class Functions {
     {
         //Iniciar partida
         //Inicializar QSceneMager
-        estadoTanqueA = QLear.GetTankState(TeamA[0]);
+       // estadoTanqueA = QLear.GetTankState(TeamA[0]);
         
         //TeamA = QSM.GetTeam()
         //TeamB = QSM.GetTeam()
