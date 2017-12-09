@@ -20,7 +20,14 @@ public class Functions {
         
     //Tendremos un estado para cada rol.
     bool[] estadoTanqueA; // actual
-    String winner;
+    bool[] estadoTanqueB;
+    bool[] estadoHealerA;
+    bool[] estadoHealerB;
+    bool[] estadoMeleA;
+    bool[] estadoMeleB;
+    bool[] estadoDistA;
+    bool[] estadoDistB;
+   
 
 	float[,] QMatrix;
 
@@ -39,33 +46,34 @@ public class Functions {
 			if (QSceneManagment.GetUnitTeam (currentUnit, TeamA, TeamB).Equals (TeamA)) {
 				switch (currentUnit.UnitRol) {
 				case Rol.Tank:
-					QMatrix = QTA;
+					
+                    QLearning(QTA, estadoTanqueA, politicaA, TeamA, currentUnit.UnitRol);
 					break;
 				case Rol.Healer:
-					QMatrix = QHA;
-					break;
+                        QLearning(QHA, estadoHealerA, politicaA, TeamA, currentUnit.UnitRol);
+                        break;
 				case Rol.Mele:
-					QMatrix = QMA;
-					break;
+                        QLearning(QMA, estadoMeleA, politicaA, TeamA, currentUnit.UnitRol);
+                        break;
 				case Rol.Distance:
-					QMatrix = QDA;
-					break;
+                        QLearning(QDA, estadoDistA, politicaA, TeamA, currentUnit.UnitRol);
+                        break;
 				}
 
 			} else {
 				switch (currentUnit.UnitRol) {
 				case Rol.Tank:
-					QMatrix = QTB;
-					break;
+                        QLearning(QTB, estadoTanqueB, politicaB, TeamB, currentUnit.UnitRol);
+                        break;
 				case Rol.Healer:
-					QMatrix = QHA;
-					break;
+                        QLearning(QHB, estadoHealerB, politicaB, TeamB, currentUnit.UnitRol);
+                        break;
 				case Rol.Mele:
-					QMatrix = QMA;
-					break;
+                        QLearning(QMB, estadoMeleB, politicaB, TeamB, currentUnit.UnitRol);
+                        break;
 				case Rol.Distance:
-					QMatrix = QDA;
-					break;
+                        QLearning(QDB, estadoDistB, politicaB, TeamB, currentUnit.UnitRol);
+                        break;
 				}
 			}
 
@@ -84,18 +92,7 @@ public class Functions {
 			//Bucle que recorra los equipos. Un rol por turno.
 
 			//La llamada cambia según el jugador y el rol
-			for (int i = 0; i < 4; i++) {
-
-				if (TeamA [i] == TeamA [0]) {
-					Debug.Log ("Tank");
-					action = getAction ('A', politicaA, "Tanque", QTA, estadoTanqueA);
-
-					// nuevo estado (posterior) para actualizar la Q
-					bool[] estadoTanqueAT1 = DoAction ('A', estadoTanqueA, action, "Tanque");
-					winner = CheckWinner (estadoTanqueAT1);
-					ActualizarQ (QTA);
-					Debug.Log (action);
-				}
+		
 
 				//si TeamA(0) 
 				//si TeamA(1).... Dependiendo del rol se las variables a pasar a cada metodo seran distintas
@@ -105,7 +102,6 @@ public class Functions {
             
 
 			}
-			Debug.Log ("Hola");
 			//Esto es general, hay que cambiarlo
 			/*/action = getAction('A', politicaA, "Tanque", QTA, estado);
         List<bool> estadoT1 = DoAction('A', estado, action, "Tanque");
@@ -115,7 +111,20 @@ public class Functions {
 
 			isGameOver = game.NextTurn ();
 		}
-    }
+    
+
+    private void QLearning(float[,] Q, bool[] estado, float politica, List<Unit> team, Rol unitRol)
+    {
+       
+            Debug.Log("Tank");
+            action = getAction('A', politica, "Tanque", Q, estado);
+
+            // nuevo estado (posterior) para actualizar la Q
+            bool[] estadoTanqueAT1 = DoAction('A', estado, action, "Tanque");
+          
+            ActualizarQ(Q);
+            Debug.Log(action);
+        }
 
     private void ActualizarQ(float[,] Q)
     {
@@ -138,4 +147,6 @@ public class Functions {
         int rand = rd.Next(1, 4);
         return rand;
     }
+
 }
+
