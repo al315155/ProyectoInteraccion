@@ -19,10 +19,8 @@ public static class QSceneManagment{
 	static int Healer_minLife = (50 * distance.Life) / 100;
 
 	// Método que inicializa los equipos de forma predeterminada
-	public static void CreateTeams(List<Unit> team1, List<Unit> team2){
-		team1 = new List<Unit> (4) { tank, healer, distance, mele};
-		team2 = new List<Unit> (4) { tank, healer, distance, mele};
-
+	public static List<Unit> CreateTeam(){
+		return new List<Unit> (4) { new Tank(), new Healer(), new DistDamage(), new MeleDamage() };
 	}
 
 	// Método que usa el tanque para saber si alguien de su equipo está focuseado

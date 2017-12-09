@@ -37,7 +37,7 @@ public class Functions {
 
 		game.StartGame (); // comienza los turnos, etc.
 
-		while (!isGameOver) {
+//		while (!isGameOver) {
 
 			// pillo la unidad a la cual le toca.
 			Unit currentUnit = game.GetCurrentPlayer ();
@@ -101,7 +101,11 @@ public class Functions {
 				//Si no hay ganador e i == 3 se reinicia el bucle
             
 
-			}
+
+
+			isGameOver = game.NextTurn ();
+
+		}
 			//Esto es general, hay que cambiarlo
 			/*/action = getAction('A', politicaA, "Tanque", QTA, estado);
         List<bool> estadoT1 = DoAction('A', estado, action, "Tanque");
@@ -109,8 +113,7 @@ public class Functions {
         ActualizarQ(QTA);
         estado = estadoT1;*/
 
-			isGameOver = game.NextTurn ();
-		}
+//		}
     
 
     private void QLearning(float[,] Q, bool[] estado, float politica, List<Unit> team, Rol unitRol)

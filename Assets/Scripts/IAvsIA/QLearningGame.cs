@@ -17,8 +17,8 @@ public class QLearningGame : MonoBehaviour
 	public CalculateBoxes calculator; // Script que devuelve celdas determinadas
 	public UnitFunctions functions;   // Script con las funciones de las unidades
 
-	private object[,] map;
-	private int dimension = 15;
+	private GameObject[,] map;
+	private int dimension = 256;
 
 	public List<Vector2> allowedBoxes;
 
@@ -36,19 +36,19 @@ public class QLearningGame : MonoBehaviour
 
 	void Awake(){
 		// Generación del mapa
-		map = new object[(int)Mathf.Sqrt (dimension), (int)Mathf.Sqrt (dimension)];
-		for (int i = 0; i < (int)Mathf.Sqrt (dimension); i++) {
-			for (int j = 0; j < (int)Mathf.Sqrt (dimension); j++) {
-				map [i, j] = new object ();
-			}
-		}
+		map = new GameObject[(int)Mathf.Sqrt (dimension), (int)Mathf.Sqrt (dimension)];
+//		for (int i = 0; i < (int)Mathf.Sqrt (dimension); i++) {
+//			for (int j = 0; j < (int)Mathf.Sqrt (dimension); j++) {
+//				map [i, j] = new GameObject ();
+//			}
+//		}
 
-		calculator = GetComponent<CalculateBoxes> ();
-		functions = GetComponent<UnitFunctions> ();
+		calculator = gameObject.AddComponent<CalculateBoxes> ();
+		functions = gameObject.AddComponent<UnitFunctions> ();
 	}
 
 	// Para el script de STATES //
-	public object[,] GetMap(){return map;}
+	public GameObject[,] GetMap(){return map;}
 	public List<Unit> GetTeam_A(){return team_1;}
 	public List<Unit> GetTeam_B(){return team_2;}
 
@@ -57,7 +57,8 @@ public class QLearningGame : MonoBehaviour
 
 	public void StartGame(){
 
-		QSceneManagment.CreateTeams (team_1, team_2);
+		team_1 = QSceneManagment.CreateTeam ();
+		team_2 = QSceneManagment.CreateTeam ();
 
 		team_1_AgroCount = 0;
 		team_2_AgroCount = 0;
@@ -73,9 +74,6 @@ public class QLearningGame : MonoBehaviour
 
 		round = getTurns ();
 		unitTurn = -1;
-
-		// Comienzo con los turnos
-		NextTurn();
 	}
 
 	private bool isGameOver(){

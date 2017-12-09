@@ -5,11 +5,18 @@ using UnityEngine;
 public class UnitFunctions : MonoBehaviour {
 
 	MatchManagment matchManagment;
+	QLearningGame qLearning;
+
 	GameObject[,] map;
 
 	void Start(){
 		matchManagment = GetComponent<MatchManagment> ();
-		map = matchManagment.map;
+		if (matchManagment == null) {
+			qLearning = GetComponent<QLearningGame> ();
+			map = qLearning.GetMap ();
+		} else {
+			map = matchManagment.map;
+		}
 	}
 
 	private Vector2 worldToMap(GameObject obj){
