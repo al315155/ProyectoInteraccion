@@ -47,32 +47,32 @@ public class Functions {
 				switch (currentUnit.UnitRol) {
 				case Rol.Tank:
 					
-                    QLearning(QTA, estadoTanqueA, politicaA, TeamA, currentUnit.UnitRol);
+                    QLearning(QTA, estadoTanqueA, politicaA, TeamA, currentUnit);
 					break;
 				case Rol.Healer:
-                        QLearning(QHA, estadoHealerA, politicaA, TeamA, currentUnit.UnitRol);
+                        QLearning(QHA, estadoHealerA, politicaA, TeamA, currentUnit);
                         break;
 				case Rol.Mele:
-                        QLearning(QMA, estadoMeleA, politicaA, TeamA, currentUnit.UnitRol);
+                        QLearning(QMA, estadoMeleA, politicaA, TeamA, currentUnit);
                         break;
 				case Rol.Distance:
-                        QLearning(QDA, estadoDistA, politicaA, TeamA, currentUnit.UnitRol);
+                        QLearning(QDA, estadoDistA, politicaA, TeamA, currentUnit);
                         break;
 				}
 
 			} else {
 				switch (currentUnit.UnitRol) {
 				case Rol.Tank:
-                        QLearning(QTB, estadoTanqueB, politicaB, TeamB, currentUnit.UnitRol);
+                        QLearning(QTB, estadoTanqueB, politicaB, TeamB, currentUnit);
                         break;
 				case Rol.Healer:
-                        QLearning(QHB, estadoHealerB, politicaB, TeamB, currentUnit.UnitRol);
+                        QLearning(QHB, estadoHealerB, politicaB, TeamB, currentUnit);
                         break;
 				case Rol.Mele:
-                        QLearning(QMB, estadoMeleB, politicaB, TeamB, currentUnit.UnitRol);
+                        QLearning(QMB, estadoMeleB, politicaB, TeamB, currentUnit);
                         break;
 				case Rol.Distance:
-                        QLearning(QDB, estadoDistB, politicaB, TeamB, currentUnit.UnitRol);
+                        QLearning(QDB, estadoDistB, politicaB, TeamB, currentUnit);
                         break;
 				}
 			}
@@ -83,47 +83,24 @@ public class Functions {
 
 
 
-
-			// estadoTanqueA = QLear.GetTankState(TeamA[0]);
         
-			//TeamA = QSM.GetTeam()
-			//TeamB = QSM.GetTeam()
-
-			//Bucle que recorra los equipos. Un rol por turno.
-
-			//La llamada cambia según el jugador y el rol
-		
-
-				//si TeamA(0) 
-				//si TeamA(1).... Dependiendo del rol se las variables a pasar a cada metodo seran distintas
-				// action = getAction('A', politicaA, "Healer",QHA,estadoHealer);....
-
-				//Si no hay ganador e i == 3 se reinicia el bucle
-            
 
 
 
 			isGameOver = game.NextTurn ();
 
 		}
-			//Esto es general, hay que cambiarlo
-			/*/action = getAction('A', politicaA, "Tanque", QTA, estado);
-        List<bool> estadoT1 = DoAction('A', estado, action, "Tanque");
-        winner = CheckWinner(estadoT1);
-        ActualizarQ(QTA);
-        estado = estadoT1;*/
-
-//		}
+	
     
 
-    private void QLearning(float[,] Q, bool[] estado, float politica, List<Unit> team, Rol unitRol)
+    private void QLearning(float[,] Q, bool[] estado, float politica, List<Unit> team, Unit currentUnit)
     {
        
             Debug.Log("Tank");
             action = getAction('A', politica, "Tanque", Q, estado);
 
             // nuevo estado (posterior) para actualizar la Q
-            bool[] estadoTanqueAT1 = DoAction('A', estado, action, "Tanque");
+            bool[] estadoTanqueAT1 = DoAction('A', estado, action, currentUnit);
           
             ActualizarQ(Q);
             Debug.Log(action);
@@ -139,9 +116,123 @@ public class Functions {
         return null;
     }
 
-    private bool[] DoAction(char player, bool[] estado, int action, string rol)
+    private bool[] DoAction(char player, bool[] estado, int action, Unit unit)
     {
-        return null;
+        bool[] estadoT1 = estado;
+        switch (unit.UnitRol)
+        {
+            case Rol.Tank:
+                switch (action)
+                {   //Atacar
+                    case 0:
+                        if(estado[2]== true)
+                        {
+                            //atacar enemigo en rango
+                            //Necesito saber cual es el enemigo que está en rango
+                        }
+                        break;
+                    //Agro
+                    case 1:
+                        if (estado[3] == true)
+                        {
+                            //Usar habilidad sobre aliado
+                            //Necesito saber que aliado está focus
+                        }
+                        break;
+                    //Moverse
+                    case 2:
+                        //Moverse
+                        break;
+                    //No hacer nada
+                    case 3:
+                        //nada
+                        break;
+                }
+                //actualizar estadoT1;
+                estadoT1 = states.GetTankState(unit);
+                
+                break;
+            case Rol.Healer:
+                switch (action)
+                {
+                    //Atacar
+                    case 0:
+                        if(estado[2]== true)
+                        {
+                            //atacar
+                        }
+                        break;
+                    //Sanar
+                    case 1:
+                        if (estado[3] == true)
+                        {
+                            //sanar
+                        }
+                        break;
+                    //Moverse
+                    case 2:
+
+                        break;
+                    //No hacer nada
+                    case 3:
+                        break;
+                }
+                //actualizar estadoT1:
+                estadoT1 = states.GetHealerState(unit);
+                break;
+            case Rol.Mele:
+                switch (action)
+                {   //atacar
+                    case 0:
+                        if (estado[1] == true)
+                        {
+                            //atacar
+                        }
+                        break;
+                    //habilidad Area
+                    case 1:
+                        if(estado[2] == true || estado[3] == true)
+                        {
+                            //habilidad area
+                        }
+                        break;
+                    //moverse
+                    case 2:
+                        break;
+                    //no hacer nada
+                    case 3:
+                        break;
+                }
+                estadoT1 = states.GetMeleConditions(unit);
+                break;
+            case Rol.Distance:
+                switch (action)
+                {   //Atacar
+                    case 0:
+                        if (estado[1] == true)
+                        {
+                            //atacar
+                        }
+                        break;
+                    //Habilidad marcar
+                    case 1:
+                        if (estado[3] == true)
+                        {
+                            //marcar
+                        }
+                        break;
+                    //moverse
+                    case 2:
+                        break;
+                    //no hacer nada
+                    case 3:
+                        break;
+                }
+                estadoT1 = states.GetDistanceConditions(unit);
+                break;
+        }
+        
+        return estadoT1;
     }
 
     private int getAction(char player, float politica, String rol, float[,] Q, bool[] estado)
