@@ -131,6 +131,28 @@ public class Functions {
                         }
 
                         break;
+                    //agro
+                    case 1:
+                        if(estadoT1[2] == true || estadoT1[3] == false)
+                        {
+                            //no dar recompensa o negativa?
+                        }else
+                        {
+                            //dar recompensa
+                        }
+                        //falta tener en cuenta la propia salud del tanque para dar rencompesa negativa.
+                        break;
+                    //moverse
+                    case 2:
+                        /*
+                         moverse hacia el enemigo
+                         salud > 40:
+                            recompensa positiva
+                         
+                         */
+                        break;
+                    case 3:
+                        break;
 
 
 
