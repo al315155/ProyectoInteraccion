@@ -100,15 +100,52 @@ public class Functions {
             action = getAction('A', politica, "Tanque", Q, estado);
 
             // nuevo estado (posterior) para actualizar la Q
-            bool[] estadoTanqueAT1 = DoAction('A', estado, action, currentUnit);
+            bool[] estadoT1 = DoAction('A', estado, action, currentUnit);
+            
           
-            ActualizarQ(Q);
+            ActualizarQ(Q,estado,estadoT1,team,currentUnit);
             Debug.Log(action);
         }
 
-    private void ActualizarQ(float[,] Q)
+    private void ActualizarQ(float[,] q, bool[] estado, bool[] estadoT1, List<Unit> team, Unit currentUnit)
     {
-        
+        float reawrd = GetReward(estadoT1, currentUnit);
+    }
+
+    private float GetReward(bool[] estadoT1, Unit currentUnit)
+    {
+        switch (currentUnit.UnitRol)
+        {
+            case Rol.Tank:
+                switch (action)
+                {
+                    //ataque
+                    case 0:
+                        if(estadoT1[2]== true)//habria que tener en cuenta tambien si hay un personaje aliado herido
+                        {
+                            //dar recompensa positiva
+                        }
+                        else
+                        {
+                            //no dar recompensa o dar recompesa negativa?
+                        }
+
+                        break;
+
+
+
+                }
+                break;
+            case Rol.Healer:
+                break;
+            case Rol.Distance:
+                break;
+            case Rol.Mele:
+                break;
+        }
+
+            return 0f;
+
     }
 
     private string CheckWinner(bool[] estadoT1)
