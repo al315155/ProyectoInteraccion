@@ -1,19 +1,19 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\IAvsIA\QLearningGame.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\IAvsIA\Functions.cs">
     <Files>
-      <File FileName="Assets\Scripts\Game Managment\MatchManagment.cs" Line="218" Column="4" />
-      <File FileName="Assets\Scripts\Game Managment\UnitFunctions.cs" Line="16" Column="10" />
+      <File FileName="Assets\Scripts\Game Managment\MatchManagment.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Game Managment\UnitFunctions.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Game Managment\MenuManagment.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Unit\Unit.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\MapGenerator.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Target.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\IAvsIA\IAvsIA.cs" Line="59" Column="3" />
-      <File FileName="Assets\Scripts\IAvsIA\Functions.cs" Line="106" Column="3" />
+      <File FileName="Assets\Scripts\IAvsIA\IAvsIA.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\IAvsIA\Functions.cs" Line="193" Column="8" />
       <File FileName="Assets\Scripts\SelectionManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\IAvsIA\QSceneManagment.cs" Line="23" Column="10" />
-      <File FileName="Assets\Scripts\IAvsIA\States.cs" Line="139" Column="43" />
-      <File FileName="Assets\Scripts\IAvsIA\QLearningGame.cs" Line="44" Column="6" />
+      <File FileName="Assets\Scripts\IAvsIA\QSceneManagment.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\IAvsIA\States.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\IAvsIA\QLearningGame.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\IAvsIA\CubeOverManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\CanvasManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Flow.cs" Line="1" Column="1" />

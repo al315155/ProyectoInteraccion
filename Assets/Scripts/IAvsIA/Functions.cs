@@ -159,6 +159,53 @@ public class Functions {
                 }
                 break;
             case Rol.Healer:
+
+			switch (action)
+			{
+			//ataque
+			case 0:
+				/*
+				 * Si enemigo dentro de rango:
+				 * 		Si saludHealer ok y compañeros ok:
+				 * 			es bueno
+				 * 		Si compañeros no ok o yo no ok:
+				 * 			malo
+				 * 	Si fuera de rango:
+				 * 		malo
+				 */
+
+				break;
+
+			case 1:
+
+				/*
+				 *Si Healer poca vida:
+				 *	Bueno
+				 *Si no si mucha vida healer:
+				 *	malo
+				 *Si aliado dentro de rango:
+				 *	Si poca vida:
+				 *		bueno
+				 *	Si no:
+				 *		malo
+				 *si fuera rango:
+				 *		malo
+				 */
+			case 2:
+				/*
+                       
+                         
+                         */
+				break;
+			case 3:
+				/*
+				 */
+				break;
+
+
+
+			}
+			
                 break;
             case Rol.Distance:
                 break;
