@@ -14,14 +14,14 @@ public class QLearningGame : MonoBehaviour
 	public List<Unit> round;
 	int unitTurn;
 
-	public CalculateBoxes calculator; // Script que devuelve celdas determinadas
-	public UnitFunctions functions;   // Script con las funciones de las unidades
 
 	private GameObject[,] map;
 	private int dimension = 256;
 
 	public List<Vector2> allowedBoxes;
 
+	CalculateBoxes calculator;
+	UnitFunctions functions;
 
 	// Para saber si hay alguien con Agro usado en el equipo
 	public Unit team_1_Agro;
@@ -198,5 +198,27 @@ public class QLearningGame : MonoBehaviour
 				cont++;
 			}
 		}
+	}
+
+	public void SetAgro(List<Unit> team, Unit tank){
+
+		if (team.Equals (team_1)) {
+			if (team_1_Agro == null) {
+				team_1_Agro = tank;
+				team_1_AgroCount = 5;
+			}
+		} else {
+			if (team_2_Agro == null) {
+				team_2_Agro = tank;
+				team_2_AgroCount = 5;
+			}
+		}
+	}
+
+
+	public void RemoveUnit(Unit unit, List<Unit> unitTeam){
+		unitTurn--;
+		round.Remove (unit);
+		unitTeam.Remove (unit);
 	}
 }

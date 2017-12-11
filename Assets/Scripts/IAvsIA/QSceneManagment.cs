@@ -76,45 +76,7 @@ public static class QSceneManagment{
 	// Función que devuelve true si una unidad del equipo Team está en el rango Range de Unit
 	// Rango en forma de estrella gorda
 	public static bool SomeoneInRange(object[,] map, Unit unit, List<Unit> team, int range){
-		List<Vector2> positions = new List<Vector2> ();
-		Vector2 pos = unit.Position;
-
-		int minX = (int)unit.Position.x - range;
-		int maxX = (int)unit.Position.x + range;
-		int minY = (int)unit.Position.y - range;
-		int maxY = (int)unit.Position.y + range;
-
-		if (minX < 0)
-			minX = 0;
-		if (maxX >= map.GetLength (0))
-			maxX = map.GetLength (0) - 1;
-
-		if (minY < 0)
-			minY = 0;
-		if (maxY >= map.GetLength (1))
-			maxY = map.GetLength (1) - 1;
-
-		int aux = 0;
-		for (int i = minX; i <= maxX; i++) {
-			for (int j = 0; j <= aux; j++) {
-				Vector2 newPosition = Vector2.one;
-
-				if ((pos.y + j) <= maxY) {
-					newPosition = new Vector2 (i, (int)pos.y + j);
-					positions.Add (newPosition);
-				}
-				if ((pos.y - j) >= minY) {
-					newPosition = new Vector2 (i, (int)pos.y - j);
-					positions.Add (newPosition);
-				}
-			}
-
-			if (i < (int)pos.x) {
-				aux++;
-			} else {
-				aux--;
-			}
-		}
+		List<Vector2> positions = BasicRange (map, unit, range);
 			
 		// Con todas las posiciones que existen dentro del rango, reviso si en una
 		// de ellas existe una unidad del equipo Team. Si es así devuelvo true.
@@ -129,39 +91,7 @@ public static class QSceneManagment{
 	}
 
 	public static bool SomeoneInMeleRange(object[,] map, Unit unit, List<Unit> enemyTeam, int range){
-		List<Vector2> positions = new List<Vector2> ();
-		Vector2 pos = unit.Position;
-
-		int minX = (int)unit.Position.x - range;
-		int maxX = (int)unit.Position.x + range;
-		int minY = (int)unit.Position.y - range;
-		int maxY = (int)unit.Position.y + range;
-
-		if (minX < 0)
-			minX = 0;
-		if (maxX >= map.GetLength (0))
-			maxX = map.GetLength (0) - 1;
-
-		if (minY < 0)
-			minY = 0;
-		if (maxY >= map.GetLength (1))
-			maxY = map.GetLength (1) - 1;
-
-		for (int i = minX; i <= maxX; i++) {
-			for (int j = minY; j <= maxY; j++) {
-				Vector2 newPosition = Vector2.one;
-
-				if (i == (int)pos.x) {
-					newPosition = new Vector2 (i, j);
-					positions.Add (newPosition);
-				}
-
-				if (j == (int)pos.y) {
-					newPosition = new Vector2 (i, j);
-					positions.Add (newPosition);
-				}
-			}
-		}
+		List<Vector2> positions = MeleRange (map, unit, range);
 
 		// Con todas las posiciones que existen dentro del rango, reviso si en una
 		// de ellas existe una unidad del equipo Team. Si es así devuelvo true.
@@ -176,39 +106,7 @@ public static class QSceneManagment{
 	}
 
 	public static bool CrowdInsideMeleRange(object[,] map, Unit unit, List<Unit> enemyTeam, int range){
-		List<Vector2> positions = new List<Vector2> ();
-		Vector2 pos = unit.Position;
-
-		int minX = (int)unit.Position.x - range;
-		int maxX = (int)unit.Position.x + range;
-		int minY = (int)unit.Position.y - range;
-		int maxY = (int)unit.Position.y + range;
-
-		if (minX < 0)
-			minX = 0;
-		if (maxX >= map.GetLength (0))
-			maxX = map.GetLength (0) - 1;
-
-		if (minY < 0)
-			minY = 0;
-		if (maxY >= map.GetLength (1))
-			maxY = map.GetLength (1) - 1;
-
-		for (int i = minX; i <= maxX; i++) {
-			for (int j = minY; j <= maxY; j++) {
-				Vector2 newPosition = Vector2.one;
-
-				if (i == (int)pos.x) {
-					newPosition = new Vector2 (i, j);
-					positions.Add (newPosition);
-				}
-
-				if (j == (int)pos.y) {
-					newPosition = new Vector2 (i, j);
-					positions.Add (newPosition);
-				}
-			}
-		}
+		List<Vector2> positions = MeleRange (map, unit, range);
 
 		// Contabilizo el total de enemigos dentro del área. Si es mayor que
 		// uno devuelvo true.
@@ -268,5 +166,131 @@ public static class QSceneManagment{
 		sideMargin = normalMargin;
 		topMargin = normalMargin / 2;
 		botMargin = normalMargin;
+	}
+
+	private static List<Vector2> BasicRange(object[,] map, Unit unit, int range){
+		List<Vector2> positions = new List<Vector2> ();
+		Vector2 pos = unit.Position;
+
+		int minX = (int)unit.Position.x - range;
+		int maxX = (int)unit.Position.x + range;
+		int minY = (int)unit.Position.y - range;
+		int maxY = (int)unit.Position.y + range;
+
+		if (minX < 0)
+			minX = 0;
+		if (maxX >= map.GetLength (0))
+			maxX = map.GetLength (0) - 1;
+
+		if (minY < 0)
+			minY = 0;
+		if (maxY >= map.GetLength (1))
+			maxY = map.GetLength (1) - 1;
+
+		int aux = 0;
+		for (int i = minX; i <= maxX; i++) {
+			for (int j = 0; j <= aux; j++) {
+				Vector2 newPosition = Vector2.one;
+
+				if ((pos.y + j) <= maxY) {
+					newPosition = new Vector2 (i, (int)pos.y + j);
+					positions.Add (newPosition);
+				}
+				if ((pos.y - j) >= minY) {
+					newPosition = new Vector2 (i, (int)pos.y - j);
+					positions.Add (newPosition);
+				}
+			}
+
+			if (i < (int)pos.x) {
+				aux++;
+			} else {
+				aux--;
+			}
+		}
+
+		return positions;
+	}
+
+	private static List<Vector2> MeleRange(object[,] map, Unit unit, int range){
+		List<Vector2> positions = new List<Vector2> ();
+		Vector2 pos = unit.Position;
+
+		int minX = (int)unit.Position.x - range;
+		int maxX = (int)unit.Position.x + range;
+		int minY = (int)unit.Position.y - range;
+		int maxY = (int)unit.Position.y + range;
+
+		if (minX < 0)
+			minX = 0;
+		if (maxX >= map.GetLength (0))
+			maxX = map.GetLength (0) - 1;
+
+		if (minY < 0)
+			minY = 0;
+		if (maxY >= map.GetLength (1))
+			maxY = map.GetLength (1) - 1;
+
+		for (int i = minX; i <= maxX; i++) {
+			for (int j = minY; j <= maxY; j++) {
+				Vector2 newPosition = Vector2.one;
+
+				if (i == (int)pos.x) {
+					newPosition = new Vector2 (i, j);
+					positions.Add (newPosition);
+				}
+
+				if (j == (int)pos.y) {
+					newPosition = new Vector2 (i, j);
+					positions.Add (newPosition);
+				}
+			}
+		}
+
+		return positions;
+	}
+
+	// Este sirve para habilidades ofensivas (como el de dist) o ataques básicos
+	public static List<Unit> EnemiesInside_BasicRange(object[,] map, Unit unit, List<Unit> enemyTeam, int range){
+		List<Vector2> positions = BasicRange (map, unit, range);
+		List<Unit> enemies = new List<Unit> ();
+
+		foreach (Vector2 position in positions) {
+			foreach (Unit u in enemyTeam) {
+				if (u.Position.Equals (position)) {
+					enemies.Add (u);
+				}
+			}
+		}
+		return enemies;
+	}
+
+	public static List<Unit> EnemiesInside_MeleRange(object[,] map, Unit unit, List<Unit> enemyTeam, int range){
+		List<Vector2> positions = MeleRange (map, unit, range);
+		List<Unit> enemies = new List<Unit> ();
+
+		foreach (Vector2 position in positions) {
+			foreach (Unit u in enemyTeam) {
+				if (u.Position.Equals (position)) {
+					enemies.Add (u);
+				}
+			}
+		}
+		return enemies;
+	}
+
+	public static List<Unit> HurtedAllies(object[,] map, Unit unit, List<Unit> team, int range){
+		List<Vector2> positions = BasicRange (map, unit, range);
+		List<Unit> hurtedAllies = new List<Unit> ();
+
+		foreach (Vector2 position in positions) {
+			foreach (Unit u in team) {
+				// No me tiene en cuenta a mi mismo, es decir al healer
+				if (u.Position.Equals (position) && !unit.Equals(u) && IsHurted(u)) {
+					hurtedAllies.Add (u);
+				}
+			}
+		}
+		return hurtedAllies;
 	}
 }
