@@ -231,6 +231,7 @@
     <Compile Include="Assets\Scripts\Game Managment\UnitFunctions.cs" />
     <Compile Include="Assets\Scripts\IAvsIA\CubeOverManager.cs" />
     <Compile Include="Assets\Scripts\IAvsIA\Functions.cs" />
+    <Compile Include="Assets\Scripts\IAvsIA\IAActions.cs" />
     <Compile Include="Assets\Scripts\IAvsIA\IAvsIA.cs" />
     <Compile Include="Assets\Scripts\IAvsIA\QLearningGame.cs" />
     <Compile Include="Assets\Scripts\IAvsIA\QSceneManagment.cs" />

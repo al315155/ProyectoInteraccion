@@ -8,10 +8,8 @@ public class Functions {
 
 	 QLearningGame game;
 	 public States states;
-	 public Functions(QLearningGame game, States states){
-	 this.game = game;
-	 this.states = states;
-	}
+    public IAActions actionsIA;
+	
 
     //Declarar QSceneMagager;
     int action;
@@ -27,15 +25,25 @@ public class Functions {
     bool[] estadoMeleB;
     bool[] estadoDistA;
     bool[] estadoDistB;
+
+    List<Unit> teamA_this;
+    List<Unit> teamB_this;
    
 
 	float[,] QMatrix;
 
-	public void entrenamiento(float[,] QTA, float[,] QTB, float[,] QHA, float[,] QHB, float[,] QMA, float[,] QMB, float[,] QDA, float[,] QDB, float learningRate, float discountFactor,float politicaA, float politicaB, List<Unit> TeamA, List<Unit> TeamB)
+    public Functions(QLearningGame game, States states)
+    {
+        this.game = game;
+        this.states = states;
+    }
+    public void entrenamiento(float[,] QTA, float[,] QTB, float[,] QHA, float[,] QHB, float[,] QMA, float[,] QMB, float[,] QDA, float[,] QDB, float learningRate, float discountFactor,float politicaA, float politicaB, List<Unit> TeamA, List<Unit> TeamB)
 	{
 		//Iniciar partida
 
 		game.StartGame (); // comienza los turnos, etc.
+        teamA_this = TeamA;
+        teamB_this = TeamB;
 
 //		while (!isGameOver) {
 
@@ -109,11 +117,19 @@ public class Functions {
 
     private void ActualizarQ(float[,] q, bool[] estado, bool[] estadoT1, List<Unit> team, Unit currentUnit)
     {
-        float reawrd = GetReward(estadoT1, currentUnit);
+        int reawrd = GetReward(estadoT1, currentUnit);
     }
 
-    private float GetReward(bool[] estadoT1, Unit currentUnit)
+    private int GetReward(bool[] estadoT1, Unit currentUnit)
     {
+        int reward = 0;
+        int bestReward = 1000;
+        int worstReward = -1000;
+        int killEnemieReward = 100;
+        int goodReward = 10;
+        int goodLessReward = 1;
+        int badLessReward = -1;
+        int badReward = -10;
         switch (currentUnit.UnitRol)
         {
             case Rol.Tank:
@@ -123,16 +139,31 @@ public class Functions {
                     case 0:
                         if(estadoT1[2]== true)//habria que tener en cuenta tambien si hay un personaje aliado herido
                         {
-                            //dar recompensa positiva
+                            //provisional
+                            //si la vida es superior a 40%
+                            if (estadoT1[0] == true)
+                            {
+                                // si mata a enemigo: KillEnemieReward
+                                //si no:
+                                reward = goodReward;
+                            }
+                            else
+                            {
+                                //lo mismo si mata al enemigo
+                                //si no:
+                                reward = goodLessReward; //O badLessReward?
+                            }
                         }
+                  
                         else
                         {
-                            //no dar recompensa o dar recompesa negativa?
+                            reward = badReward;
                         }
 
                         break;
                     //agro
                     case 1:
+                        //Consultar
                         if(estadoT1[2] == true || estadoT1[3] == false)
                         {
                             //no dar recompensa o negativa?
@@ -152,6 +183,7 @@ public class Functions {
                          */
                         break;
                     case 3:
+                        reward = badReward;
                         break;
 
 
@@ -166,6 +198,7 @@ public class Functions {
 			case 0:
 				/*
 				 * Si enemigo dentro de rango:
+                 * 
 				 * 		Si saludHealer ok y compañeros ok:
 				 * 			es bueno
 				 * 		Si compañeros no ok o yo no ok:
@@ -173,24 +206,65 @@ public class Functions {
 				 * 	Si fuera de rango:
 				 * 		malo
 				 */
+                 if(estadoT1[2] == true)
+                        {
+                            if(estadoT1[0] == true && estadoT1[1] == true)
+                            {
+                                reward = goodReward;
+
+                            }
+                            else if(estadoT1[0]== false || estadoT1[1]== false)
+                            {
+                                reward = badReward;
+                            }
+                        }
+                 else
+                        {
+                            reward = badReward;
+                        }
 
 				break;
 
 			case 1:
 
-				/*
-				 *Si Healer poca vida:
-				 *	Bueno
-				 *Si no si mucha vida healer:
-				 *	malo
-				 *Si aliado dentro de rango:
-				 *	Si poca vida:
-				 *		bueno
-				 *	Si no:
-				 *		malo
-				 *si fuera rango:
-				 *		malo
-				 */
+                        /*
+                         *Si Healer poca vida:
+                         *	Bueno
+                         *Si no si mucha vida healer:
+                         *	malo
+                         *Si aliado dentro de rango:
+                         *	Si poca vida:
+                         *		bueno
+                         *	Si no:
+                         *		malo
+                         *si fuera rango:
+                         *		malo
+                        
+                         *  */
+                        if (estadoT1[0] == false)
+                        {
+                            reward = goodReward;
+                        }
+                        else
+                        {
+                            reward = badReward;
+                        }
+                        if (estadoT1[3] == true)
+                        {
+                            if (estadoT1[1] == false)
+                            {
+                                reward = goodReward;
+                            }
+                            else
+                            {
+                                reward = badReward;
+                            }
+                        }
+                        else
+                        {
+                            reward = badReward;
+                        }
+                    break;
 			case 2:
 				/*
                        
@@ -208,12 +282,34 @@ public class Functions {
 			
                 break;
             case Rol.Distance:
+                switch (action)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                }
                 break;
             case Rol.Mele:
+                switch (action)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                }
                 break;
         }
 
-            return 0f;
+            return reward;
 
     }
 
@@ -241,8 +337,7 @@ public class Functions {
                     case 1:
                         if (estado[3] == true)
                         {
-                            //Usar habilidad sobre aliado
-                            //Necesito saber que aliado está focus
+                            actionsIA.IA_Agro(unit, teamA_this, teamB_this);
                         }
                         break;
                     //Moverse
@@ -300,6 +395,7 @@ public class Functions {
                         if(estado[2] == true || estado[3] == true)
                         {
                             //habilidad area
+                            actionsIA.IA_Area(game.map, unit, teamA_this, teamB_this, 10);
                         }
                         break;
                     //moverse
