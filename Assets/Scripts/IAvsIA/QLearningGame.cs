@@ -42,6 +42,8 @@ public class QLearningGame : MonoBehaviour
 //				map [i, j] = new GameObject ();
 //			}
 //		}
+		team_1 = QSceneManagment.CreateTeam ();
+		team_2 = QSceneManagment.CreateTeam ();
 
 		calculator = gameObject.AddComponent<CalculateBoxes> ();
 		functions = gameObject.AddComponent<UnitFunctions> ();

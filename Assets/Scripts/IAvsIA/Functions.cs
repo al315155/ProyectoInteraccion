@@ -44,42 +44,51 @@ public class Functions {
 		game.StartGame (); // comienza los turnos, etc.
         teamA_this = TeamA;
         teamB_this = TeamB;
-
+		game.NextTurn ();
 //		while (!isGameOver) {
 
 			// pillo la unidad a la cual le toca.
 			Unit currentUnit = game.GetCurrentPlayer ();
 
+		Debug.Log (currentUnit);
 			// mirar a quién le toca de qué equipo.
 			if (QSceneManagment.GetUnitTeam (currentUnit, TeamA, TeamB).Equals (TeamA)) {
 				switch (currentUnit.UnitRol) {
-				case Rol.Tank:
-					
+			case Rol.Tank:
+				estadoTanqueA = states.GetTankState (currentUnit);
+
                     QLearning(QTA, estadoTanqueA, politicaA, TeamA, currentUnit);
 					break;
-				case Rol.Healer:
+			case Rol.Healer:
+				estadoHealerA = states.GetHealerState (currentUnit);
                         QLearning(QHA, estadoHealerA, politicaA, TeamA, currentUnit);
                         break;
-				case Rol.Mele:
+			case Rol.Mele:
+				estadoMeleA = states.GetMeleConditions (currentUnit);
                         QLearning(QMA, estadoMeleA, politicaA, TeamA, currentUnit);
                         break;
-				case Rol.Distance:
+			case Rol.Distance:
+				estadoDistA = states.GetDistanceConditions (currentUnit);
                         QLearning(QDA, estadoDistA, politicaA, TeamA, currentUnit);
                         break;
 				}
 
 			} else {
 				switch (currentUnit.UnitRol) {
-				case Rol.Tank:
+			case Rol.Tank:
+				estadoTanqueB = states.GetTankState (currentUnit);
                         QLearning(QTB, estadoTanqueB, politicaB, TeamB, currentUnit);
                         break;
-				case Rol.Healer:
+			case Rol.Healer:
+				estadoHealerB = states.GetHealerState (currentUnit);
                         QLearning(QHB, estadoHealerB, politicaB, TeamB, currentUnit);
                         break;
-				case Rol.Mele:
+			case Rol.Mele:
+				estadoMeleB = states.GetMeleConditions (currentUnit);
                         QLearning(QMB, estadoMeleB, politicaB, TeamB, currentUnit);
                         break;
-				case Rol.Distance:
+			case Rol.Distance:
+				estadoDistB = states.GetMeleConditions (currentUnit);
                         QLearning(QDB, estadoDistB, politicaB, TeamB, currentUnit);
                         break;
 				}
@@ -105,6 +114,7 @@ public class Functions {
     {
        
             Debug.Log("Tank");
+		Debug.Log ("Estado"+estadoTanqueA);
             action = getAction('A', politica, "Tanque", Q, estado);
 
             // nuevo estado (posterior) para actualizar la Q
@@ -162,15 +172,21 @@ public class Functions {
 
                         break;
                     //agro
-                    case 1:
+			case 1:
                         //Consultar
-                        if(estadoT1[2] == true || estadoT1[3] == false)
-                        {
-                            //no dar recompensa o negativa?
-                        }else
-                        {
-                            //dar recompensa
-                        }
+				if (estadoT1 [0] == true) {
+                           
+					if (estadoT1 [1] == false || estadoT1 [3] == true) {
+						reward = goodReward;
+
+					} else {
+						reward = badReward;
+					}
+				}
+				else
+                {
+					reward = badReward;
+                }
                         //falta tener en cuenta la propia salud del tanque para dar rencompesa negativa.
                         break;
                     //moverse
@@ -274,6 +290,7 @@ public class Functions {
 			case 3:
 				/*
 				 */
+				reward = badReward;
 				break;
 
 
@@ -284,26 +301,64 @@ public class Functions {
             case Rol.Distance:
                 switch (action)
                 {
-                    case 0:
+			case 0:
+				if (estadoT1 [1] == true) {
+					//si enemigo muere la mejor
+					reward = goodReward;
+				} else {
+					reward = badReward;
+				}
+
                         break;
-                    case 1:
+				//Marcar
+			case 1:
+				if (estadoT1 [1] = false && estadoT1 [3] == true) {
+					reward = goodReward;
+				} else if (estadoT1 [1] == true && estadoT1 [3] == true) {
+					reward = goodLessReward;
+				}
                         break;
                     case 2:
+				
                         break;
-                    case 3:
+			case 3:
+				reward = badReward;
                         break;
                 }
                 break;
             case Rol.Mele:
                 switch (action)
                 {
-                    case 0:
-                        break;
-                    case 1:
+					//ataque
+			case 0:
+				if (estadoT1 [0] == true) {
+					if (estadoT1 [1] == true) {
+						reward = goodReward;
+					} else {
+						reward = badReward;
+					}
+				} else {
+					reward = badReward;
+				}
+				    break;
+				//Area
+			case 1:
+				if (estadoT1 [2] == true) {
+					if (estadoT1 [3] == true) {
+						reward = goodReward;
+					} else {
+						reward = goodLessReward;
+					}
+
+
+				}else{
+					reward = badReward;
+				}
                         break;
                     case 2:
                         break;
-                    case 3:
+			case 3:
+				reward = badReward;
                         break;
                 }
                 break;
@@ -318,6 +373,15 @@ public class Functions {
         return null;
     }
 
+	Unit GetEnemy (List<Unit> teamA_this, List<Unit> teamB_this, Unit unit)
+	{
+		List <Unit> enemies = QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this);
+		System.Random rd = new System.Random ();
+
+		int rand = rd.Next (0, enemies.Count);
+		return enemies [rand];
+	}
+
     private bool[] DoAction(char player, bool[] estado, int action, Unit unit)
     {
         bool[] estadoT1 = estado;
@@ -329,8 +393,7 @@ public class Functions {
                     case 0:
                         if(estado[2]== true)
                         {
-                            //atacar enemigo en rango
-                            //Necesito saber cual es el enemigo que está en rango
+					actionsIA.IA_Attack(game.map,unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.AttackRange);
                         }
                         break;
                     //Agro
@@ -340,14 +403,20 @@ public class Functions {
                             actionsIA.IA_Agro(unit, teamA_this, teamB_this);
                         }
                         break;
-                    //Moverse
+                    //Moverse hacia enemigo
                     case 2:
                         //Moverse
+				//como se quien es el traget?
+
+
+				actionsIA.GoNearer(game.allowedBoxes,unit,GetEnemy(teamA_this,teamB_this,unit));
                         break;
                     //No hacer nada
                     case 3:
                         //nada
                         break;
+					case 4:
+						break;
                 }
                 //actualizar estadoT1;
                 estadoT1 = states.GetTankState(unit);
@@ -361,13 +430,14 @@ public class Functions {
                         if(estado[2]== true)
                         {
                             //atacar
+					actionsIA.IA_Attack(game.map,unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.AttackRange);
                         }
                         break;
                     //Sanar
                     case 1:
                         if (estado[3] == true)
                         {
-                            //sanar
+					actionsIA.IA_Heal (game.map, unit, QSceneManagment.GetUnitTeam (unit, teamA_this, teamB_this),unit.HabilityRange);
                         }
                         break;
                     //Moverse
@@ -387,7 +457,7 @@ public class Functions {
                     case 0:
                         if (estado[1] == true)
                         {
-                            //atacar
+					actionsIA.IA_Attack(game.map,unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.AttackRange);
                         }
                         break;
                     //habilidad Area
@@ -395,7 +465,7 @@ public class Functions {
                         if(estado[2] == true || estado[3] == true)
                         {
                             //habilidad area
-                            actionsIA.IA_Area(game.map, unit, teamA_this, teamB_this, 10);
+					actionsIA.IA_Area(game.map, unit, teamA_this, teamB_this, unit.HabilityRange);
                         }
                         break;
                     //moverse
@@ -413,7 +483,7 @@ public class Functions {
                     case 0:
                         if (estado[1] == true)
                         {
-                            //atacar
+					actionsIA.IA_Attack(game.map,unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.AttackRange);
                         }
                         break;
                     //Habilidad marcar
@@ -421,6 +491,7 @@ public class Functions {
                         if (estado[3] == true)
                         {
                             //marcar
+					actionsIA.IA_Focus(game.map,unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.HabilityRange);
                         }
                         break;
                     //moverse
@@ -437,12 +508,17 @@ public class Functions {
         return estadoT1;
     }
 
-    private int getAction(char player, float politica, String rol, float[,] Q, bool[] estado)
-    {
-        System.Random rd = new System.Random();
-        int rand = rd.Next(1, 4);
-        return rand;
-    }
+
+
+	public int getAction(char player, float politica, String rol, float[,] Q, bool[] estado)
+	{
+		System.Random rd = new System.Random();
+
+		int rand = rd.Next (1, 5);
+		return rand;
+	}
 
 }
+
+
 

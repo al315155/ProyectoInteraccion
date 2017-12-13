@@ -60,10 +60,10 @@ public class IAvsIA : MonoBehaviour {
 		funciones = new Functions(qGame, states);
 
 
-//        for (int i = 0; i < nPartidas; i++)
-//        {
-//			funciones.entrenamiento(QTanqueA, QTanqueB, QHealerA, QHealerB, QMeleA, QMeleB, QDistanceA, QDistanceB, learning_rate, discount_factor, politicaA, politicaB, TeamA, TeamB);
-//        }
+        for (int i = 0; i < nPartidas; i++)
+        {
+			funciones.entrenamiento(QTanqueA, QTanqueB, QHealerA, QHealerB, QMeleA, QMeleB, QDistanceA, QDistanceB, learning_rate, discount_factor, politicaA, politicaB, TeamA, TeamB);
+        }
 
 
     }
