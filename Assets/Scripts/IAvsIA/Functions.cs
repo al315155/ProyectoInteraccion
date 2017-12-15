@@ -57,7 +57,7 @@ public class Functions {
 			case Rol.Tank:
 				estadoTanqueA = states.GetTankState (currentUnit);
 
-                    QLearning(QTA, estadoTanqueA, politicaA, TeamA, currentUnit);
+				QLearning(QTA, estadoTanqueA, politicaA, TeamA, currentUnit,discountFactor, learningRate);
 					break;
 			case Rol.Healer:
 				estadoHealerA = states.GetHealerState (currentUnit);
@@ -110,7 +110,7 @@ public class Functions {
 	
     
 
-    private void QLearning(float[,] Q, bool[] estado, float politica, List<Unit> team, Unit currentUnit)
+	private void QLearning(float[,] Q, bool[] estado, float politica, List<Unit> team, Unit currentUnit,float discount, float learningRate)
     {
        
             Debug.Log("Tank");
@@ -118,17 +118,25 @@ public class Functions {
             action = getAction('A', politica, "Tanque", Q, estado);
 
             // nuevo estado (posterior) para actualizar la Q
-            bool[] estadoT1 = DoAction('A', estado, action, currentUnit);
+		bool[] estadoT1 = DoAction('A', estado, action, currentUnit,discount,learningRate);
             
           
             ActualizarQ(Q,estado,estadoT1,team,currentUnit);
             Debug.Log(action);
         }
 
-    private void ActualizarQ(float[,] q, bool[] estado, bool[] estadoT1, List<Unit> team, Unit currentUnit)
+	private void ActualizarQ(float[,] q, bool[] estado, bool[] estadoT1, List<Unit> team, Unit currentUnit,float discount, float learningRate)
     {
-        int reawrd = GetReward(estadoT1, currentUnit);
+		float max_value = GetMaxValue (q, estadoT1);
+        int reward = GetReward(estadoT1, currentUnit);
+		q [GetQRow (estado), action] += learningRate * (reward + discount * max_value - q [GetQRow (estado), action]);
+
     }
+
+	float GetMaxValue (float[,] q, bool[] estadoT1)
+	{
+		return 0f;
+	}
 
     private int GetReward(bool[] estadoT1, Unit currentUnit)
     {
@@ -516,6 +524,58 @@ public class Functions {
 
 		int rand = rd.Next (1, 5);
 		return rand;
+	}
+
+	int GetQRow(bool[] estado){
+		
+		if (estado [0] == true && estado [0] == true && estado [0] == true && estado [0] == true) {
+			return 0;
+		}
+		else if(estado [0] == false && estado [0] == true && estado [0] == true && estado [0] == true) {
+			return 1;
+		}
+		else if(estado [0] == false && estado [0] == false && estado [0] == true && estado [0] == true) {
+			return 2;
+		}
+		else if(estado [0] == false && estado [0] == false && estado [0] == false && estado [0] == true) {
+			return 3;
+		}
+		else if(estado [0] == false && estado [0] == false && estado [0] == false && estado [0] == false) {
+			return 4;
+		}
+		else if(estado [0] == true && estado [0] == true && estado [0] == true && estado [0] == false) {
+			return 5;
+		}
+		else if(estado [0] == true && estado [0] == true && estado [0] == false && estado [0] == false) {
+			return 6;
+		}
+		else if(estado [0] == true && estado [0] == false && estado [0] == false && estado [0] == false) {
+			return 7;
+		}
+		else if(estado [0] == true && estado [0] == false && estado [0] == false && estado [0] == true) {
+			return 8;
+		}
+		else if(estado [0] == false && estado [0] == true && estado [0] == true && estado [0] == false) {
+			return 9;
+		}
+		else if(estado [0] == true && estado [0] == false && estado [0] == true && estado [0] == false) {
+			return 10;
+		}
+		else if(estado [0] == false && estado [0] == true && estado [0] == false && estado [0] == true) {
+			return 11;
+		}
+		else if(estado [0] == true && estado [0] == false && estado [0] == true && estado [0] == true) {
+			return 12;
+		}
+		else if(estado [0] == false && estado [0] == true && estado [0] == false && estado [0] == false) {
+			return 13;
+		}
+		else if(estado [0] == true && estado [0] == true && estado [0] == false && estado [0] == true) {
+			return 14;
+		}
+		else if(estado [0] == false && estado [0] == false && estado [0] == true && estado [0] == false) {
+			return 15;
+		}
 	}
 
 }
