@@ -8,6 +8,9 @@ public class IAvsIA : MonoBehaviour {
 	// (mapa, team1 y team2)
 	private States states;
 	private QLearningGame game;
+    public IAActions IAactions;
+
+    public GameObject iaActionsObj;
 
 
 	//---//---//---//---//
@@ -50,6 +53,9 @@ public class IAvsIA : MonoBehaviour {
         FillQ(QDistanceB);
 
 		qGame = gameObject.AddComponent<QLearningGame>();
+        IAactions = iaActionsObj.GetComponent<IAActions>();
+
+       
 //		qGame.StartGame();
 
 		TeamA = qGame.GetTeam_A();
@@ -57,7 +63,7 @@ public class IAvsIA : MonoBehaviour {
 
 		states = new States(qGame.GetMap(), TeamA, TeamB);
 
-		funciones = new Functions(qGame, states);
+		funciones = new Functions(qGame, states,IAactions);
 
 
         for (int i = 0; i < nPartidas; i++)
@@ -85,7 +91,7 @@ public class IAvsIA : MonoBehaviour {
 
         for (int i = 0; i < 18; i++)
         {
-            for (int j = 0; j < 4; j++)
+            for (int j = 0; j < 5; j++)
             {
                 Q[i, j] = 0f;
             }
@@ -94,14 +100,14 @@ public class IAvsIA : MonoBehaviour {
 
     void initializeQs()
     {
-        QTanqueA = new float[18, 4];
-        QTanqueB = new float[18, 4];
-        QMeleA = new float[18, 4];
-        QMeleB = new float[18, 4];
-        QHealerA = new float[18, 4];
-        QHealerB = new float[18, 4];
-        QDistanceA= new float[18, 4];
-        QDistanceB = new float[18, 4];
+        QTanqueA = new float[18, 5];
+        QTanqueB = new float[18, 5];
+        QMeleA = new float[18, 5];
+        QMeleB = new float[18, 5];
+        QHealerA = new float[18, 5];
+        QHealerB = new float[18, 5];
+        QDistanceA= new float[18, 5];
+        QDistanceB = new float[18, 5];
     }
 
 

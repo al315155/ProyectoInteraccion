@@ -1,4 +1,4 @@
-﻿using System;
+﻿using  System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +8,9 @@ public class Functions {
 
 	 QLearningGame game;
 	 public States states;
-    public IAActions actionsIA;
+     IAActions actionsIA;
+    
+    
 	
 
     //Declarar QSceneMagager;
@@ -32,10 +34,12 @@ public class Functions {
 
 	float[,] QMatrix;
 
-    public Functions(QLearningGame game, States states)
+    public Functions(QLearningGame game, States states, IAActions actions)
     {
+        this.actionsIA = actions;
         this.game = game;
         this.states = states;
+       
     }
     public void entrenamiento(float[,] QTA, float[,] QTB, float[,] QHA, float[,] QHB, float[,] QMA, float[,] QMB, float[,] QDA, float[,] QDB, float learningRate, float discountFactor,float politicaA, float politicaB, List<Unit> TeamA, List<Unit> TeamB)
 	{
@@ -45,6 +49,7 @@ public class Functions {
         teamA_this = TeamA;
         teamB_this = TeamB;
 		game.NextTurn ();
+       
 //		while (!isGameOver) {
 
 			// pillo la unidad a la cual le toca.
@@ -61,15 +66,15 @@ public class Functions {
 					break;
 			case Rol.Healer:
 				estadoHealerA = states.GetHealerState (currentUnit);
-                        QLearning(QHA, estadoHealerA, politicaA, TeamA, currentUnit);
+                        QLearning(QHA, estadoHealerA, politicaA, TeamA, currentUnit,discountFactor,learningRate);
                         break;
 			case Rol.Mele:
 				estadoMeleA = states.GetMeleConditions (currentUnit);
-                        QLearning(QMA, estadoMeleA, politicaA, TeamA, currentUnit);
+                        QLearning(QMA, estadoMeleA, politicaA, TeamA, currentUnit,discountFactor,learningRate);
                         break;
 			case Rol.Distance:
 				estadoDistA = states.GetDistanceConditions (currentUnit);
-                        QLearning(QDA, estadoDistA, politicaA, TeamA, currentUnit);
+                        QLearning(QDA, estadoDistA, politicaA, TeamA, currentUnit,discountFactor,learningRate);
                         break;
 				}
 
@@ -77,19 +82,19 @@ public class Functions {
 				switch (currentUnit.UnitRol) {
 			case Rol.Tank:
 				estadoTanqueB = states.GetTankState (currentUnit);
-                        QLearning(QTB, estadoTanqueB, politicaB, TeamB, currentUnit);
+                        QLearning(QTB, estadoTanqueB, politicaB, TeamB, currentUnit,discountFactor,learningRate);
                         break;
 			case Rol.Healer:
 				estadoHealerB = states.GetHealerState (currentUnit);
-                        QLearning(QHB, estadoHealerB, politicaB, TeamB, currentUnit);
+                        QLearning(QHB, estadoHealerB, politicaB, TeamB, currentUnit,discountFactor,learningRate);
                         break;
 			case Rol.Mele:
 				estadoMeleB = states.GetMeleConditions (currentUnit);
-                        QLearning(QMB, estadoMeleB, politicaB, TeamB, currentUnit);
+                        QLearning(QMB, estadoMeleB, politicaB, TeamB, currentUnit,discountFactor,learningRate);
                         break;
 			case Rol.Distance:
 				estadoDistB = states.GetMeleConditions (currentUnit);
-                        QLearning(QDB, estadoDistB, politicaB, TeamB, currentUnit);
+                        QLearning(QDB, estadoDistB, politicaB, TeamB, currentUnit,discountFactor,learningRate);
                         break;
 				}
 			}
@@ -118,10 +123,10 @@ public class Functions {
             action = getAction('A', politica, "Tanque", Q, estado);
 
             // nuevo estado (posterior) para actualizar la Q
-		bool[] estadoT1 = DoAction('A', estado, action, currentUnit,discount,learningRate);
+		bool[] estadoT1 = DoAction('A', estado, action, currentUnit);
             
           
-            ActualizarQ(Q,estado,estadoT1,team,currentUnit);
+            ActualizarQ(Q,estado,estadoT1,team,currentUnit,discount,learningRate);
             Debug.Log(action);
         }
 
@@ -135,7 +140,16 @@ public class Functions {
 
 	float GetMaxValue (float[,] q, bool[] estadoT1)
 	{
-		return 0f;
+        float maxValue = 0;
+        //cambiar a 5 cuando se ñada la otra funcion de mover
+        for (int i = 0; i < 4; i++)
+        {
+            if(q[GetQRow(estadoT1),i] > maxValue)
+            {
+                maxValue = q[GetQRow(estadoT1), i];
+            }
+        }
+		return maxValue;
 	}
 
     private int GetReward(bool[] estadoT1, Unit currentUnit)
@@ -414,16 +428,18 @@ public class Functions {
                     //Moverse hacia enemigo
                     case 2:
                         //Moverse
-				//como se quien es el traget?
+				        //como se quien es el traget?
 
 
-				actionsIA.GoNearer(game.allowedBoxes,unit,GetEnemy(teamA_this,teamB_this,unit));
+				        actionsIA.GoNearer(game.allowedBoxes,unit,GetEnemy(teamA_this,teamB_this,unit));
                         break;
                     //No hacer nada
                     case 3:
                         //nada
                         break;
+                    //moverse lejos
 					case 4:
+                        actionsIA.GoFarther(game.allowedBoxes, GetEnemy(teamA_this, teamB_this, unit), unit);
 						break;
                 }
                 //actualizar estadoT1;
@@ -438,22 +454,26 @@ public class Functions {
                         if(estado[2]== true)
                         {
                             //atacar
-					actionsIA.IA_Attack(game.map,unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.AttackRange);
+					        actionsIA.IA_Attack(game.map,unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.AttackRange);
                         }
                         break;
                     //Sanar
                     case 1:
                         if (estado[3] == true)
                         {
-					actionsIA.IA_Heal (game.map, unit, QSceneManagment.GetUnitTeam (unit, teamA_this, teamB_this),unit.HabilityRange);
+					        actionsIA.IA_Heal (game.map, unit, QSceneManagment.GetUnitTeam (unit, teamA_this, teamB_this),unit.HabilityRange);
                         }
                         break;
-                    //Moverse
+                    //Moverse cerca
                     case 2:
-
+                        actionsIA.GoNearer(game.allowedBoxes, unit, GetEnemy(teamA_this, teamB_this, unit));
                         break;
                     //No hacer nada
                     case 3:
+                        break;
+                    //moverse lejos
+                    case 4:
+                        actionsIA.GoFarther(game.allowedBoxes, GetEnemy(teamA_this, teamB_this, unit), unit);
                         break;
                 }
                 //actualizar estadoT1:
@@ -476,11 +496,16 @@ public class Functions {
 					actionsIA.IA_Area(game.map, unit, teamA_this, teamB_this, unit.HabilityRange);
                         }
                         break;
-                    //moverse
+                    //moverse cerca
                     case 2:
+                        actionsIA.GoNearer(game.allowedBoxes, unit, GetEnemy(teamA_this, teamB_this, unit));
                         break;
                     //no hacer nada
                     case 3:
+                        break;
+                    //moverse lejos
+                    case 4:
+                        actionsIA.GoFarther(game.allowedBoxes, GetEnemy(teamA_this, teamB_this, unit), unit);
                         break;
                 }
                 estadoT1 = states.GetMeleConditions(unit);
@@ -491,7 +516,7 @@ public class Functions {
                     case 0:
                         if (estado[1] == true)
                         {
-					actionsIA.IA_Attack(game.map,unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.AttackRange);
+					        actionsIA.IA_Attack(game.map,unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.AttackRange);
                         }
                         break;
                     //Habilidad marcar
@@ -499,14 +524,19 @@ public class Functions {
                         if (estado[3] == true)
                         {
                             //marcar
-					actionsIA.IA_Focus(game.map,unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.HabilityRange);
+					        actionsIA.IA_Focus(game.map,unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.HabilityRange);
                         }
                         break;
-                    //moverse
+                    //moverse lejos
                     case 2:
+                        actionsIA.GoNearer(game.allowedBoxes, unit, GetEnemy(teamA_this, teamB_this, unit));
                         break;
                     //no hacer nada
                     case 3:
+                        break;
+                    //moverse cerca
+                    case 4:
+                        actionsIA.GoFarther(game.allowedBoxes, GetEnemy(teamA_this, teamB_this, unit), unit);
                         break;
                 }
                 estadoT1 = states.GetDistanceConditions(unit);
@@ -521,8 +551,8 @@ public class Functions {
 	public int getAction(char player, float politica, String rol, float[,] Q, bool[] estado)
 	{
 		System.Random rd = new System.Random();
-
-		int rand = rd.Next (1, 5);
+        //cambiar cuando se añada función de mover 
+		int rand = rd.Next (0, 5);
 		return rand;
 	}
 
@@ -573,12 +603,14 @@ public class Functions {
 		else if(estado [0] == true && estado [0] == true && estado [0] == false && estado [0] == true) {
 			return 14;
 		}
-		else if(estado [0] == false && estado [0] == false && estado [0] == true && estado [0] == false) {
+		else /*(estado [0] == false && estado [0] == false && estado [0] == true && estado [0] == false) */{
 			return 15;
 		}
+       
 	}
 
 }
+//Falta comprobar si es game over para poder cerrar el bucle. Decidir las recompensas restantes... y Ya? Estados ganar perder partida. Hablar sobre la accion atacar.
 
 
 
