@@ -38,6 +38,7 @@ public class IAActions : MonoBehaviour
 
 			if (victim.CurrentLife <= 0) {
 				qGame.RemoveUnit (victim, enemyTeam);
+
 			}
 		}
 

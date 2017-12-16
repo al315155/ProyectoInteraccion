@@ -491,11 +491,11 @@ public class Functions {
                         }
                         break;
                     //Moverse hacia enemigo
-                    case 2:
+			case 2:
                         //Moverse
 				        //como se quien es el traget?
 
-
+						game.allowedBoxes = QSceneManagment.EnemiesInside_BasicRange (game.map, unit, QSceneManagment.GetEnemyTeam (unit, teamA_this, teamB_this), unit.Movement);
 				        actionsIA.GoNearer(game.allowedBoxes,unit,GetEnemy(teamA_this,teamB_this,unit));
                         break;
                     //No hacer nada
