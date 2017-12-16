@@ -176,7 +176,7 @@ public class Functions {
                             if (estadoT1[0] == true)
                             {
                                 // si mata a enemigo: KillEnemieReward
-                                if (GetEnemy(teamA_this, teamB_this, currentUnit).Life == 0)
+                                if (actionsIA.isEnemyDead == true)
                                 {
                                     if (teamA_this.Count == 0 || teamB_this.Count == 0)
                                     {
@@ -186,7 +186,7 @@ public class Functions {
                                     {
                                         reward = killEnemieReward;
                                     }
-
+                                    actionsIA.isEnemyDead = false;
                                 }
                                 else
                                 {
@@ -264,7 +264,7 @@ public class Functions {
                             if(estadoT1[0] == true && estadoT1[1] == true)
                             {
                                 // si mata a enemigo: KillEnemieReward
-                                if (GetEnemy(teamA_this, teamB_this, currentUnit).Life == 0)
+                                if (actionsIA.isEnemyDead == true)
                                 {
                                     if (teamA_this.Count == 0 || teamB_this.Count == 0)
                                     {
@@ -274,6 +274,7 @@ public class Functions {
                                     {
                                         reward = killEnemieReward;
                                     }
+                                    actionsIA.isEnemyDead = false;
 
                                 }
                                 else
@@ -358,7 +359,7 @@ public class Functions {
 			case 0:
 				if (estadoT1 [1] == true) {
                             // si mata a enemigo: KillEnemieReward
-                            if (GetEnemy(teamA_this, teamB_this, currentUnit).Life == 0)
+                            if (actionsIA.isEnemyDead == true)
                             {
                                 if (teamA_this.Count == 0 || teamB_this.Count == 0)
                                 {
@@ -368,7 +369,7 @@ public class Functions {
                                 {
                                     reward = killEnemieReward;
                                 }
-
+                                actionsIA.isEnemyDead = false;
                             }
                             else
                             {
@@ -404,7 +405,7 @@ public class Functions {
 				if (estadoT1 [0] == true) {
 					if (estadoT1 [1] == true) {
                                 // si mata a enemigo: KillEnemieReward
-                                if (GetEnemy(teamA_this, teamB_this, currentUnit).Life == 0)
+                                if (actionsIA.isEnemyDead == true)
                                 {
                                     if (teamA_this.Count == 0 || teamB_this.Count == 0)
                                     {
@@ -414,6 +415,7 @@ public class Functions {
                                     {
                                         reward = killEnemieReward;
                                     }
+                                    actionsIA.isEnemyDead = false;
 
                                 }
                                 else
@@ -495,7 +497,7 @@ public class Functions {
                         //Moverse
 				        //como se quien es el traget?
 
-						game.allowedBoxes = QSceneManagment.EnemiesInside_BasicRange (game.map, unit, QSceneManagment.GetEnemyTeam (unit, teamA_this, teamB_this), unit.Movement);
+						game.allowedBoxes = QSceneManagment.EnemiesInside_BasicRange (game.map, unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.Movement);
 				        actionsIA.GoNearer(game.allowedBoxes,unit,GetEnemy(teamA_this,teamB_this,unit));
                         break;
                     //No hacer nada

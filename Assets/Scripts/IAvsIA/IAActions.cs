@@ -6,15 +6,19 @@ public class IAActions : MonoBehaviour
 {
 
 	QLearningGame qGame;
+    public bool isEnemyDead;
+  
 
 	void Start(){
 		qGame = GetComponent<QLearningGame> ();
+        isEnemyDead = false;
+
 	}
 
 	public void IA_Attack(object[,] map, Unit attacker, List<Unit> enemyTeam, int range){
 		//List<Unit> hurtedEnemies = QSceneManagment.HurtedAllies (map, attacker, enemyTeam, range);
 		List<Unit> enemiesAtRange = QSceneManagment.EnemiesInside_BasicRange (map, attacker, enemyTeam, range);
-
+        
 		Unit victim = enemiesAtRange[Random.Range(0, enemiesAtRange.Count)];
 
 		float probability = UnityEngine.Random.Range (0, 100);
@@ -38,11 +42,13 @@ public class IAActions : MonoBehaviour
 
 			if (victim.CurrentLife <= 0) {
 				qGame.RemoveUnit (victim, enemyTeam);
-
+                isEnemyDead = true;
+                
 			}
 		}
 
 	}
+ 
 
 	// HEALER
 	public void IA_Heal(object[,] map, Unit healer, List<Unit> myTeam, int range){
