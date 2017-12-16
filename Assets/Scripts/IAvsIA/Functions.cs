@@ -176,8 +176,23 @@ public class Functions {
                             if (estadoT1[0] == true)
                             {
                                 // si mata a enemigo: KillEnemieReward
-                                //si no:
-                                reward = goodReward;
+                                if (GetEnemy(teamA_this, teamB_this, currentUnit).Life == 0)
+                                {
+                                    if (teamA_this.Count == 0 || teamB_this.Count == 0)
+                                    {
+                                        reward = bestReward;
+                                    }
+                                    else if (teamA_this.Count != 0 && teamB_this.Count != 0)
+                                    {
+                                        reward = killEnemieReward;
+                                    }
+
+                                }
+                                else
+                                {
+                                    //si no:
+                                    reward = goodReward;
+                                }
                             }
                             else
                             {
@@ -248,7 +263,24 @@ public class Functions {
                         {
                             if(estadoT1[0] == true && estadoT1[1] == true)
                             {
-                                reward = goodReward;
+                                // si mata a enemigo: KillEnemieReward
+                                if (GetEnemy(teamA_this, teamB_this, currentUnit).Life == 0)
+                                {
+                                    if (teamA_this.Count == 0 || teamB_this.Count == 0)
+                                    {
+                                        reward = bestReward;
+                                    }
+                                    else if (teamA_this.Count != 0 && teamB_this.Count != 0)
+                                    {
+                                        reward = killEnemieReward;
+                                    }
+
+                                }
+                                else
+                                {
+                                    //si no:
+                                    reward = goodReward;
+                                }
 
                             }
                             else if(estadoT1[0]== false || estadoT1[1]== false)
@@ -325,9 +357,25 @@ public class Functions {
                 {
 			case 0:
 				if (estadoT1 [1] == true) {
-					//si enemigo muere la mejor
-					reward = goodReward;
-				} else {
+                            // si mata a enemigo: KillEnemieReward
+                            if (GetEnemy(teamA_this, teamB_this, currentUnit).Life == 0)
+                            {
+                                if (teamA_this.Count == 0 || teamB_this.Count == 0)
+                                {
+                                    reward = bestReward;
+                                }
+                                else if (teamA_this.Count != 0 && teamB_this.Count != 0)
+                                {
+                                    reward = killEnemieReward;
+                                }
+
+                            }
+                            else
+                            {
+                                //si no:
+                                reward = goodReward;
+                            }
+                        } else {
 					reward = badReward;
 				}
 
@@ -355,8 +403,25 @@ public class Functions {
 			case 0:
 				if (estadoT1 [0] == true) {
 					if (estadoT1 [1] == true) {
-						reward = goodReward;
-					} else {
+                                // si mata a enemigo: KillEnemieReward
+                                if (GetEnemy(teamA_this, teamB_this, currentUnit).Life == 0)
+                                {
+                                    if (teamA_this.Count == 0 || teamB_this.Count == 0)
+                                    {
+                                        reward = bestReward;
+                                    }
+                                    else if (teamA_this.Count != 0 && teamB_this.Count != 0)
+                                    {
+                                        reward = killEnemieReward;
+                                    }
+
+                                }
+                                else
+                                {
+                                    //si no:
+                                    reward = goodReward;
+                                }
+                            } else {
 						reward = badReward;
 					}
 				} else {

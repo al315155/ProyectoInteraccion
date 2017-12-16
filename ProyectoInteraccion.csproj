@@ -228,6 +228,7 @@
     <Compile Include="Assets\Scripts\Game Managment\GameMode.cs" />
     <Compile Include="Assets\Scripts\Game Managment\MatchManagment.cs" />
     <Compile Include="Assets\Scripts\Game Managment\MenuManagment.cs" />
+    <Compile Include="Assets\Scripts\Game Managment\QMatrix.cs" />
     <Compile Include="Assets\Scripts\Game Managment\UnitFunctions.cs" />
     <Compile Include="Assets\Scripts\IAvsIA\CubeOverManager.cs" />
     <Compile Include="Assets\Scripts\IAvsIA\Functions.cs" />

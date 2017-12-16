@@ -143,7 +143,7 @@ public class IAActions : MonoBehaviour
 	{
 		float[] values = GetPositionValues (allowedBoxes, target);
 		Vector2[] positions = ArrayFromList (allowedBoxes);
-
+        Debug.Log("Tamaño" + values.Length);
 		positions = Nearest2Furthest (positions, values);
 		me.Position = positions [0];
 	}
