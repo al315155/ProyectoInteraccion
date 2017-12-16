@@ -13,14 +13,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PixelRect:
     serializedVersion: 2
-    x: 8
-    y: 51
+    x: 0
+    y: 43
     width: 1368
     height: 829
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 2}
-  m_MinSize: {x: 950, y: 542}
+  m_MinSize: {x: 950, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -43,7 +43,7 @@ MonoBehaviour:
     y: 0
     width: 1368
     height: 829
-  m_MinSize: {x: 950, y: 542}
+  m_MinSize: {x: 950, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &3
 MonoBehaviour:
@@ -176,8 +176,8 @@ MonoBehaviour:
     y: 0
     width: 857
     height: 373
-  m_MinSize: {x: 102, y: 121}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 15}
@@ -204,8 +204,8 @@ MonoBehaviour:
     y: 373
     width: 857
     height: 406
-  m_MinSize: {x: 102, y: 121}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -304,8 +304,8 @@ MonoBehaviour:
     y: 0
     width: 277
     height: 779
-  m_MinSize: {x: 277, y: 71}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 22}
   m_Panes:
   - {fileID: 22}
@@ -333,8 +333,8 @@ MonoBehaviour:
   m_DepthBufferBits: 0
   m_Pos:
     serializedVersion: 2
-    x: 8
-    y: 473
+    x: 0
+    y: 465
     width: 855
     height: 385
   m_MaximizeOnPlay: 0
@@ -526,8 +526,8 @@ MonoBehaviour:
   m_DepthBufferBits: 0
   m_Pos:
     serializedVersion: 2
-    x: 8
-    y: 100
+    x: 0
+    y: 92
     width: 855
     height: 352
 --- !u!114 &18
@@ -606,13 +606,13 @@ MonoBehaviour:
   m_DepthBufferBits: 0
   m_Pos:
     serializedVersion: 2
-    x: 867
-    y: 100
+    x: 859
+    y: 92
     width: 230
     height: 380
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 76050000
+    m_SelectedIDs: 
     m_LastClickedID: 0
     m_ExpandedIDs: fefaffff00000000
     m_RenameOverlay:
@@ -659,8 +659,8 @@ MonoBehaviour:
   m_DepthBufferBits: 0
   m_Pos:
     serializedVersion: 2
-    x: 867
-    y: 501
+    x: 859
+    y: 493
     width: 230
     height: 357
   m_SearchFilter:
@@ -675,19 +675,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Scripts/Unit
+    - Assets/Scripts/IAvsIA
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Scripts/Unit
+  - Assets/Scripts/IAvsIA
   m_LastFoldersGridSize: 16
-  m_LastProjectPath: C:\Users\shado\Documents\GitHub\ProyectoInteraccion
+  m_LastProjectPath: C:\Users\alvaro\Documents\GitHub\ProyectoInteraccion
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: c4280000
-    m_LastClickedID: 10436
-    m_ExpandedIDs: 000000006e2800007c28000086280000bc2800002a290000ffffff7f
+    m_SelectedIDs: ac280000
+    m_LastClickedID: 10412
+    m_ExpandedIDs: 000000006e2800007c28000086280000bc2800002a29000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -792,8 +792,8 @@ MonoBehaviour:
   m_DepthBufferBits: 0
   m_Pos:
     serializedVersion: 2
-    x: 1101
-    y: 100
+    x: 1093
+    y: 92
     width: 275
     height: 758
   m_ScrollPosition: {x: 0, y: 0}

@@ -497,8 +497,8 @@ public class Functions {
                         //Moverse
 				        //como se quien es el traget?
 
-						game.allowedBoxes = QSceneManagment.EnemiesInside_BasicRange (game.map, unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.Movement);
-				        actionsIA.GoNearer(game.allowedBoxes,unit,GetEnemy(teamA_this,teamB_this,unit));
+						
+				actionsIA.GoNearer(unit,GetEnemy(teamA_this,teamB_this,unit));
                         break;
                     //No hacer nada
                     case 3:
@@ -506,7 +506,7 @@ public class Functions {
                         break;
                     //moverse lejos
 					case 4:
-                        actionsIA.GoFarther(game.allowedBoxes, GetEnemy(teamA_this, teamB_this, unit), unit);
+                        actionsIA.GoFarther(GetEnemy(teamA_this, teamB_this, unit), unit);
 						break;
                 }
                 //actualizar estadoT1;
@@ -533,14 +533,14 @@ public class Functions {
                         break;
                     //Moverse cerca
                     case 2:
-                        actionsIA.GoNearer(game.allowedBoxes, unit, GetEnemy(teamA_this, teamB_this, unit));
+                        actionsIA.GoNearer(unit, GetEnemy(teamA_this, teamB_this, unit));
                         break;
                     //No hacer nada
                     case 3:
                         break;
                     //moverse lejos
                     case 4:
-                        actionsIA.GoFarther(game.allowedBoxes, GetEnemy(teamA_this, teamB_this, unit), unit);
+                        actionsIA.GoFarther(GetEnemy(teamA_this, teamB_this, unit), unit);
                         break;
                 }
                 //actualizar estadoT1:
@@ -565,14 +565,14 @@ public class Functions {
                         break;
                     //moverse cerca
                     case 2:
-                        actionsIA.GoNearer(game.allowedBoxes, unit, GetEnemy(teamA_this, teamB_this, unit));
+                        actionsIA.GoNearer(unit, GetEnemy(teamA_this, teamB_this, unit));
                         break;
                     //no hacer nada
                     case 3:
                         break;
                     //moverse lejos
                     case 4:
-                        actionsIA.GoFarther(game.allowedBoxes, GetEnemy(teamA_this, teamB_this, unit), unit);
+                        actionsIA.GoFarther(GetEnemy(teamA_this, teamB_this, unit), unit);
                         break;
                 }
                 estadoT1 = states.GetMeleConditions(unit);
@@ -596,14 +596,14 @@ public class Functions {
                         break;
                     //moverse lejos
                     case 2:
-                        actionsIA.GoNearer(game.allowedBoxes, unit, GetEnemy(teamA_this, teamB_this, unit));
+                        actionsIA.GoNearer(unit, GetEnemy(teamA_this, teamB_this, unit));
                         break;
                     //no hacer nada
                     case 3:
                         break;
                     //moverse cerca
                     case 4:
-                        actionsIA.GoFarther(game.allowedBoxes, GetEnemy(teamA_this, teamB_this, unit), unit);
+                        actionsIA.GoFarther(GetEnemy(teamA_this, teamB_this, unit), unit);
                         break;
                 }
                 estadoT1 = states.GetDistanceConditions(unit);

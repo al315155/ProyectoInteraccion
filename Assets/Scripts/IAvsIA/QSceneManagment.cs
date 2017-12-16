@@ -168,7 +168,7 @@ public static class QSceneManagment{
 		botMargin = normalMargin;
 	}
 
-	private static List<Vector2> BasicRange(object[,] map, Unit unit, int range){
+	public static List<Vector2> BasicRange(object[,] map, Unit unit, int range){
 		List<Vector2> positions = new List<Vector2> ();
 		Vector2 pos = unit.Position;
 
