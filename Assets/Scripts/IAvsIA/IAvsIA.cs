@@ -11,6 +11,7 @@ public class IAvsIA : MonoBehaviour {
     public IAActions IAactions;
 
     public GameObject iaActionsObj;
+    QMatrix qmatrix;
 
 
 	//---//---//---//---//
@@ -64,13 +65,14 @@ public class IAvsIA : MonoBehaviour {
 		states = new States(qGame.GetMap(), TeamA, TeamB);
 
 		funciones = new Functions(qGame, states,IAactions);
+        qmatrix = new QMatrix();
 
 
         for (int i = 0; i < nPartidas; i++)
         {
 			funciones.entrenamiento(QTanqueA, QTanqueB, QHealerA, QHealerB, QMeleA, QMeleB, QDistanceA, QDistanceB, learning_rate, discount_factor, politicaA, politicaB, TeamA, TeamB);
         }
-
+       
 
     }
 
