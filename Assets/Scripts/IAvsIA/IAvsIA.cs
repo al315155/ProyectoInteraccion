@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class IAvsIA : MonoBehaviour {
 
+	public int movementNum;
+
 	// primero crear game y después states con los parámetros de game
 	// (mapa, team1 y team2)
 	private States states;
@@ -56,34 +58,36 @@ public class IAvsIA : MonoBehaviour {
 		qGame = gameObject.AddComponent<QLearningGame>();
         IAactions = iaActionsObj.GetComponent<IAActions>();
 
-       
-//		qGame.StartGame();
-
 		TeamA = qGame.GetTeam_A();
 		TeamB = qGame.GetTeam_B();
 
 		states = new States(qGame.GetMap(), TeamA, TeamB);
+		qmatrix = gameObject.AddComponent<QMatrix> ();
+		funciones = new Functions(qGame, states, IAactions, movementNum, qmatrix);
 
-		funciones = new Functions(qGame, states,IAactions);
-        qmatrix = new QMatrix();
+		//cargo matrices
+
+		funciones.QTA = qmatrix.ChargeQMatrix(funciones.QTA, qmatrix.Route_QMatrix_Begginer_A_Tank, 18, 5);
+		funciones.QTB = qmatrix.ChargeQMatrix (funciones.QTB, qmatrix.Route_QMatrix_Begginer_B_Tank, 18, 5);
+		funciones.QHA = qmatrix.ChargeQMatrix (funciones.QHA, qmatrix.Route_QMatrix_Begginer_A_Healer, 18, 5);
+		funciones.QHB = qmatrix.ChargeQMatrix (funciones.QHB, qmatrix.Route_QMatrix_Begginer_B_Healer, 18, 5);
+		funciones.QMA = qmatrix.ChargeQMatrix (funciones.QMA, qmatrix.Route_QMatrix_Begginer_A_Mele, 18, 5);
+		funciones.QMB = qmatrix.ChargeQMatrix (funciones.QMB, qmatrix.Route_QMatrix_Begginer_B_Mele, 18, 5);
+		funciones.QDA = qmatrix.ChargeQMatrix (funciones.QDA, qmatrix.Route_QMatrix_Begginer_A_Distance, 18, 5);
+		funciones.QDB = qmatrix.ChargeQMatrix (funciones.QDB, qmatrix.Route_QMatrix_Begginer_B_Distance, 18, 5);
 
 
-        for (int i = 0; i < nPartidas; i++)
-        {
+//        for (int i = 0; i < nPartidas; i++)
+//        {
 			funciones.entrenamiento(QTanqueA, QTanqueB, QHealerA, QHealerB, QMeleA, QMeleB, QDistanceA, QDistanceB, learning_rate, discount_factor, politicaA, politicaB, TeamA, TeamB);
-        }
-        Debug.Log(funciones.GetQDA()[0,0]+ "kjshfha");
-        qmatrix.SaveQMatrix(funciones.GetQDA(), "C:/Users/shado/Documents/GitHub/ProyectoInteraccion/DatosQ/qda.xlm", 18, 5);
-        qmatrix.SaveQMatrix(funciones.GetQDB(), "C:/Users/shado/Documents/GitHub/ProyectoInteraccion/DatosQ/qdb.txt", 18,5);
-        qmatrix.SaveQMatrix(funciones.GetQHA(), "C:/Users/shado/Documents/GitHub/ProyectoInteraccion/DatosQ/qha.txt", 18, 5);
-        qmatrix.SaveQMatrix(funciones.GetQHB(), "C:/Users/shado/Documents/GitHub/ProyectoInteraccion/DatosQ/qhb.txt", 18, 5);
-        qmatrix.SaveQMatrix(funciones.GetQMA(), "C:/Users/shado/Documents/GitHub/ProyectoInteraccion/DatosQ/qma.txt", 18, 5);
-        qmatrix.SaveQMatrix(funciones.GetQMB(), "C:/Users/shado/Documents/GitHub/ProyectoInteraccion/DatosQ/qmb.txt", 18, 5);
-        qmatrix.SaveQMatrix(funciones.GetQTA(), "C:/Users/shado/Documents/GitHub/ProyectoInteraccion/DatosQ/qta.txt", 18, 5);
-        qmatrix.SaveQMatrix(funciones.GetQTB(), "C:/Users/shado/Documents/GitHub/ProyectoInteraccion/DatosQ/qtb.txt", 18, 5);
+//        }
+
+
         
 
     }
+
+
 
     private void Update()
     {

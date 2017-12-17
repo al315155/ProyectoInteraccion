@@ -9,13 +9,8 @@ public class Functions {
 	 QLearningGame game;
 	 public States states;
      IAActions actionsIA;
-    
-    
-	
 
-    //Declarar QSceneMagager;
     int action;
-  
 	bool isGameOver = false;
         
     //Tendremos un estado para cada rol.
@@ -41,23 +36,31 @@ public class Functions {
     float[,] thisQDB;
 
 
+	int movements;
+	QMatrix qmatrix;
+
     float[,] QMatrix;
 
-    public Functions(QLearningGame game, States states, IAActions actions)
+	public Functions(QLearningGame game, States states, IAActions actions, int movements, QMatrix qmatrix)
     {
         this.actionsIA = actions;
         this.game = game;
         this.states = states;
-       
+
+		this.movements = movements;
+		this.qmatrix = qmatrix;
     }
     public void entrenamiento(float[,] QTA, float[,] QTB, float[,] QHA, float[,] QHB, float[,] QMA, float[,] QMB, float[,] QDA, float[,] QDB, float learningRate, float discountFactor, float politicaA, float politicaB, List<Unit> TeamA, List<Unit> TeamB)
     {
         //Iniciar partida
-
+		int cont = 0;
         game.StartGame(); // comienza los turnos, etc.
         teamA_this = TeamA;
         teamB_this = TeamB;
-        game.NextTurn();
+
+		game.NextTurn();
+
+
         thisQDA = QDA;
         thisQDB = QDB;
         thisQHA = QHA;
@@ -66,73 +69,73 @@ public class Functions {
         thisQMB = QMB;
         thisQTA = QTA;
         thisQTB = QTB;
-     	while (!isGameOver) {
+		while (cont<movements) {
 
-        // pillo la unidad a la cual le toca.
-        Unit currentUnit = game.GetCurrentPlayer();
+			// pillo la unidad a la cual le toca.
+			Unit currentUnit = game.GetCurrentPlayer ();
 
-        // mirar a quién le toca de qué equipo.
-        if (QSceneManagment.GetUnitTeam(currentUnit, TeamA, TeamB).Equals(TeamA))
-        {
-            switch (currentUnit.UnitRol)
-            {
-                case Rol.Tank:
-                    estadoTanqueA = states.GetTankState(currentUnit);
+			// mirar a quién le toca de qué equipo.
+			if (QSceneManagment.GetUnitTeam (currentUnit, TeamA, TeamB).Equals (TeamA)) {
+				switch (currentUnit.UnitRol) {
+				case Rol.Tank:
+					estadoTanqueA = states.GetTankState (currentUnit);
 
-                    QLearning(QTA, estadoTanqueA, politicaA, TeamA, currentUnit, discountFactor, learningRate);
-                    break;
-                case Rol.Healer:
-                    estadoHealerA = states.GetHealerState(currentUnit);
-                    QLearning(QHA, estadoHealerA, politicaA, TeamA, currentUnit, discountFactor, learningRate);
-                    break;
-                case Rol.Mele:
-                    estadoMeleA = states.GetMeleConditions(currentUnit);
-                    QLearning(QMA, estadoMeleA, politicaA, TeamA, currentUnit, discountFactor, learningRate);
-                    break;
-                case Rol.Distance:
-                    estadoDistA = states.GetDistanceConditions(currentUnit);
-                    QLearning(QDA, estadoDistA, politicaA, TeamA, currentUnit, discountFactor, learningRate);
-                    break;
-            }
+					QLearning (QTA, estadoTanqueA, politicaA, TeamA, currentUnit, discountFactor, learningRate);
+					break;
+				case Rol.Healer:
+					estadoHealerA = states.GetHealerState (currentUnit);
+					QLearning (QHA, estadoHealerA, politicaA, TeamA, currentUnit, discountFactor, learningRate);
+					break;
+				case Rol.Mele:
+					estadoMeleA = states.GetMeleConditions (currentUnit);
+					QLearning (QMA, estadoMeleA, politicaA, TeamA, currentUnit, discountFactor, learningRate);
+					break;
+				case Rol.Distance:
+					estadoDistA = states.GetDistanceConditions (currentUnit);
+					QLearning (QDA, estadoDistA, politicaA, TeamA, currentUnit, discountFactor, learningRate);
+					break;
+				}
 
-        }
-        else
-        {
-            switch (currentUnit.UnitRol)
-            {
-                case Rol.Tank:
-                    estadoTanqueB = states.GetTankState(currentUnit);
-                    QLearning(QTB, estadoTanqueB, politicaB, TeamB, currentUnit, discountFactor, learningRate);
-                    break;
-                case Rol.Healer:
-                    estadoHealerB = states.GetHealerState(currentUnit);
-                    QLearning(QHB, estadoHealerB, politicaB, TeamB, currentUnit, discountFactor, learningRate);
-                    break;
-                case Rol.Mele:
-                    estadoMeleB = states.GetMeleConditions(currentUnit);
-                    QLearning(QMB, estadoMeleB, politicaB, TeamB, currentUnit, discountFactor, learningRate);
-                    break;
-                case Rol.Distance:
-                    estadoDistB = states.GetMeleConditions(currentUnit);
-                    QLearning(QDB, estadoDistB, politicaB, TeamB, currentUnit, discountFactor, learningRate);
-                    break;
-            }
-        }
+			} else {
+				switch (currentUnit.UnitRol) {
+				case Rol.Tank:
+					estadoTanqueB = states.GetTankState (currentUnit);
+					QLearning (QTB, estadoTanqueB, politicaB, TeamB, currentUnit, discountFactor, learningRate);
+					break;
+				case Rol.Healer:
+					estadoHealerB = states.GetHealerState (currentUnit);
+					QLearning (QHB, estadoHealerB, politicaB, TeamB, currentUnit, discountFactor, learningRate);
+					break;
+				case Rol.Mele:
+					estadoMeleB = states.GetMeleConditions (currentUnit);
+					QLearning (QMB, estadoMeleB, politicaB, TeamB, currentUnit, discountFactor, learningRate);
+					break;
+				case Rol.Distance:
+					estadoDistB = states.GetMeleConditions (currentUnit);
+					QLearning (QDB, estadoDistB, politicaB, TeamB, currentUnit, discountFactor, learningRate);
+					break;
+				}
+			}
 
-        // tengo la matriz del personaje en el turno actual --> QMatrix
-
-
-
-
-
-
-
-        UpdateQs(teamA_this, teamB_this);
-
-        isGameOver = game.NextTurn();
-    }
-
+			// tengo la matriz del personaje en el turno actual --> QMatrix
+			UpdateQs (teamA_this, teamB_this);
+			isGameOver = game.NextTurn ();
+			cont++;
 		}
+
+	
+
+		Debug.Log ("entro y guardo");
+		qmatrix.SaveQMatrix(QDA, qmatrix.Route_QMatrix_Begginer_A_Distance, 18, 5);
+		qmatrix.SaveQMatrix(QDB, qmatrix.Route_QMatrix_Begginer_B_Distance, 18,5);
+		qmatrix.SaveQMatrix(QHA, qmatrix.Route_QMatrix_Begginer_A_Healer, 18, 5);
+		qmatrix.SaveQMatrix(QHB, qmatrix.Route_QMatrix_Begginer_B_Healer, 18, 5);
+		qmatrix.SaveQMatrix(QMA, qmatrix.Route_QMatrix_Begginer_A_Mele, 18, 5);
+		qmatrix.SaveQMatrix(QMB, qmatrix.Route_QMatrix_Begginer_B_Mele, 18, 5);
+		qmatrix.SaveQMatrix(QTA, qmatrix.Route_QMatrix_Begginer_A_Tank, 18, 5);
+		qmatrix.SaveQMatrix(QTB, qmatrix.Route_QMatrix_Begginer_B_Tank, 18, 5);
+		
+	}
 
     private void UpdateQs(List<Unit> teamA_this, List<Unit> teamB_this)
     {
@@ -146,7 +149,6 @@ public class Functions {
                 {
                     case Rol.Tank:
                         estadoTanqueA = states.GetTankState(currentUnit);
-
                        
                         break;
                     case Rol.Healer:
@@ -752,37 +754,61 @@ public class Functions {
 		}
        
 	}
-    public float[,] GetQTA() {
-        return thisQTA;
+
+
+
+    public float[,] QTA{
+		set { thisQTA = value; }
+		get{ return thisQTA; }
     }
-    public float[,] GetQTB()
+
+    public float[,] QTB
     {
-        return thisQTB;
+		set{ thisQTB = value; }
+		get{
+			return thisQTB;
+		}
     }
-    public float[,] GetQHA()
+
+	public float[,] QHA
     {
-        return thisQHA;
+		set{ thisQHA = value; }
+		get{return thisQHA;}
     }
-    public float[,] GetQHB()
+
+    public float[,] QHB
     {
-        return thisQHB;
+		set{ thisQHB = value; }
+		get{return thisQHB;}
     }
-    public float[,] GetQMA()
+
+    public float[,] QMA
     {
-        return thisQMA;
+		set{ thisQMA = value; }
+		get{return thisQMA;}
     }
-    public float[,] GetQMB()
+
+    public float[,] QMB
     {
-        return thisQMB;
+		set{ thisQMB = value; }
+		get{
+			return thisQMB;
+		}
     }
-    public float[,] GetQDA()
+
+    public float[,] QDA
     {
-        return thisQDA;
+		set{ thisQDA = value; }
+		get{return thisQDA;}
     }
-    public float[,] GetQDB()
+
+    public float[,] QDB
     {
-        return thisQDB;
+		set{ thisQDB = value; }
+		get{return thisQDB;}
     }
+
+
 }
 //Falta comprobar si es game over para poder cerrar el bucle. Decidir las recompensas restantes... y Ya? Estados ganar perder partida. Hablar sobre la accion atacar.
 

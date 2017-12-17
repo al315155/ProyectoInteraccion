@@ -8,7 +8,7 @@ using System.IO;
 using System;
 using System.Runtime.Serialization.Formatters.Binary;
 
-public class QMatrix
+public class QMatrix : MonoBehaviour
 {
 	public float[,] QMatrix_Begginer_A_Tank;
 	public float[,] QMatrix_Begginer_A_Healer;
@@ -35,32 +35,32 @@ public class QMatrix
 	public float[,] QMatrix_Difficult_B_Distance;
 	public float[,] QMatrix_Difficult_B_Mele;
 
-	private String Route_QMatrix_Begginer_A_Tank;
-	private String Route_QMatrix_Begginer_A_Healer;
-	private String Route_QMatrix_Begginer_A_Distance;
-	private String Route_QMatrix_Begginer_A_Mele;
-	private String Route_QMatrix_Begginer_B_Tank;
-	private String Route_QMatrix_Begginer_B_Healer;
-	private String Route_QMatrix_Begginer_B_Distance;
-	private String Route_QMatrix_Begginer_B_Mele;
-	private String Route_QMatrix_Intermediate_A_Tank;
-	private String Route_QMatrix_Intermediate_A_Healer;
-	private String Route_QMatrix_Intermediate_A_Distance;
-	private String Route_QMatrix_Intermediate_A_Mele;
-	private String Route_QMatrix_Intermediate_B_Tank;
-	private String Route_QMatrix_Intermediate_B_Healer;
-	private String Route_QMatrix_Intermediate_B_Distance;
-	private String Route_QMatrix_Intermediate_B_Mele;
-	private String Route_QMatrix_Difficult_A_Tank;
-	private String Route_QMatrix_Difficult_A_Healer;
-	private String Route_QMatrix_Difficult_A_Distance;
-	private String Route_QMatrix_Difficult_A_Mele;
-	private String Route_QMatrix_Difficult_B_Tank;
-	private String Route_QMatrix_Difficult_B_Healer;
-	private String Route_QMatrix_Difficult_B_Distance;
-	private String Route_QMatrix_Difficult_B_Mele;
+	public String Route_QMatrix_Begginer_A_Tank;
+	public String Route_QMatrix_Begginer_A_Healer;
+	public String Route_QMatrix_Begginer_A_Distance;
+	public String Route_QMatrix_Begginer_A_Mele;
+	public String Route_QMatrix_Begginer_B_Tank;
+	public String Route_QMatrix_Begginer_B_Healer;
+	public String Route_QMatrix_Begginer_B_Distance;
+	public String Route_QMatrix_Begginer_B_Mele;
+	public String Route_QMatrix_Intermediate_A_Tank;
+	public String Route_QMatrix_Intermediate_A_Healer;
+	public String Route_QMatrix_Intermediate_A_Distance;
+	public String Route_QMatrix_Intermediate_A_Mele;
+	public String Route_QMatrix_Intermediate_B_Tank;
+	public String Route_QMatrix_Intermediate_B_Healer;
+	public String Route_QMatrix_Intermediate_B_Distance;
+	public String Route_QMatrix_Intermediate_B_Mele;
+	public String Route_QMatrix_Difficult_A_Tank;
+	public String Route_QMatrix_Difficult_A_Healer;
+	public String Route_QMatrix_Difficult_A_Distance;
+	public String Route_QMatrix_Difficult_A_Mele;
+	public String Route_QMatrix_Difficult_B_Tank;
+	public String Route_QMatrix_Difficult_B_Healer;
+	public String Route_QMatrix_Difficult_B_Distance;
+	public String Route_QMatrix_Difficult_B_Mele;
 
-	public QMatrix ()
+	void Start ()
 	{
 		Route_QMatrix_Begginer_A_Tank 			= Application.persistentDataPath + "Begginer-A-Tank.text.bytes";
 		Route_QMatrix_Begginer_A_Healer 		= Application.persistentDataPath + "Begginer-A-Healer.text.bytes";
@@ -96,7 +96,7 @@ public class QMatrix
 		file.Close();
 	}
 
-	public void ChargeQMatrix(out float[,] Q, String route, int f, int c){
+	public float[,] ChargeQMatrix(float[,] Q, String route, int f, int c){
 		if (File.Exists (route)) {
 			BinaryFormatter bf = new BinaryFormatter ();
 			FileStream file = File.Open (route, FileMode.Open);
@@ -111,6 +111,8 @@ public class QMatrix
 				}
 			}
 		}
+
+		return Q;
 	}
 		
 	public float[,] FromArray2Matrix(float[] array, int f, int c){
@@ -138,6 +140,7 @@ public class QMatrix
 		}
 		return array;
 	}
+
 }
 
 [Serializable]

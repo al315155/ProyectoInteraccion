@@ -139,9 +139,11 @@ public class IAActions : MonoBehaviour
 			}
 		}
 
-		foreach (Unit unit in deadUnits) {
+		if (deadUnits.Count > 0) {
+			foreach (Unit unit in deadUnits) {
 				if (unit.CurrentLife <= 0) {
-				qGame.RemoveUnit (unit, QSceneManagment.GetUnitTeam (unit, unitTeam, enemyTeam));
+					qGame.RemoveUnit (unit, enemyTeam);
+				}
 			}
 		}
 	}
@@ -153,7 +155,7 @@ public class IAActions : MonoBehaviour
 
         float[] values = GetPositionValues (allowedBoxes, target);
 		Vector2[] positions = ArrayFromList (allowedBoxes);
-        Debug.Log("Tamaño" + values.Length);
+//        Debug.Log("Tamaño" + values.Length);
 		positions = Nearest2Furthest (positions, values);
 		me.Position = positions [0];
 	}

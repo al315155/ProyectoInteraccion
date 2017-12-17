@@ -131,7 +131,7 @@ public class QLearningGame : MonoBehaviour
 	public bool NextTurn(){
 
 		if (isGameOver ()) {
-			
+			Debug.Log ("acabo partida");
 			return true;
 		} 
 		else {
