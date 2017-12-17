@@ -72,7 +72,16 @@ public class IAvsIA : MonoBehaviour {
         {
 			funciones.entrenamiento(QTanqueA, QTanqueB, QHealerA, QHealerB, QMeleA, QMeleB, QDistanceA, QDistanceB, learning_rate, discount_factor, politicaA, politicaB, TeamA, TeamB);
         }
-       
+        Debug.Log(funciones.GetQDA()[0,0]+ "kjshfha");
+        qmatrix.SaveQMatrix(funciones.GetQDA(), "C:/Users/shado/Documents/GitHub/ProyectoInteraccion/DatosQ/qda.xlm", 18, 5);
+        qmatrix.SaveQMatrix(funciones.GetQDB(), "C:/Users/shado/Documents/GitHub/ProyectoInteraccion/DatosQ/qdb.txt", 18,5);
+        qmatrix.SaveQMatrix(funciones.GetQHA(), "C:/Users/shado/Documents/GitHub/ProyectoInteraccion/DatosQ/qha.txt", 18, 5);
+        qmatrix.SaveQMatrix(funciones.GetQHB(), "C:/Users/shado/Documents/GitHub/ProyectoInteraccion/DatosQ/qhb.txt", 18, 5);
+        qmatrix.SaveQMatrix(funciones.GetQMA(), "C:/Users/shado/Documents/GitHub/ProyectoInteraccion/DatosQ/qma.txt", 18, 5);
+        qmatrix.SaveQMatrix(funciones.GetQMB(), "C:/Users/shado/Documents/GitHub/ProyectoInteraccion/DatosQ/qmb.txt", 18, 5);
+        qmatrix.SaveQMatrix(funciones.GetQTA(), "C:/Users/shado/Documents/GitHub/ProyectoInteraccion/DatosQ/qta.txt", 18, 5);
+        qmatrix.SaveQMatrix(funciones.GetQTB(), "C:/Users/shado/Documents/GitHub/ProyectoInteraccion/DatosQ/qtb.txt", 18, 5);
+        
 
     }
 
