@@ -34,12 +34,13 @@ public class IAvsIA : MonoBehaviour {
     public int nPartidas;
     public float learning_rate;
     public float discount_factor;
-    public float politicaA;
-    public float politicaB;
+    public int politicaA;
+    public int politicaB;
 
     public Functions funciones;
 
 	QLearningGame qGame;
+    int numeroPartidas = 0;
 
 
     void Start()
@@ -66,7 +67,7 @@ public class IAvsIA : MonoBehaviour {
 		funciones = new Functions(qGame, states, IAactions, movementNum, qmatrix);
 
 		//cargo matrices
-
+        // cambiar;
 		funciones.QTA = qmatrix.ChargeQMatrix(funciones.QTA, qmatrix.Route_QMatrix_Begginer_A_Tank, 18, 5);
 		funciones.QTB = qmatrix.ChargeQMatrix (funciones.QTB, qmatrix.Route_QMatrix_Begginer_B_Tank, 18, 5);
 		funciones.QHA = qmatrix.ChargeQMatrix (funciones.QHA, qmatrix.Route_QMatrix_Begginer_A_Healer, 18, 5);
@@ -77,13 +78,22 @@ public class IAvsIA : MonoBehaviour {
 		funciones.QDB = qmatrix.ChargeQMatrix (funciones.QDB, qmatrix.Route_QMatrix_Begginer_B_Distance, 18, 5);
 
 
-//        for (int i = 0; i < nPartidas; i++)
-//        {
+        for (int i = 0; i < nPartidas; i++)
+         {
 			funciones.entrenamiento(QTanqueA, QTanqueB, QHealerA, QHealerB, QMeleA, QMeleB, QDistanceA, QDistanceB, learning_rate, discount_factor, politicaA, politicaB, TeamA, TeamB);
-//        }
+            numeroPartidas++;
+            Debug.Log("Partidas" + numeroPartidas);
+        }
 
+        qmatrix.SaveQMatrix(funciones.QDA, qmatrix.Route_QMatrix_Begginer_A_Distance, 18, 5);
+        qmatrix.SaveQMatrix(funciones.QDB, qmatrix.Route_QMatrix_Begginer_B_Distance, 18, 5);
+        qmatrix.SaveQMatrix(funciones.QHA, qmatrix.Route_QMatrix_Begginer_A_Healer, 18, 5);
+        qmatrix.SaveQMatrix(funciones.QHB, qmatrix.Route_QMatrix_Begginer_B_Healer, 18, 5);
+        qmatrix.SaveQMatrix(funciones.QMA, qmatrix.Route_QMatrix_Begginer_A_Mele, 18, 5);
+        qmatrix.SaveQMatrix(funciones.QMB, qmatrix.Route_QMatrix_Begginer_B_Mele, 18, 5);
+        qmatrix.SaveQMatrix(funciones.QTA, qmatrix.Route_QMatrix_Begginer_A_Tank, 18, 5);
+        qmatrix.SaveQMatrix(funciones.QTB, qmatrix.Route_QMatrix_Begginer_B_Tank, 18, 5);
 
-        
 
     }
 

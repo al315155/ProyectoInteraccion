@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.574817, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -288,11 +288,11 @@ MonoBehaviour:
   movementNum: 1000
   IAactions: {fileID: 0}
   iaActionsObj: {fileID: 1979469398}
-  nPartidas: 10
-  learning_rate: 0
-  discount_factor: 0
-  politicaA: 0
-  politicaB: 0
+  nPartidas: 5
+  learning_rate: 0.5
+  discount_factor: 0.5
+  politicaA: 60
+  politicaB: 60
 --- !u!4 &1659697808
 Transform:
   m_ObjectHideFlags: 0

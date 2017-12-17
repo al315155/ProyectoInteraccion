@@ -62,30 +62,30 @@ public class QMatrix : MonoBehaviour
 
 	void Start ()
 	{
-		Route_QMatrix_Begginer_A_Tank 			= Application.persistentDataPath + "Begginer-A-Tank.text.bytes";
-		Route_QMatrix_Begginer_A_Healer 		= Application.persistentDataPath + "Begginer-A-Healer.text.bytes";
-		Route_QMatrix_Begginer_A_Distance 		= Application.persistentDataPath + "Begginer-A-Distance.text.bytes";
-		Route_QMatrix_Begginer_A_Mele 			= Application.persistentDataPath + "Begginer-A-Mele.text.bytes";
-		Route_QMatrix_Begginer_B_Tank 			= Application.persistentDataPath + "Begginer-B-Tank.text.bytes";
-		Route_QMatrix_Begginer_B_Healer 		= Application.persistentDataPath + "Begginer-B-Healer.text.bytes";
-		Route_QMatrix_Begginer_B_Distance 		= Application.persistentDataPath + "Begginer-B-Distance.text.bytes";
-		Route_QMatrix_Begginer_B_Mele 			= Application.persistentDataPath + "Begginer-B-Mele.text.bytes";
-		Route_QMatrix_Intermediate_A_Tank 		= Application.persistentDataPath + "Intermediate-A-Tank.text.bytes";
-		Route_QMatrix_Intermediate_A_Healer 	= Application.persistentDataPath + "Intermediate-A-Healer.text.bytes";
-		Route_QMatrix_Intermediate_A_Distance 	= Application.persistentDataPath + "Intermediate-A-Distance.text.bytes";
-		Route_QMatrix_Intermediate_A_Mele 		= Application.persistentDataPath + "Intermediate-A-Mele.text.bytes";
-		Route_QMatrix_Intermediate_B_Tank 		= Application.persistentDataPath + "Intermediate-B-Tank.text.bytes";
-		Route_QMatrix_Intermediate_B_Healer 	= Application.persistentDataPath + "Intermediate-B-Healer.text.bytes";
-		Route_QMatrix_Intermediate_B_Distance 	= Application.persistentDataPath + "Intermediate-B-Distance.text.bytes";
-		Route_QMatrix_Intermediate_B_Mele 		= Application.persistentDataPath + "Intermediate-B-Mele.text.bytes";
-		Route_QMatrix_Difficult_A_Tank 			= Application.persistentDataPath + "Difficult-A-Tank.text.bytes";
-		Route_QMatrix_Difficult_A_Healer 		= Application.persistentDataPath + "Difficult-A-Healer.text.bytes";
-		Route_QMatrix_Difficult_A_Distance 		= Application.persistentDataPath + "Difficult-A-Distance.text.bytes";
-		Route_QMatrix_Difficult_A_Mele 			= Application.persistentDataPath + "Difficult-A-Mele.text.bytes";
-		Route_QMatrix_Difficult_B_Tank 			= Application.persistentDataPath + "Difficult-B-Tank.text.bytes";
-		Route_QMatrix_Difficult_B_Healer 		= Application.persistentDataPath + "Difficult-B-Healer.text.bytes";
-		Route_QMatrix_Difficult_B_Distance 		= Application.persistentDataPath + "Difficult-B-Distance.text.bytes";
-		Route_QMatrix_Difficult_B_Mele 			= Application.persistentDataPath + "Difficult-B-Mele.text.bytes";
+		Route_QMatrix_Begginer_A_Tank 			= Application.persistentDataPath + "/Begginer-A-Tank.text.bytes";
+		Route_QMatrix_Begginer_A_Healer 		= Application.persistentDataPath + "/Begginer-A-Healer.text.bytes";
+		Route_QMatrix_Begginer_A_Distance 		= Application.persistentDataPath + "/Begginer-A-Distance.text.bytes";
+		Route_QMatrix_Begginer_A_Mele 			= Application.persistentDataPath + "/Begginer-A-Mele.text.bytes";
+		Route_QMatrix_Begginer_B_Tank 			= Application.persistentDataPath + "/Begginer-B-Tank.text.bytes";
+		Route_QMatrix_Begginer_B_Healer 		= Application.persistentDataPath + "/Begginer-B-Healer.text.bytes";
+		Route_QMatrix_Begginer_B_Distance 		= Application.persistentDataPath + "/Begginer-B-Distance.text.bytes";
+		Route_QMatrix_Begginer_B_Mele 			= Application.persistentDataPath + "/Begginer-B-Mele.text.bytes";
+		Route_QMatrix_Intermediate_A_Tank 		= Application.persistentDataPath + "/Intermediate-A-Tank.text.bytes";
+		Route_QMatrix_Intermediate_A_Healer 	= Application.persistentDataPath + "/Intermediate-A-Healer.text.bytes";
+		Route_QMatrix_Intermediate_A_Distance 	= Application.persistentDataPath + "/Intermediate-A-Distance.text.bytes";
+		Route_QMatrix_Intermediate_A_Mele 		= Application.persistentDataPath + "/Intermediate-A-Mele.text.bytes";
+		Route_QMatrix_Intermediate_B_Tank 		= Application.persistentDataPath + "/Intermediate-B-Tank.text.bytes";
+		Route_QMatrix_Intermediate_B_Healer 	= Application.persistentDataPath + "/Intermediate-B-Healer.text.bytes";
+		Route_QMatrix_Intermediate_B_Distance 	= Application.persistentDataPath + "/Intermediate-B-Distance.text.bytes";
+		Route_QMatrix_Intermediate_B_Mele 		= Application.persistentDataPath + "/Intermediate-B-Mele.text.bytes";
+		Route_QMatrix_Difficult_A_Tank 			= Application.persistentDataPath + "/Difficult-A-Tank.text.bytes";
+		Route_QMatrix_Difficult_A_Healer 		= Application.persistentDataPath + "/Difficult-A-Healer.text.bytes";
+		Route_QMatrix_Difficult_A_Distance 		= Application.persistentDataPath + "/Difficult-A-Distance.text.bytes";
+		Route_QMatrix_Difficult_A_Mele 			= Application.persistentDataPath + "/Difficult-A-Mele.text.bytes";
+		Route_QMatrix_Difficult_B_Tank 			= Application.persistentDataPath + "/Difficult-B-Tank.text.bytes";
+		Route_QMatrix_Difficult_B_Healer 		= Application.persistentDataPath + "/Difficult-B-Healer.text.bytes";
+		Route_QMatrix_Difficult_B_Distance 		= Application.persistentDataPath + "/Difficult-B-Distance.text.bytes";
+		Route_QMatrix_Difficult_B_Mele 			= Application.persistentDataPath + "/Difficult-B-Mele.text.bytes";
 	}
 
 	public void SaveQMatrix(float[,] Q, String route, int f, int c){

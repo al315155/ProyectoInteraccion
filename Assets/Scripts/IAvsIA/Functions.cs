@@ -50,7 +50,7 @@ public class Functions {
 		this.movements = movements;
 		this.qmatrix = qmatrix;
     }
-    public void entrenamiento(float[,] QTA, float[,] QTB, float[,] QHA, float[,] QHB, float[,] QMA, float[,] QMB, float[,] QDA, float[,] QDB, float learningRate, float discountFactor, float politicaA, float politicaB, List<Unit> TeamA, List<Unit> TeamB)
+    public void entrenamiento(float[,] QTA, float[,] QTB, float[,] QHA, float[,] QHB, float[,] QMA, float[,] QMB, float[,] QDA, float[,] QDB, float learningRate, float discountFactor, int politicaA, int politicaB, List<Unit> TeamA, List<Unit> TeamB)
     {
         //Iniciar partida
 		int cont = 0;
@@ -126,14 +126,14 @@ public class Functions {
 	
 
 		Debug.Log ("entro y guardo");
-		qmatrix.SaveQMatrix(QDA, qmatrix.Route_QMatrix_Begginer_A_Distance, 18, 5);
+		/*qmatrix.SaveQMatrix(QDA, qmatrix.Route_QMatrix_Begginer_A_Distance, 18, 5);
 		qmatrix.SaveQMatrix(QDB, qmatrix.Route_QMatrix_Begginer_B_Distance, 18,5);
 		qmatrix.SaveQMatrix(QHA, qmatrix.Route_QMatrix_Begginer_A_Healer, 18, 5);
 		qmatrix.SaveQMatrix(QHB, qmatrix.Route_QMatrix_Begginer_B_Healer, 18, 5);
 		qmatrix.SaveQMatrix(QMA, qmatrix.Route_QMatrix_Begginer_A_Mele, 18, 5);
 		qmatrix.SaveQMatrix(QMB, qmatrix.Route_QMatrix_Begginer_B_Mele, 18, 5);
 		qmatrix.SaveQMatrix(QTA, qmatrix.Route_QMatrix_Begginer_A_Tank, 18, 5);
-		qmatrix.SaveQMatrix(QTB, qmatrix.Route_QMatrix_Begginer_B_Tank, 18, 5);
+		qmatrix.SaveQMatrix(QTB, qmatrix.Route_QMatrix_Begginer_B_Tank, 18, 5);*/
 		
 	}
 
@@ -194,12 +194,12 @@ public class Functions {
     }
     
 
-    private void QLearning(float[,] Q, bool[] estado, float politica, List<Unit> team, Unit currentUnit,float discount, float learningRate)
+    private void QLearning(float[,] Q, bool[] estado, int politica, List<Unit> team, Unit currentUnit,float discount, float learningRate)
     {
        
             Debug.Log("Tank");
 		Debug.Log ("Estado"+estadoTanqueA);
-            action = getAction('A', politica, "Tanque", Q, estado);
+            action = selectActionAuto(Q,estado,politica);
 
             // nuevo estado (posterior) para actualizar la Q
 		bool[] estadoT1 = DoAction('A', estado, action, currentUnit);
@@ -694,7 +694,7 @@ public class Functions {
 
 
 
-	public int getAction(char player, float politica, String rol, float[,] Q, bool[] estado)
+	public int getAction()
 	{
 		System.Random rd = new System.Random();
         //cambiar cuando se añada función de mover 
@@ -806,6 +806,39 @@ public class Functions {
     {
 		set{ thisQDB = value; }
 		get{return thisQDB;}
+    }
+
+    public int selectActionAuto(float[,] Q, bool[] estado, int politica)
+    {
+        if (politica == 0)
+        {
+            return getAction();
+        }
+        else
+        {
+            System.Random rand = new System.Random();
+            float x = rand.Next(1,100);
+            if (x > politica)
+            {
+                return getAction();
+            }
+            else
+            {
+                float maxValue = 0;
+                int iMax = 0;
+                //cambiar a 5 cuando se ñada la otra funcion de mover
+                for (int i = 0; i < 4; i++)
+                {
+                    if (Q[GetQRow(estado), i] > maxValue)
+                    {
+                        maxValue = Q[GetQRow(estado), i];
+                        iMax = i;
+                    }
+                }
+                return iMax;
+            }
+
+        }
     }
 
 
