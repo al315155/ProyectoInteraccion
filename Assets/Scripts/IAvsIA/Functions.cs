@@ -50,14 +50,14 @@ public class Functions {
         this.states = states;
        
     }
-    public void entrenamiento(float[,] QTA, float[,] QTB, float[,] QHA, float[,] QHB, float[,] QMA, float[,] QMB, float[,] QDA, float[,] QDB, float learningRate, float discountFactor,float politicaA, float politicaB, List<Unit> TeamA, List<Unit> TeamB)
-	{
-		//Iniciar partida
+    public void entrenamiento(float[,] QTA, float[,] QTB, float[,] QHA, float[,] QHB, float[,] QMA, float[,] QMB, float[,] QDA, float[,] QDB, float learningRate, float discountFactor, float politicaA, float politicaB, List<Unit> TeamA, List<Unit> TeamB)
+    {
+        //Iniciar partida
 
-		game.StartGame (); // comienza los turnos, etc.
+        game.StartGame(); // comienza los turnos, etc.
         teamA_this = TeamA;
         teamB_this = TeamB;
-		game.NextTurn ();
+        game.NextTurn();
         thisQDA = QDA;
         thisQDB = QDB;
         thisQHA = QHA;
@@ -65,54 +65,59 @@ public class Functions {
         thisQMA = QMA;
         thisQMB = QMB;
         thisQTA = QTA;
-        thisQTB = QTB;         
-//		while (!isGameOver) {
+        thisQTB = QTB;
+     	while (!isGameOver) {
 
-			// pillo la unidad a la cual le toca.
-			Unit currentUnit = game.GetCurrentPlayer ();
+        // pillo la unidad a la cual le toca.
+        Unit currentUnit = game.GetCurrentPlayer();
 
-			// mirar a quién le toca de qué equipo.
-			if (QSceneManagment.GetUnitTeam (currentUnit, TeamA, TeamB).Equals (TeamA)) {
-				switch (currentUnit.UnitRol) {
-			case Rol.Tank:
-				estadoTanqueA = states.GetTankState (currentUnit);
+        // mirar a quién le toca de qué equipo.
+        if (QSceneManagment.GetUnitTeam(currentUnit, TeamA, TeamB).Equals(TeamA))
+        {
+            switch (currentUnit.UnitRol)
+            {
+                case Rol.Tank:
+                    estadoTanqueA = states.GetTankState(currentUnit);
 
-				QLearning(QTA, estadoTanqueA, politicaA, TeamA, currentUnit,discountFactor, learningRate);
-					break;
-			case Rol.Healer:
-				estadoHealerA = states.GetHealerState (currentUnit);
-                        QLearning(QHA, estadoHealerA, politicaA, TeamA, currentUnit,discountFactor,learningRate);
-                        break;
-			case Rol.Mele:
-				estadoMeleA = states.GetMeleConditions (currentUnit);
-                        QLearning(QMA, estadoMeleA, politicaA, TeamA, currentUnit,discountFactor,learningRate);
-                        break;
-			case Rol.Distance:
-				estadoDistA = states.GetDistanceConditions (currentUnit);
-                        QLearning(QDA, estadoDistA, politicaA, TeamA, currentUnit,discountFactor,learningRate);
-                        break;
-				}
+                    QLearning(QTA, estadoTanqueA, politicaA, TeamA, currentUnit, discountFactor, learningRate);
+                    break;
+                case Rol.Healer:
+                    estadoHealerA = states.GetHealerState(currentUnit);
+                    QLearning(QHA, estadoHealerA, politicaA, TeamA, currentUnit, discountFactor, learningRate);
+                    break;
+                case Rol.Mele:
+                    estadoMeleA = states.GetMeleConditions(currentUnit);
+                    QLearning(QMA, estadoMeleA, politicaA, TeamA, currentUnit, discountFactor, learningRate);
+                    break;
+                case Rol.Distance:
+                    estadoDistA = states.GetDistanceConditions(currentUnit);
+                    QLearning(QDA, estadoDistA, politicaA, TeamA, currentUnit, discountFactor, learningRate);
+                    break;
+            }
 
-			} else {
-				switch (currentUnit.UnitRol) {
-			case Rol.Tank:
-				estadoTanqueB = states.GetTankState (currentUnit);
-                        QLearning(QTB, estadoTanqueB, politicaB, TeamB, currentUnit,discountFactor,learningRate);
-                        break;
-			case Rol.Healer:
-				estadoHealerB = states.GetHealerState (currentUnit);
-                        QLearning(QHB, estadoHealerB, politicaB, TeamB, currentUnit,discountFactor,learningRate);
-                        break;
-			case Rol.Mele:
-				estadoMeleB = states.GetMeleConditions (currentUnit);
-                        QLearning(QMB, estadoMeleB, politicaB, TeamB, currentUnit,discountFactor,learningRate);
-                        break;
-			case Rol.Distance:
-				estadoDistB = states.GetMeleConditions (currentUnit);
-                        QLearning(QDB, estadoDistB, politicaB, TeamB, currentUnit,discountFactor,learningRate);
-                        break;
-				}
-			}
+        }
+        else
+        {
+            switch (currentUnit.UnitRol)
+            {
+                case Rol.Tank:
+                    estadoTanqueB = states.GetTankState(currentUnit);
+                    QLearning(QTB, estadoTanqueB, politicaB, TeamB, currentUnit, discountFactor, learningRate);
+                    break;
+                case Rol.Healer:
+                    estadoHealerB = states.GetHealerState(currentUnit);
+                    QLearning(QHB, estadoHealerB, politicaB, TeamB, currentUnit, discountFactor, learningRate);
+                    break;
+                case Rol.Mele:
+                    estadoMeleB = states.GetMeleConditions(currentUnit);
+                    QLearning(QMB, estadoMeleB, politicaB, TeamB, currentUnit, discountFactor, learningRate);
+                    break;
+                case Rol.Distance:
+                    estadoDistB = states.GetMeleConditions(currentUnit);
+                    QLearning(QDB, estadoDistB, politicaB, TeamB, currentUnit, discountFactor, learningRate);
+                    break;
+            }
+        }
 
         // tengo la matriz del personaje en el turno actual --> QMatrix
 
@@ -122,9 +127,10 @@ public class Functions {
 
 
 
-            UpdateQs(teamA_this,teamB_this);
+        UpdateQs(teamA_this, teamB_this);
 
-			isGameOver = game.NextTurn ();
+        isGameOver = game.NextTurn();
+    }
 
 		}
 
@@ -696,49 +702,49 @@ public class Functions {
 
 	int GetQRow(bool[] estado){
 		
-		if (estado [0] == true && estado [0] == true && estado [0] == true && estado [0] == true) {
+		if (estado [0] == true && estado [1] == true && estado [2] == true && estado [3] == true) {
 			return 0;
 		}
-		else if(estado [0] == false && estado [0] == true && estado [0] == true && estado [0] == true) {
+		else if(estado [0] == false && estado [1] == true && estado [2] == true && estado [3] == true) {
 			return 1;
 		}
-		else if(estado [0] == false && estado [0] == false && estado [0] == true && estado [0] == true) {
+		else if(estado [0] == false && estado [1] == false && estado [2] == true && estado [3] == true) {
 			return 2;
 		}
-		else if(estado [0] == false && estado [0] == false && estado [0] == false && estado [0] == true) {
+		else if(estado [0] == false && estado [1] == false && estado [2] == false && estado [3] == true) {
 			return 3;
 		}
-		else if(estado [0] == false && estado [0] == false && estado [0] == false && estado [0] == false) {
+		else if(estado [0] == false && estado [1] == false && estado [2] == false && estado [3] == false) {
 			return 4;
 		}
-		else if(estado [0] == true && estado [0] == true && estado [0] == true && estado [0] == false) {
+		else if(estado [0] == true && estado [1] == true && estado [2] == true && estado [3] == false) {
 			return 5;
 		}
-		else if(estado [0] == true && estado [0] == true && estado [0] == false && estado [0] == false) {
+		else if(estado [0] == true && estado [1] == true && estado [2] == false && estado [3] == false) {
 			return 6;
 		}
-		else if(estado [0] == true && estado [0] == false && estado [0] == false && estado [0] == false) {
+		else if(estado [0] == true && estado [1] == false && estado [2] == false && estado [3] == false) {
 			return 7;
 		}
-		else if(estado [0] == true && estado [0] == false && estado [0] == false && estado [0] == true) {
+		else if(estado [0] == true && estado [1] == false && estado [2] == false && estado [3] == true) {
 			return 8;
 		}
-		else if(estado [0] == false && estado [0] == true && estado [0] == true && estado [0] == false) {
+		else if(estado [0] == false && estado [1] == true && estado [2] == true && estado [3] == false) {
 			return 9;
 		}
-		else if(estado [0] == true && estado [0] == false && estado [0] == true && estado [0] == false) {
+		else if(estado [0] == true && estado [1] == false && estado [2] == true && estado [3] == false) {
 			return 10;
 		}
-		else if(estado [0] == false && estado [0] == true && estado [0] == false && estado [0] == true) {
+		else if(estado [0] == false && estado [1] == true && estado [2] == false && estado [3] == true) {
 			return 11;
 		}
-		else if(estado [0] == true && estado [0] == false && estado [0] == true && estado [0] == true) {
+		else if(estado [0] == true && estado [1] == false && estado [2] == true && estado [3] == true) {
 			return 12;
 		}
-		else if(estado [0] == false && estado [0] == true && estado [0] == false && estado [0] == false) {
+		else if(estado [0] == false && estado [1] == true && estado [2] == false && estado [3] == false) {
 			return 13;
 		}
-		else if(estado [0] == true && estado [0] == true && estado [0] == false && estado [0] == true) {
+		else if(estado [0] == true && estado [1] == true && estado [2] == false && estado [3] == true) {
 			return 14;
 		}
 		else /*(estado [0] == false && estado [0] == false && estado [0] == true && estado [0] == false) */{
