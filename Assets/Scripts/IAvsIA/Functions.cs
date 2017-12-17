@@ -65,7 +65,7 @@ public class Functions {
         thisQMA = QMA;
         thisQMB = QMB;
         thisQTA = QTA;
-        thisQTB = QTB;       
+        thisQTB = QTB;         
 //		while (!isGameOver) {
 
 			// pillo la unidad a la cual le toca.
