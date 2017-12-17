@@ -71,7 +71,6 @@ public class Functions {
 			// pillo la unidad a la cual le toca.
 			Unit currentUnit = game.GetCurrentPlayer ();
 
-		Debug.Log (currentUnit);
 			// mirar a quién le toca de qué equipo.
 			if (QSceneManagment.GetUnitTeam (currentUnit, TeamA, TeamB).Equals (TeamA)) {
 				switch (currentUnit.UnitRol) {
@@ -554,7 +553,7 @@ public class Functions {
                     case 0:
                         if(estado[2]== true)
                         {
-					actionsIA.IA_Attack(game.map,unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.AttackRange);
+					actionsIA.IA_Attack(game.GetMap(),unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.AttackRange);
                         }
                         break;
                     //Agro
@@ -570,7 +569,7 @@ public class Functions {
 				        //como se quien es el traget?
 
 						
-				actionsIA.GoNearer(unit,GetEnemy(teamA_this,teamB_this,unit));
+				actionsIA.GoNearer(game.GetMap(), unit,GetEnemy(teamA_this,teamB_this,unit));
                         break;
                     //No hacer nada
                     case 3:
@@ -578,7 +577,7 @@ public class Functions {
                         break;
                     //moverse lejos
 					case 4:
-                        actionsIA.GoFarther(GetEnemy(teamA_this, teamB_this, unit), unit);
+				actionsIA.GoFarther(game.GetMap(), GetEnemy(teamA_this, teamB_this, unit), unit);
 						break;
                 }
                 //actualizar estadoT1;
@@ -593,26 +592,26 @@ public class Functions {
                         if(estado[2]== true)
                         {
                             //atacar
-					        actionsIA.IA_Attack(game.map,unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.AttackRange);
+					actionsIA.IA_Attack(game.GetMap(),unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.AttackRange);
                         }
                         break;
                     //Sanar
                     case 1:
                         if (estado[3] == true)
                         {
-					        actionsIA.IA_Heal (game.map, unit, QSceneManagment.GetUnitTeam (unit, teamA_this, teamB_this),unit.HabilityRange);
+					actionsIA.IA_Heal (game.GetMap(), unit, QSceneManagment.GetUnitTeam (unit, teamA_this, teamB_this),unit.HabilityRange);
                         }
                         break;
                     //Moverse cerca
                     case 2:
-                        actionsIA.GoNearer(unit, GetEnemy(teamA_this, teamB_this, unit));
+				actionsIA.GoNearer(game.GetMap(), unit, GetEnemy(teamA_this, teamB_this, unit));
                         break;
                     //No hacer nada
                     case 3:
                         break;
                     //moverse lejos
                     case 4:
-                        actionsIA.GoFarther(GetEnemy(teamA_this, teamB_this, unit), unit);
+				actionsIA.GoFarther(game.GetMap(), GetEnemy(teamA_this, teamB_this, unit), unit);
                         break;
                 }
                 //actualizar estadoT1:
@@ -624,7 +623,7 @@ public class Functions {
                     case 0:
                         if (estado[1] == true)
                         {
-					actionsIA.IA_Attack(game.map,unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.AttackRange);
+					actionsIA.IA_Attack(game.GetMap(),unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.AttackRange);
                         }
                         break;
                     //habilidad Area
@@ -632,19 +631,19 @@ public class Functions {
                         if(estado[2] == true || estado[3] == true)
                         {
                             //habilidad area
-					actionsIA.IA_Area(game.map, unit, teamA_this, teamB_this, unit.HabilityRange);
+					actionsIA.IA_Area(game.GetMap(), unit, teamA_this, teamB_this, unit.HabilityRange);
                         }
                         break;
                     //moverse cerca
                     case 2:
-                        actionsIA.GoNearer(unit, GetEnemy(teamA_this, teamB_this, unit));
+				actionsIA.GoNearer(game.GetMap(), unit, GetEnemy(teamA_this, teamB_this, unit));
                         break;
                     //no hacer nada
                     case 3:
                         break;
                     //moverse lejos
                     case 4:
-                        actionsIA.GoFarther(GetEnemy(teamA_this, teamB_this, unit), unit);
+				actionsIA.GoFarther(game.GetMap(), GetEnemy(teamA_this, teamB_this, unit), unit);
                         break;
                 }
                 estadoT1 = states.GetMeleConditions(unit);
@@ -655,7 +654,7 @@ public class Functions {
                     case 0:
                         if (estado[1] == true)
                         {
-					        actionsIA.IA_Attack(game.map,unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.AttackRange);
+					actionsIA.IA_Attack(game.GetMap(),unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.AttackRange);
                         }
                         break;
                     //Habilidad marcar
@@ -663,19 +662,19 @@ public class Functions {
                         if (estado[3] == true)
                         {
                             //marcar
-					        actionsIA.IA_Focus(game.map,unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.HabilityRange);
+					actionsIA.IA_Focus(game.GetMap(),unit,QSceneManagment.GetEnemyTeam(unit,teamA_this,teamB_this),unit.HabilityRange);
                         }
                         break;
                     //moverse lejos
                     case 2:
-                        actionsIA.GoNearer(unit, GetEnemy(teamA_this, teamB_this, unit));
+				actionsIA.GoNearer(game.GetMap(), unit, GetEnemy(teamA_this, teamB_this, unit));
                         break;
                     //no hacer nada
                     case 3:
                         break;
                     //moverse cerca
                     case 4:
-                        actionsIA.GoFarther(GetEnemy(teamA_this, teamB_this, unit), unit);
+				actionsIA.GoFarther(game.GetMap(), GetEnemy(teamA_this, teamB_this, unit), unit);
                         break;
                 }
                 estadoT1 = states.GetDistanceConditions(unit);

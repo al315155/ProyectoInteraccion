@@ -15,7 +15,7 @@ public class QLearningGame : MonoBehaviour
 	int unitTurn;
 
 
-	[HideInInspector]public GameObject[,] map;
+	GameObject[,] map;
 	private int dimension = 256;
 
 	public List<Vector2> allowedBoxes;

@@ -146,12 +146,11 @@ public class IAActions : MonoBehaviour
 		}
 	}
 
-	public void GoNearer(Unit me, Unit target)
+	public void GoNearer(object[,] map, Unit me, Unit target)
 	{
-        Debug.Log(qGame.GetMap().Length);
         List<Vector2> allowedBoxes = new List<Vector2>();
-       
-        allowedBoxes = QSceneManagment.BasicRange(qGame.map, me, me.Movement);
+		allowedBoxes = QSceneManagment.BasicRange(map, me, me.Movement);
+
         float[] values = GetPositionValues (allowedBoxes, target);
 		Vector2[] positions = ArrayFromList (allowedBoxes);
         Debug.Log("Tamaño" + values.Length);
@@ -159,10 +158,9 @@ public class IAActions : MonoBehaviour
 		me.Position = positions [0];
 	}
 
-	public void GoFarther ( Unit unit, Unit me){
+	public void GoFarther (object[,] map, Unit unit, Unit me){
 		List<Vector2> allowedBoxes = new List<Vector2>();
-        allowedBoxes = QSceneManagment.BasicRange(qGame.map, me, me.Movement);
-
+		allowedBoxes = QSceneManagment.BasicRange(map, me, me.Movement);
 
         float[] values = GetPositionValues (allowedBoxes, unit);
 		Vector2[] positions = ArrayFromList (allowedBoxes);

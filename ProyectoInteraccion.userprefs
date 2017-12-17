@@ -1,21 +1,14 @@
-﻿<Properties StartupItem="ProyectoInteraccion.csproj" RefactoringSettings.EnableRefactorings="True">
+﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\IAvsIA\IAActions.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Game Managment\QMatrix.cs">
     <Files>
-      <File FileName="Assets\Scripts\SelectionManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\IAvsIA\QSceneManagment.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\IAvsIA\States.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\IAvsIA\QLearningGame.cs" Line="224" Column="26" />
+      <File FileName="Assets\Scripts\IAvsIA\QLearningGame.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\IAvsIA\IAvsIA.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\IAvsIA\IAActions.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Game Managment\UnitFunctions.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\IAvsIA\Functions.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Game Managment\MenuManagment.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Game Managment\MatchManagment.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\IAvsIA\CubeOverManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Game Managment\QMatrix.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Game Managment\GameMode.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Game Managment\GameManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\IAvsIA\QSceneManagment.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Game Managment\QMatrix.cs" Line="134" Column="12" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

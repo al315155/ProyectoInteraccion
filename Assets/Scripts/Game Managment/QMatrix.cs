@@ -10,30 +10,30 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class QMatrix
 {
-	public int[,] QMatrix_Begginer_A_Tank;
-	public int[,] QMatrix_Begginer_A_Healer;
-	public int[,] QMatrix_Begginer_A_Distance;
-	public int[,] QMatrix_Begginer_A_Mele;
-	public int[,] QMatrix_Begginer_B_Tank;
-	public int[,] QMatrix_Begginer_B_Healer;
-	public int[,] QMatrix_Begginer_B_Distance;
-	public int[,] QMatrix_Begginer_B_Mele;
-	public int[,] QMatrix_Intermediate_A_Tank;
-	public int[,] QMatrix_Intermediate_A_Healer;
-	public int[,] QMatrix_Intermediate_A_Distance;
-	public int[,] QMatrix_Intermediate_A_Mele;
-	public int[,] QMatrix_Intermediate_B_Tank;
-	public int[,] QMatrix_Intermediate_B_Healer;
-	public int[,] QMatrix_Intermediate_B_Distance;
-	public int[,] QMatrix_Intermediate_B_Mele;
-	public int[,] QMatrix_Difficult_A_Tank;
-	public int[,] QMatrix_Difficult_A_Healer;
-	public int[,] QMatrix_Difficult_A_Distance;
-	public int[,] QMatrix_Difficult_A_Mele;
-	public int[,] QMatrix_Difficult_B_Tank;
-	public int[,] QMatrix_Difficult_B_Healer;
-	public int[,] QMatrix_Difficult_B_Distance;
-	public int[,] QMatrix_Difficult_B_Mele;
+	public float[,] QMatrix_Begginer_A_Tank;
+	public float[,] QMatrix_Begginer_A_Healer;
+	public float[,] QMatrix_Begginer_A_Distance;
+	public float[,] QMatrix_Begginer_A_Mele;
+	public float[,] QMatrix_Begginer_B_Tank;
+	public float[,] QMatrix_Begginer_B_Healer;
+	public float[,] QMatrix_Begginer_B_Distance;
+	public float[,] QMatrix_Begginer_B_Mele;
+	public float[,] QMatrix_Intermediate_A_Tank;
+	public float[,] QMatrix_Intermediate_A_Healer;
+	public float[,] QMatrix_Intermediate_A_Distance;
+	public float[,] QMatrix_Intermediate_A_Mele;
+	public float[,] QMatrix_Intermediate_B_Tank;
+	public float[,] QMatrix_Intermediate_B_Healer;
+	public float[,] QMatrix_Intermediate_B_Distance;
+	public float[,] QMatrix_Intermediate_B_Mele;
+	public float[,] QMatrix_Difficult_A_Tank;
+	public float[,] QMatrix_Difficult_A_Healer;
+	public float[,] QMatrix_Difficult_A_Distance;
+	public float[,] QMatrix_Difficult_A_Mele;
+	public float[,] QMatrix_Difficult_B_Tank;
+	public float[,] QMatrix_Difficult_B_Healer;
+	public float[,] QMatrix_Difficult_B_Distance;
+	public float[,] QMatrix_Difficult_B_Mele;
 
 	private String Route_QMatrix_Begginer_A_Tank;
 	private String Route_QMatrix_Begginer_A_Healer;
@@ -88,7 +88,7 @@ public class QMatrix
 		Route_QMatrix_Difficult_B_Mele 			= Application.persistentDataPath + "Difficult-B-Mele.text.bytes";
 	}
 
-	public void SaveQMatrix(int[,] Q, String route, int f, int c){
+	public void SaveQMatrix(float[,] Q, String route, int f, int c){
 		BinaryFormatter bf = new BinaryFormatter ();
 		FileStream file = File.Create (route);
 		KeepMatrixData data = new KeepMatrixData (FromMatrix2Array (Q, f, c));
@@ -96,7 +96,7 @@ public class QMatrix
 		file.Close();
 	}
 
-	public void ChargeQMatrix(out int[,] Q, String route, int f, int c){
+	public void ChargeQMatrix(out float[,] Q, String route, int f, int c){
 		if (File.Exists (route)) {
 			BinaryFormatter bf = new BinaryFormatter ();
 			FileStream file = File.Open (route, FileMode.Open);
@@ -104,17 +104,17 @@ public class QMatrix
 			Q = FromArray2Matrix (data.Data, f, c);
 			file.Close ();
 		} else {
-			Q = new int[f, c];
+			Q = new float[f, c];
 			for (int i = 0; i < f; i++) {
 				for (int j = 0; j < c; j++) {
-					Q [i, j] = 0;
+					Q [i, j] = 0f;
 				}
 			}
 		}
 	}
 		
-	public int[,] FromArray2Matrix(int[] array, int f, int c){
-		int[,] matrix = new int[f, c];
+	public float[,] FromArray2Matrix(float[] array, int f, int c){
+		float[,] matrix = new float[f, c];
 
 		int cont = 0;
 		for (int i = 0; i < f; i++) {
@@ -126,8 +126,8 @@ public class QMatrix
 		return matrix;
 	}
 
-	public int[] FromMatrix2Array(int[,] matrix, int f, int c){
-		int[] array = new int[f * c];
+	public float[] FromMatrix2Array(float[,] matrix, int f, int c){
+		float[] array = new float[f * c];
 
 		int cont = 0;
 		for (int i = 0; i < f; i++) {
@@ -143,13 +143,13 @@ public class QMatrix
 [Serializable]
 public class KeepMatrixData{
 	
-	int[] data;
+	float[] data;
 
-	public KeepMatrixData(int[] data){
+	public KeepMatrixData(float[] data){
 		this.data = data;
 	}
 
-	public int[] Data{
+	public float[] Data{
 		set{ data = value;}
 		get{ return data; }
 	}
