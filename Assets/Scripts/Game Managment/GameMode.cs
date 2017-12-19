@@ -13,6 +13,7 @@ namespace AssemblyCSharp
 	[Serializable]
 	public class GameMode
 	{
+		
 		private string title;
 		private string explanation;
 		private GameType type;
@@ -46,7 +47,13 @@ namespace AssemblyCSharp
 			get{ return members; }
 		}
 
+
+		// METERLE LAS MATRICES A LA FUNCION DE GET BASIC TEAM
+
 		public List<string> GetBasicTeam(){
+
+
+
 			List<string> units = new List<string> ();
 			if (this.type.Equals (GameType.Team_vs_Team) || this.type.Equals (GameType.One_Kill)) {
 				//Los miembros son 6
@@ -59,6 +66,8 @@ namespace AssemblyCSharp
 			} else {
 				units.Add ("Boss");
 			}
+
+
 			return units;
 		}
 
@@ -78,5 +87,6 @@ namespace AssemblyCSharp
 	public enum GameType{
 		Team_vs_Team, One_Kill, Boss_Fight
 	}
+
 }
 

@@ -35,6 +35,13 @@ public class Unit {
 	private bool focused;
 	private int focusedCount;
 
+	private float[,] matrix;
+
+	public float[,] Matrix{
+		set{ matrix = value; }
+		get{ return matrix; }
+	}
+
 	public Unit (int life, int damage, int velocity, int movement, int critic, int agility, int habilityRange, Rol rol, int minVelocity, int maxVelocity, int habilityCritic){
 		this.life = life;
 		this.damage = damage;

@@ -12,6 +12,7 @@ public class UnitFunctions : MonoBehaviour {
 	void Start(){
 		matchManagment = GetComponent<MatchManagment> ();
 		if (matchManagment == null) {
+			Debug.Log ("entro");
 			qLearning = GetComponent<QLearningGame> ();
 			map = qLearning.GetMap ();
 		} else {

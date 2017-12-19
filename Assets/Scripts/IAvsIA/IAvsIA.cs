@@ -82,8 +82,13 @@ public class IAvsIA : MonoBehaviour {
          {
 			funciones.entrenamiento(QTanqueA, QTanqueB, QHealerA, QHealerB, QMeleA, QMeleB, QDistanceA, QDistanceB, learning_rate, discount_factor, politicaA, politicaB, TeamA, TeamB);
             numeroPartidas++;
-            Debug.Log("Partidas" + numeroPartidas);
         }
+
+		for (int i = 0; i < funciones.QTA.GetLength (0); i++) {
+			for (int j = 0; j < funciones.QTA.GetLength (1); j++) {
+				Debug.Log (funciones.QTA [i, j]);
+			}
+		}
 
         qmatrix.SaveQMatrix(funciones.QDA, qmatrix.Route_QMatrix_Begginer_A_Distance, 18, 5);
         qmatrix.SaveQMatrix(funciones.QDB, qmatrix.Route_QMatrix_Begginer_B_Distance, 18, 5);
@@ -94,7 +99,7 @@ public class IAvsIA : MonoBehaviour {
         qmatrix.SaveQMatrix(funciones.QTA, qmatrix.Route_QMatrix_Begginer_A_Tank, 18, 5);
         qmatrix.SaveQMatrix(funciones.QTB, qmatrix.Route_QMatrix_Begginer_B_Tank, 18, 5);
 
-
+	
     }
 
 

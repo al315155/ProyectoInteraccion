@@ -69,6 +69,7 @@ public class Functions {
         thisQMB = QMB;
         thisQTA = QTA;
         thisQTB = QTB;
+
 		while (cont<movements) {
 
 			// pillo la unidad a la cual le toca.
@@ -122,18 +123,6 @@ public class Functions {
 			isGameOver = game.NextTurn ();
 			cont++;
 		}
-
-	
-
-		Debug.Log ("entro y guardo");
-		/*qmatrix.SaveQMatrix(QDA, qmatrix.Route_QMatrix_Begginer_A_Distance, 18, 5);
-		qmatrix.SaveQMatrix(QDB, qmatrix.Route_QMatrix_Begginer_B_Distance, 18,5);
-		qmatrix.SaveQMatrix(QHA, qmatrix.Route_QMatrix_Begginer_A_Healer, 18, 5);
-		qmatrix.SaveQMatrix(QHB, qmatrix.Route_QMatrix_Begginer_B_Healer, 18, 5);
-		qmatrix.SaveQMatrix(QMA, qmatrix.Route_QMatrix_Begginer_A_Mele, 18, 5);
-		qmatrix.SaveQMatrix(QMB, qmatrix.Route_QMatrix_Begginer_B_Mele, 18, 5);
-		qmatrix.SaveQMatrix(QTA, qmatrix.Route_QMatrix_Begginer_A_Tank, 18, 5);
-		qmatrix.SaveQMatrix(QTB, qmatrix.Route_QMatrix_Begginer_B_Tank, 18, 5);*/
 		
 	}
 
@@ -197,8 +186,8 @@ public class Functions {
     private void QLearning(float[,] Q, bool[] estado, int politica, List<Unit> team, Unit currentUnit,float discount, float learningRate)
     {
        
-            Debug.Log("Tank");
-		Debug.Log ("Estado"+estadoTanqueA);
+//            Debug.Log("Tank");
+//		Debug.Log ("Estado"+estadoTanqueA);
             action = selectActionAuto(Q,estado,politica);
 
             // nuevo estado (posterior) para actualizar la Q
@@ -206,7 +195,7 @@ public class Functions {
             
           
             ActualizarQ(Q,estado,estadoT1,team,currentUnit,discount,learningRate);
-            Debug.Log(action);
+//            Debug.Log(action);
         }
 
 	private void ActualizarQ(float[,] q, bool[] estado, bool[] estadoT1, List<Unit> team, Unit currentUnit,float discount, float learningRate)
@@ -462,7 +451,7 @@ public class Functions {
                         break;
 				//Marcar
 			case 1:
-				if (estadoT1 [1] = false && estadoT1 [3] == true) {
+				if (estadoT1 [1] = false || estadoT1 [3] == true) {
 					reward = goodReward;
 				} else if (estadoT1 [1] == true && estadoT1 [3] == true) {
 					reward = goodLessReward;

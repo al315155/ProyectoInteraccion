@@ -2,99 +2,51 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IAActions : MonoBehaviour
+public class IAActionsInGame : MonoBehaviour
 {
-
-	QLearningGame qGame;
-    public bool isEnemyDead;
-  
+	MatchManagment game;
+	GameObject[,] map;
+	List<Unit> myTeam;
+	List<Unit> enemyTeam;
 
 	void Start(){
-		qGame = GetComponent<QLearningGame> ();
-        isEnemyDead = false;
-
+		game = GameObject.Find ("Scene Manager").GetComponent<MatchManagment> ();
+		map = game.map;
+		myTeam = game.team_2_unitList;
+		enemyTeam = game.team_1_unitList;
 	}
 
-	public void IA_Attack(object[,] map, Unit attacker, List<Unit> enemyTeam, int range){
-		//List<Unit> hurtedEnemies = QSceneManagment.HurtedAllies (map, attacker, enemyTeam, range);
+	public void Attack(Unit attacker, int range){
 		List<Unit> enemiesAtRange = QSceneManagment.EnemiesInside_BasicRange (map, attacker, enemyTeam, range);
-        
 
 		if (enemiesAtRange.Count > 0) {
 			Unit victim = enemiesAtRange [Random.Range (0, enemiesAtRange.Count)];
 
-
 			float probability = UnityEngine.Random.Range (0, 100);
 			if (probability > (100 - victim.Agility)) {
 				Debug.Log ("fallo ataque");
-				// Debería pasar turno 
 
 			} else {
 				Debug.Log ("acierto ataque");
-				//acierto el área en esta unidad
-				//critico??
-
 				probability = UnityEngine.Random.Range (0, 100);
 				if (probability < attacker.Critic / 2) {
-					//critico
 					victim.CurrentLife -= attacker.Damage * 2;
 				} else {
-					//no critico
 					victim.CurrentLife -= attacker.Damage;
 				}
 
 				if (victim.CurrentLife <= 0) {
-					qGame.RemoveUnit (victim, enemyTeam);
+					game.RemoveUnit (victim);
 
-					isEnemyDead = true;
-                
 				}
 			}
 		}
 	}
 
-
-		public void IA_Attack_Game(object[,] map, Unit attacker, List<Unit> enemyTeam, int range){
-			//List<Unit> hurtedEnemies = QSceneManagment.HurtedAllies (map, attacker, enemyTeam, range);
-			List<Unit> enemiesAtRange = QSceneManagment.EnemiesInside_BasicRange (map, attacker, enemyTeam, range);
-
-			Unit victim = enemiesAtRange[Random.Range(0, enemiesAtRange.Count)];
-
-			float probability = UnityEngine.Random.Range (0, 100);
-			if (probability > (100 - victim.Agility)) {
-				Debug.Log ("fallo ataque");
-				// Debería pasar turno 
-
-			} else {
-				Debug.Log ("acierto ataque");
-				//acierto el área en esta unidad
-				//critico??
-
-				probability = UnityEngine.Random.Range (0, 100);
-				if (probability < attacker.Critic / 2) {
-					//critico
-					victim.CurrentLife -= attacker.Damage * 2;
-				} else {
-					//no critico
-					victim.CurrentLife -= attacker.Damage;
-				}
-
-				if (victim.CurrentLife <= 0) {
-					qGame.RemoveUnit (victim, enemyTeam);
-
-					isEnemyDead = true;
-
-				}
-			}
-
-	}
- 
-
 	// HEALER
-	public void IA_Heal(object[,] map, Unit healer, List<Unit> myTeam, int range){
+	public void Heal(Unit healer, int range){
 		List<Unit> hurtedAllies = QSceneManagment.HurtedAllies (map, healer, myTeam, range);
 
-		// ¿Curo a quién peor esté?
 		Unit victim = mostHurted(hurtedAllies);
 
 		float probability = UnityEngine.Random.Range (0, 100);
@@ -124,7 +76,7 @@ public class IAActions : MonoBehaviour
 	}
 
 	// DISTANCE
-	public void IA_Focus(object[,] map, Unit distance, List<Unit> enemyTeam, int range){
+	public void Focus(Unit distance, int range){
 		List<Unit> enemiesAtRange = QSceneManagment.EnemiesInside_BasicRange (map, distance, enemyTeam, range);
 
 		// ¿A quién priorizo, a quien tiene menos vida?
@@ -134,7 +86,7 @@ public class IAActions : MonoBehaviour
 		if (probability > (100 - victim.Agility)) {
 			Debug.Log ("fallo focus");
 			// Debería pasar turno 
-				
+
 		} else {
 			Debug.Log ("acierto focus");
 			victim.Focused = true;
@@ -143,27 +95,34 @@ public class IAActions : MonoBehaviour
 	}
 
 	// TANQUE
-	public void IA_Agro(Unit tank, List<Unit> team1, List<Unit> team2){
-		if (QSceneManagment.GetUnitTeam (tank, team1, team2).Equals (team1)) {
-			qGame.SetAgro (team1, tank);
+	public void Agro(Unit tank){
 
-		} else {
-			qGame.SetAgro (team2, tank);
+		if (game.team_2_Agro == null) {
+
+			game.agro.SetActive (true);
+			GameObject agroIcon = Instantiate (game.agro);
+			game.agro.SetActive (false);
+
+			agroIcon.transform.position = game.GameObjectFromUnit (tank).transform.position + Vector3.up * 2;
+			agroIcon.transform.SetParent (game.GameObjectFromUnit (tank).transform);
+			game.team_2_Agro = tank;
+			game.team_2_AgroCount = 5;
+
 		}
-
 
 	}
 
 	// MELE
-	public void IA_Area(object[,] map, Unit mele, List<Unit> unitTeam, List<Unit> enemyTeam, int range){
+	public void Area(Unit mele, int range){
 		List<Unit> enemiesInRange = QSceneManagment.EnemiesInside_MeleRange (map, mele, enemyTeam, range);
 		List<Unit> deadUnits = new List<Unit> ();
 
 		foreach (Unit unit in enemyTeam) {
 
 			float probability = UnityEngine.Random.Range (0, 100);
-			if (probability > (100 - unit.Agility)) {
+			if (probability < (100 - unit.Agility)) {
 				//acierto el área en esta unidad
+				Debug.Log ("acierto area");
 				int value = UnityEngine.Random.Range ((int)mele.GetArea (unit).x, (int)mele.GetArea (unit).y);
 				//critico??
 
@@ -179,36 +138,38 @@ public class IAActions : MonoBehaviour
 				if (unit.CurrentLife <= 0) {
 					deadUnits.Add (unit);
 				}
+			} else {
+				Debug.Log ("fallo area");
 			}
 		}
 
 		if (deadUnits.Count > 0) {
 			foreach (Unit unit in deadUnits) {
 				if (unit.CurrentLife <= 0) {
-					qGame.RemoveUnit (unit, enemyTeam);
+					game.RemoveUnit (unit);
 
 				}
 			}
 		}
 	}
 
-	public void GoNearer(object[,] map, Unit me, Unit target)
+	public void GoNearer(Unit me, Unit target)
 	{
-        List<Vector2> allowedBoxes = new List<Vector2>();
+		List<Vector2> allowedBoxes = new List<Vector2>();
 		allowedBoxes = QSceneManagment.BasicRange(map, me, me.Movement);
 
-        float[] values = GetPositionValues (allowedBoxes, target);
+		float[] values = GetPositionValues (allowedBoxes, target);
 		Vector2[] positions = ArrayFromList (allowedBoxes);
-//        Debug.Log("Tamaño" + values.Length);
+		//        Debug.Log("Tamaño" + values.Length);
 		positions = Nearest2Furthest (positions, values);
 		me.Position = positions [0];
 	}
 
-	public void GoFarther (object[,] map, Unit unit, Unit me){
+	public void GoFarther (Unit unit, Unit me){
 		List<Vector2> allowedBoxes = new List<Vector2>();
 		allowedBoxes = QSceneManagment.BasicRange(map, me, me.Movement);
 
-        float[] values = GetPositionValues (allowedBoxes, unit);
+		float[] values = GetPositionValues (allowedBoxes, unit);
 		Vector2[] positions = ArrayFromList (allowedBoxes);
 
 		positions = Nearest2Furthest (positions, values);

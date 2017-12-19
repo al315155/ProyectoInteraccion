@@ -60,7 +60,7 @@ public class QMatrix : MonoBehaviour
 	public String Route_QMatrix_Difficult_B_Distance;
 	public String Route_QMatrix_Difficult_B_Mele;
 
-	void Start ()
+	void Awake ()
 	{
 		Route_QMatrix_Begginer_A_Tank 			= Application.persistentDataPath + "/Begginer-A-Tank.text.bytes";
 		Route_QMatrix_Begginer_A_Healer 		= Application.persistentDataPath + "/Begginer-A-Healer.text.bytes";
@@ -98,12 +98,14 @@ public class QMatrix : MonoBehaviour
 
 	public float[,] ChargeQMatrix(float[,] Q, String route, int f, int c){
 		if (File.Exists (route)) {
+			Debug.Log ("ya existe la ruta");
 			BinaryFormatter bf = new BinaryFormatter ();
 			FileStream file = File.Open (route, FileMode.Open);
 			KeepMatrixData data = (KeepMatrixData)bf.Deserialize (file);
 			Q = FromArray2Matrix (data.Data, f, c);
 			file.Close ();
 		} else {
+			Debug.Log ("inicializo matriZ");
 			Q = new float[f, c];
 			for (int i = 0; i < f; i++) {
 				for (int j = 0; j < c; j++) {

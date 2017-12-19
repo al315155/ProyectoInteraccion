@@ -12,6 +12,18 @@ using UnityEngine.EventSystems;
 
 public class MatchManagment : MonoBehaviour
 {	
+
+
+
+
+	States qStates;
+	IAActionsInGame qIA;
+	QMatrix qMatrix;
+
+
+
+
+
 	// GAME MANAGER --------------------------------------------------
 	private GameManager gameManager;
 
@@ -69,9 +81,15 @@ public class MatchManagment : MonoBehaviour
 	private List<Unit> looser;
 	public GameObject finalCanvas;
 
+	//
+	private bool playerTurn;
+
 	void Awake(){
 		map = new GameObject[(int) Mathf.Sqrt(dimension), (int) Mathf.Sqrt(dimension)];
 		buildMap ();
+		qMatrix = gameObject.AddComponent<QMatrix> ();
+
+
 	}
 
 	void Start(){
@@ -80,36 +98,165 @@ public class MatchManagment : MonoBehaviour
 		calculator = GetComponent<CalculateBoxes> ();
 		functions = GetComponent<UnitFunctions> ();
 		buildMatch ();
+		qStates = new States (map, team_1_unitList, team_2_unitList);
+		qIA = GameObject.Find ("IA").GetComponent<IAActionsInGame> ();
+
 		NextTurn ();
 	}
 
 	void Update(){
+		if (playerTurn) {
 
-		if (currentAction.Equals(AssemblyCSharp.Action.Move) && Input.GetMouseButton(0)) {
-			// meterle el equipo al cual pertenece y eso
-			functions.Move (round[unitTurn], allowedBoxes);
-		}
+			if (currentAction.Equals (AssemblyCSharp.Action.Move) && Input.GetMouseButton (0)) {
+				// meterle el equipo al cual pertenece y eso
+				functions.Move (round [unitTurn], allowedBoxes);
+			}
 
-		if (currentAction.Equals (AssemblyCSharp.Action.Attack) && Input.GetMouseButton (0)) {
-			functions.Attack (round[unitTurn], allowedBoxes);
-		}
+			if (currentAction.Equals (AssemblyCSharp.Action.Attack) && Input.GetMouseButton (0)) {
+				functions.Attack (round [unitTurn], allowedBoxes);
+			}
 
-		if (currentAction.Equals (AssemblyCSharp.Action.Hability) && Input.GetMouseButton (0)) {
-			switch (round [unitTurn].UnitRol) {
-			case Rol.Healer:
-				functions.Heal (round[unitTurn], allowedBoxes);
-				break;
+			if (currentAction.Equals (AssemblyCSharp.Action.Hability) && Input.GetMouseButton (0)) {
+				switch (round [unitTurn].UnitRol) {
+				case Rol.Healer:
+					functions.Heal (round [unitTurn], allowedBoxes);
+					break;
 
-			case Rol.Distance:
-				functions.Focus (round[unitTurn], allowedBoxes);
-				break;
+				case Rol.Distance:
+					functions.Focus (round [unitTurn], allowedBoxes);
+					break;
 
-			case Rol.Mele:
-				functions.Area (round[unitTurn], allowedBoxes);
-				break;
+				case Rol.Mele:
+					functions.Area (round [unitTurn], allowedBoxes);
+					break;
+				}
+			}
+		} 
+	}
+
+	void enemyTurn ()
+	{
+		for (int i = 0; i < round [unitTurn].Matrix.GetLength (0); i++) {
+			for (int j = 0; j < round [unitTurn].Matrix.GetLength (1); j++) {
+				Debug.Log (round [unitTurn].Matrix [i, j]);
 			}
 		}
+
+
+		bool[] unitState = null;
+		Rol currentRol = Rol.Boss;
+		switch (round [unitTurn].UnitRol) {
+		case Rol.Healer:
+			currentRol = Rol.Healer;
+			unitState = qStates.GetHealerState (round [unitTurn]);
+			break;
+			
+		case Rol.Distance:
+			currentRol = Rol.Distance;
+			unitState = qStates.GetDistanceConditions (round [unitTurn]);
+			break;
+
+		case Rol.Tank:
+			currentRol = Rol.Tank;
+			unitState = qStates.GetTankState (round [unitTurn]);
+			break;
+
+		case Rol.Mele:
+			currentRol = Rol.Mele;
+			unitState = qStates.GetMeleConditions (round [unitTurn]);
+			break;
+		}
+
+		float[] marks = new float[5];
+		int row = GetQRow (unitState);
+		marks [0] = round [unitTurn].Matrix [row, 0];
+		marks [1] = round [unitTurn].Matrix [row, 1];
+		marks [2] = round [unitTurn].Matrix [row, 2];
+		marks [3] = round [unitTurn].Matrix [row, 3];
+		marks [4] = round [unitTurn].Matrix [row, 4];
+
+		int bestMark = 0;
+		for (int i = 0; i < marks.Length; i++) {
+			if (marks [i] > marks [bestMark]) {
+				bestMark = i;
+			}
+		}
+		Unit objectiveUnit;
+		GameObject unitInScene;
+
+		switch (bestMark) {
+		case 0:
+			qIA.Attack (round [unitTurn], round [unitTurn].AttackRange);
+			break;
+
+		case 1:
+
+			if (currentRol.Equals (Rol.Healer)) {
+				qIA.Heal (round [unitTurn], round [unitTurn].HabilityRange);
+
+			} else if (currentRol.Equals (Rol.Tank)) {
+				qIA.Agro (round [unitTurn]);
+
+				//					matchManagment.agro.SetActive (true);
+				//					GameObject agroIcon = Instantiate (matchManagment.agro);
+				//					matchManagment.agro.SetActive (false);
+				//
+				//					agroIcon.transform.position = matchManagment.GameObjectFromUnit(currentUnit).transform.position + Vector3.up * 2;
+				//					agroIcon.transform.SetParent (matchManagment.GameObjectFromUnit(currentUnit).transform);
+				//					matchManagment.team_2_Agro = currentUnit;
+				//					matchManagment.team_2_AgroCount = 5;
+
+
+			} else if (currentRol.Equals (Rol.Mele)) {
+				qIA.Area (round [unitTurn], round [unitTurn].HabilityRange);
+
+			} else if (currentRol.Equals (Rol.Distance)) {
+				qIA.Focus (round [unitTurn], round [unitTurn].HabilityRange);
+
+				//					focusedUnit.Focused = true;
+				//					focusedUnit.FocusedCount = 6;
+				//
+				//					matchManagment.focused.SetActive (true);
+				//					GameObject focusedIcon = Instantiate (matchManagment.focused);
+				//					matchManagment.focused.SetActive (false);
+				//
+				//					focusedIcon.transform.position = hit.collider.transform.position + Vector3.up * 2;
+				//					focusedIcon.transform.SetParent (hit.collider.transform);
+			}
+
+
+			break;
+
+		case 2:
+			objectiveUnit = team_1_unitList [UnityEngine.Random.Range (0, team_1_unitList.Count)];
+			Debug.Log ("me acerco");
+
+			qIA.GoNearer (round [unitTurn], objectiveUnit);
+
+			unitInScene = GameObjectFromUnit (round [unitTurn]);
+			unitInScene.transform.position = map [(int)round [unitTurn].Position.x, (int)round [unitTurn].Position.y].transform.position + Vector3.up * 1.5f;
+			break;
+
+		case 3:
+			Debug.Log ("no hago nada");
+			
+			break;
+		case 4:
+			Debug.Log ("me alejo");
+			objectiveUnit = team_1_unitList [UnityEngine.Random.Range (0, team_1_unitList.Count)];
+			qIA.GoFarther (round [unitTurn], objectiveUnit);
+
+			unitInScene = GameObjectFromUnit (round [unitTurn]);
+			unitInScene.transform.position = map [(int)round [unitTurn].Position.x, (int)round [unitTurn].Position.y].transform.position + Vector3.up * 1.5f;
+			break;
+		}
+
+
+		NextTurn ();
+
 	}
+
+
 
 	private void buildMap(){
 		for (int i = 0; i < (int) Mathf.Sqrt(dimension); i++) {
@@ -125,6 +272,8 @@ public class MatchManagment : MonoBehaviour
 	}
 
 	private void buildMatch(){
+		playerTurn = false;
+
 		team_1_AgroCount = 0;
 		team_2_AgroCount = 0;
 
@@ -141,6 +290,23 @@ public class MatchManagment : MonoBehaviour
 		// Un equipo prefijado
 		team_2_unitList = Unit.GenerateTeam (gameManager.GetGameMode ().GetBasicTeam ());
 		Vector2[] team_2_Area = calculator.GetAreaReferences(dimension, "Team_2");
+
+		foreach (Unit unit in team_2_unitList) {
+			if (unit.UnitRol.Equals (Rol.Healer)) {
+				unit.Matrix = qMatrix.ChargeQMatrix(qMatrix.QMatrix_Begginer_A_Healer, qMatrix.Route_QMatrix_Begginer_A_Healer, 18, 5);
+			}
+			if (unit.UnitRol.Equals (Rol.Distance)) {
+				unit.Matrix = qMatrix.ChargeQMatrix(qMatrix.QMatrix_Begginer_A_Distance, qMatrix.Route_QMatrix_Begginer_A_Distance, 18, 5);
+
+			}
+			if (unit.UnitRol.Equals (Rol.Mele)) {
+				unit.Matrix = qMatrix.ChargeQMatrix(qMatrix.QMatrix_Begginer_A_Mele, qMatrix.Route_QMatrix_Begginer_A_Mele, 18, 5);
+			}
+			if (unit.UnitRol.Equals (Rol.Tank)) {
+				unit.Matrix = qMatrix.ChargeQMatrix(qMatrix.QMatrix_Begginer_A_Tank, qMatrix.Route_QMatrix_Begginer_A_Tank, 18, 5);
+			}
+
+		}
 
 		placeCharacters (team_1_unitList, team_1_Area);
 		placeCharacters (team_2_unitList, team_2_Area);
@@ -182,6 +348,15 @@ public class MatchManagment : MonoBehaviour
 		} else {
 						 
 			unitTurn++;
+
+			Debug.Log (unitTurn);
+
+			Debug.Log (team_1_unitList);
+			if (team_1_unitList.Contains(round[unitTurn])) {
+				playerTurn = true;
+			} else {
+				playerTurn = false;
+			}
 
 			if (unitTurn >= round.Count) {
 				unitTurn = 0;
@@ -236,6 +411,10 @@ public class MatchManagment : MonoBehaviour
 			} else {
 				actualizeCanvas (team_2_Canvas, team_1_Canvas);
 			}
+		}
+
+		if (!playerTurn) {
+			enemyTurn ();
 		}
 	}
 
@@ -312,6 +491,8 @@ public class MatchManagment : MonoBehaviour
 				copy.GetComponent<Renderer> ().material.color = Color.blue;
 				break;
 			}
+
+
 		}
 	}
 
@@ -455,5 +636,62 @@ public class MatchManagment : MonoBehaviour
 
 			Destroy (unitInScene.gameObject);
 		}
+	}
+
+
+
+
+
+	int GetQRow(bool[] estado){
+
+		if (estado [0] == true && estado [1] == true && estado [2] == true && estado [3] == true) {
+			return 0;
+		}
+		else if(estado [0] == false && estado [1] == true && estado [2] == true && estado [3] == true) {
+			return 1;
+		}
+		else if(estado [0] == false && estado [1] == false && estado [2] == true && estado [3] == true) {
+			return 2;
+		}
+		else if(estado [0] == false && estado [1] == false && estado [2] == false && estado [3] == true) {
+			return 3;
+		}
+		else if(estado [0] == false && estado [1] == false && estado [2] == false && estado [3] == false) {
+			return 4;
+		}
+		else if(estado [0] == true && estado [1] == true && estado [2] == true && estado [3] == false) {
+			return 5;
+		}
+		else if(estado [0] == true && estado [1] == true && estado [2] == false && estado [3] == false) {
+			return 6;
+		}
+		else if(estado [0] == true && estado [1] == false && estado [2] == false && estado [3] == false) {
+			return 7;
+		}
+		else if(estado [0] == true && estado [1] == false && estado [2] == false && estado [3] == true) {
+			return 8;
+		}
+		else if(estado [0] == false && estado [1] == true && estado [2] == true && estado [3] == false) {
+			return 9;
+		}
+		else if(estado [0] == true && estado [1] == false && estado [2] == true && estado [3] == false) {
+			return 10;
+		}
+		else if(estado [0] == false && estado [1] == true && estado [2] == false && estado [3] == true) {
+			return 11;
+		}
+		else if(estado [0] == true && estado [1] == false && estado [2] == true && estado [3] == true) {
+			return 12;
+		}
+		else if(estado [0] == false && estado [1] == true && estado [2] == false && estado [3] == false) {
+			return 13;
+		}
+		else if(estado [0] == true && estado [1] == true && estado [2] == false && estado [3] == true) {
+			return 14;
+		}
+		else /*(estado [0] == false && estado [0] == false && estado [0] == true && estado [0] == false) */{
+			return 15;
+		}
+
 	}
 }
