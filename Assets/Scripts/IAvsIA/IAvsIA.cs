@@ -64,42 +64,17 @@ public class IAvsIA : MonoBehaviour {
 
 		states = new States(qGame.GetMap(), TeamA, TeamB);
 		qmatrix = gameObject.AddComponent<QMatrix> ();
+
 		funciones = new Functions(qGame, states, IAactions, movementNum, qmatrix);
 
 		//cargo matrices
         // cambiar;
-		funciones.QTA = qmatrix.ChargeQMatrix(funciones.QTA, qmatrix.Route_QMatrix_Begginer_A_Tank, 18, 5);
-		funciones.QTB = qmatrix.ChargeQMatrix (funciones.QTB, qmatrix.Route_QMatrix_Begginer_B_Tank, 18, 5);
-		funciones.QHA = qmatrix.ChargeQMatrix (funciones.QHA, qmatrix.Route_QMatrix_Begginer_A_Healer, 18, 5);
-		funciones.QHB = qmatrix.ChargeQMatrix (funciones.QHB, qmatrix.Route_QMatrix_Begginer_B_Healer, 18, 5);
-		funciones.QMA = qmatrix.ChargeQMatrix (funciones.QMA, qmatrix.Route_QMatrix_Begginer_A_Mele, 18, 5);
-		funciones.QMB = qmatrix.ChargeQMatrix (funciones.QMB, qmatrix.Route_QMatrix_Begginer_B_Mele, 18, 5);
-		funciones.QDA = qmatrix.ChargeQMatrix (funciones.QDA, qmatrix.Route_QMatrix_Begginer_A_Distance, 18, 5);
-		funciones.QDB = qmatrix.ChargeQMatrix (funciones.QDB, qmatrix.Route_QMatrix_Begginer_B_Distance, 18, 5);
 
 
-        for (int i = 0; i < nPartidas; i++)
-         {
-			funciones.entrenamiento(QTanqueA, QTanqueB, QHealerA, QHealerB, QMeleA, QMeleB, QDistanceA, QDistanceB, learning_rate, discount_factor, politicaA, politicaB, TeamA, TeamB);
-            numeroPartidas++;
-        }
-
-		for (int i = 0; i < funciones.QTA.GetLength (0); i++) {
-			for (int j = 0; j < funciones.QTA.GetLength (1); j++) {
-				Debug.Log (funciones.QTA [i, j]);
-			}
-		}
-
-        qmatrix.SaveQMatrix(funciones.QDA, qmatrix.Route_QMatrix_Begginer_A_Distance, 18, 5);
-        qmatrix.SaveQMatrix(funciones.QDB, qmatrix.Route_QMatrix_Begginer_B_Distance, 18, 5);
-        qmatrix.SaveQMatrix(funciones.QHA, qmatrix.Route_QMatrix_Begginer_A_Healer, 18, 5);
-        qmatrix.SaveQMatrix(funciones.QHB, qmatrix.Route_QMatrix_Begginer_B_Healer, 18, 5);
-        qmatrix.SaveQMatrix(funciones.QMA, qmatrix.Route_QMatrix_Begginer_A_Mele, 18, 5);
-        qmatrix.SaveQMatrix(funciones.QMB, qmatrix.Route_QMatrix_Begginer_B_Mele, 18, 5);
-        qmatrix.SaveQMatrix(funciones.QTA, qmatrix.Route_QMatrix_Begginer_A_Tank, 18, 5);
-        qmatrix.SaveQMatrix(funciones.QTB, qmatrix.Route_QMatrix_Begginer_B_Tank, 18, 5);
-
-	
+//        for (int i = 0; i < nPartidas; i++)
+//         {
+			funciones.BegginerTraining(learning_rate, discount_factor, politicaA, politicaB, TeamA, TeamB);
+//        }
     }
 
 

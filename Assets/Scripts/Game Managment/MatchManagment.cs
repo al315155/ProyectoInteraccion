@@ -136,13 +136,6 @@ public class MatchManagment : MonoBehaviour
 
 	void enemyTurn ()
 	{
-		for (int i = 0; i < round [unitTurn].Matrix.GetLength (0); i++) {
-			for (int j = 0; j < round [unitTurn].Matrix.GetLength (1); j++) {
-				Debug.Log (round [unitTurn].Matrix [i, j]);
-			}
-		}
-
-
 		bool[] unitState = null;
 		Rol currentRol = Rol.Boss;
 		switch (round [unitTurn].UnitRol) {
@@ -229,8 +222,6 @@ public class MatchManagment : MonoBehaviour
 
 		case 2:
 			objectiveUnit = team_1_unitList [UnityEngine.Random.Range (0, team_1_unitList.Count)];
-			Debug.Log ("me acerco");
-
 			qIA.GoNearer (round [unitTurn], objectiveUnit);
 
 			unitInScene = GameObjectFromUnit (round [unitTurn]);
@@ -238,17 +229,17 @@ public class MatchManagment : MonoBehaviour
 			break;
 
 		case 3:
-			Debug.Log ("no hago nada");
 			
-			break;
-		case 4:
-			Debug.Log ("me alejo");
 			objectiveUnit = team_1_unitList [UnityEngine.Random.Range (0, team_1_unitList.Count)];
 			qIA.GoFarther (round [unitTurn], objectiveUnit);
 
 			unitInScene = GameObjectFromUnit (round [unitTurn]);
 			unitInScene.transform.position = map [(int)round [unitTurn].Position.x, (int)round [unitTurn].Position.y].transform.position + Vector3.up * 1.5f;
 			break;
+			
+		case 4:
+			break;
+
 		}
 
 
@@ -293,17 +284,18 @@ public class MatchManagment : MonoBehaviour
 
 		foreach (Unit unit in team_2_unitList) {
 			if (unit.UnitRol.Equals (Rol.Healer)) {
-				unit.Matrix = qMatrix.ChargeQMatrix(qMatrix.QMatrix_Begginer_A_Healer, qMatrix.Route_QMatrix_Begginer_A_Healer, 18, 5);
+				unit.Matrix = qMatrix.ChargeQMatrix(qMatrix.QMatrix_Begginer_B_Healer, qMatrix.Route_QMatrix_Begginer_B_Healer, 18, 5);
+//				unit.Name = "Jordi";
 			}
 			if (unit.UnitRol.Equals (Rol.Distance)) {
-				unit.Matrix = qMatrix.ChargeQMatrix(qMatrix.QMatrix_Begginer_A_Distance, qMatrix.Route_QMatrix_Begginer_A_Distance, 18, 5);
+				unit.Matrix = qMatrix.ChargeQMatrix(qMatrix.QMatrix_Begginer_B_Distance, qMatrix.Route_QMatrix_Begginer_B_Distance, 18, 5);
 
 			}
 			if (unit.UnitRol.Equals (Rol.Mele)) {
-				unit.Matrix = qMatrix.ChargeQMatrix(qMatrix.QMatrix_Begginer_A_Mele, qMatrix.Route_QMatrix_Begginer_A_Mele, 18, 5);
+				unit.Matrix = qMatrix.ChargeQMatrix(qMatrix.QMatrix_Begginer_B_Mele, qMatrix.Route_QMatrix_Begginer_B_Mele, 18, 5);
 			}
 			if (unit.UnitRol.Equals (Rol.Tank)) {
-				unit.Matrix = qMatrix.ChargeQMatrix(qMatrix.QMatrix_Begginer_A_Tank, qMatrix.Route_QMatrix_Begginer_A_Tank, 18, 5);
+				unit.Matrix = qMatrix.ChargeQMatrix(qMatrix.QMatrix_Begginer_B_Tank, qMatrix.Route_QMatrix_Begginer_B_Tank, 18, 5);
 			}
 
 		}
@@ -349,18 +341,15 @@ public class MatchManagment : MonoBehaviour
 						 
 			unitTurn++;
 
-			Debug.Log (unitTurn);
+			if (unitTurn >= round.Count) {
+				unitTurn = 0;
+			}	 
 
-			Debug.Log (team_1_unitList);
 			if (team_1_unitList.Contains(round[unitTurn])) {
 				playerTurn = true;
 			} else {
 				playerTurn = false;
-			}
-
-			if (unitTurn >= round.Count) {
-				unitTurn = 0;
-			}	
+			}                          
 				
 			if (team_1_Agro != null) {
 				team_1_AgroCount -= 1;

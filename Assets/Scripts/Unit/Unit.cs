@@ -18,6 +18,8 @@ public class Unit {
 	public static string MeleDamageDetails = 
 		"Daño cuerpo a cuepro moderado y aguante moderado también.";
 
+	public string name;
+
 	private Rol rol;
 	private int life;
 	private int currentLife;
@@ -40,6 +42,11 @@ public class Unit {
 	public float[,] Matrix{
 		set{ matrix = value; }
 		get{ return matrix; }
+	}
+
+	public string Name{
+		set{ name = value; }
+		get{ return name; }
 	}
 
 	public Unit (int life, int damage, int velocity, int movement, int critic, int agility, int habilityRange, Rol rol, int minVelocity, int maxVelocity, int habilityCritic){

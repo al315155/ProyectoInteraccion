@@ -128,17 +128,20 @@ public class IAActions : MonoBehaviour
 		List<Unit> enemiesAtRange = QSceneManagment.EnemiesInside_BasicRange (map, distance, enemyTeam, range);
 
 		// ¿A quién priorizo, a quien tiene menos vida?
-		Unit victim = enemiesAtRange[Random.Range(0, enemiesAtRange.Count)];
+		if (enemiesAtRange.Count > 0) {
+			Unit victim = enemiesAtRange [Random.Range (0, enemiesAtRange.Count)];
 
-		float probability = UnityEngine.Random.Range (0, 100);
-		if (probability > (100 - victim.Agility)) {
-			Debug.Log ("fallo focus");
-			// Debería pasar turno 
+
+			float probability = UnityEngine.Random.Range (0, 100);
+			if (probability > (100 - victim.Agility)) {
+				Debug.Log ("fallo focus");
+				// Debería pasar turno 
 				
-		} else {
-			Debug.Log ("acierto focus");
-			victim.Focused = true;
-			victim.FocusedCount = 6;
+			} else {
+				Debug.Log ("acierto focus");
+				victim.Focused = true;
+				victim.FocusedCount = 6;
+			}
 		}
 	}
 

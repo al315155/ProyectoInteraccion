@@ -814,10 +814,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 416138042}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a77cb35481e6734099629e4ced5814e, type: 3}
+  m_Script: {fileID: 11500000, guid: f9241ae6bc59b0b43844d1ec2f436888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnemyDead: 0
 --- !u!4 &416138044
 Transform:
   m_ObjectHideFlags: 0

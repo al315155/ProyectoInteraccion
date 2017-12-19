@@ -86,9 +86,21 @@ public class QMatrix : MonoBehaviour
 		Route_QMatrix_Difficult_B_Healer 		= Application.persistentDataPath + "/Difficult-B-Healer.text.bytes";
 		Route_QMatrix_Difficult_B_Distance 		= Application.persistentDataPath + "/Difficult-B-Distance.text.bytes";
 		Route_QMatrix_Difficult_B_Mele 			= Application.persistentDataPath + "/Difficult-B-Mele.text.bytes";
+
+
+		QMatrix_Begginer_A_Tank = ChargeQMatrix(QMatrix_Begginer_A_Tank, Route_QMatrix_Begginer_A_Tank, 18, 5);
+		QMatrix_Begginer_B_Tank = ChargeQMatrix(QMatrix_Begginer_B_Tank, Route_QMatrix_Begginer_B_Tank, 18, 5);
+		QMatrix_Begginer_A_Healer = ChargeQMatrix (QMatrix_Begginer_A_Healer, Route_QMatrix_Begginer_A_Healer, 18, 5);
+		QMatrix_Begginer_B_Healer = ChargeQMatrix (QMatrix_Begginer_B_Healer, Route_QMatrix_Begginer_B_Healer, 18, 5);
+		QMatrix_Begginer_A_Mele = ChargeQMatrix (QMatrix_Begginer_A_Mele, Route_QMatrix_Begginer_A_Mele, 18, 5);
+		QMatrix_Begginer_B_Mele = ChargeQMatrix (QMatrix_Begginer_B_Mele, Route_QMatrix_Begginer_B_Mele, 18, 5);
+		QMatrix_Begginer_A_Distance = ChargeQMatrix ( QMatrix_Begginer_A_Distance, Route_QMatrix_Begginer_A_Distance, 18, 5);
+		QMatrix_Begginer_B_Distance = ChargeQMatrix (QMatrix_Begginer_B_Distance, Route_QMatrix_Begginer_B_Distance, 18, 5);
+
 	}
 
 	public void SaveQMatrix(float[,] Q, String route, int f, int c){
+//		Debug.Log ("guardo matriz");
 		BinaryFormatter bf = new BinaryFormatter ();
 		FileStream file = File.Create (route);
 		KeepMatrixData data = new KeepMatrixData (FromMatrix2Array (Q, f, c));
@@ -98,10 +110,10 @@ public class QMatrix : MonoBehaviour
 
 	public float[,] ChargeQMatrix(float[,] Q, String route, int f, int c){
 		if (File.Exists (route)) {
-			Debug.Log ("ya existe la ruta");
+//			Debug.Log ("ya existe la ruta");
 			BinaryFormatter bf = new BinaryFormatter ();
 			FileStream file = File.Open (route, FileMode.Open);
-			KeepMatrixData data = (KeepMatrixData)bf.Deserialize (file);
+			KeepMatrixData data = (KeepMatrixData) bf.Deserialize (file);
 			Q = FromArray2Matrix (data.Data, f, c);
 			file.Close ();
 		} else {
