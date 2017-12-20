@@ -11,7 +11,7 @@ namespace AssemblyCSharp
 {
 	public class DistDamage : Unit
 	{
-		static int life = 60;
+		static int life = 120;
 		static int damage = 50;
 		static int velocity = 30;
 		static int movement = 4;

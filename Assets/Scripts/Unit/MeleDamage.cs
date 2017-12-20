@@ -12,7 +12,7 @@ namespace AssemblyCSharp
 {
 	public class MeleDamage : Unit
 	{
-		static int life = 120;
+		static int life = 240;
 		static int damage = 35;
 		static int velocity = 20;
 		static int movement = 3;

@@ -180,6 +180,8 @@ public class MatchManagment : MonoBehaviour
 		switch (bestMark) {
 		case 0:
 			qIA.Attack (round [unitTurn], round [unitTurn].AttackRange);
+			Debug.Log ("ataco");
+
 			break;
 
 		case 1:
@@ -187,24 +189,33 @@ public class MatchManagment : MonoBehaviour
 			if (currentRol.Equals (Rol.Healer)) {
 				qIA.Heal (round [unitTurn], round [unitTurn].HabilityRange);
 
+				Debug.Log ("curo");
+
 			} else if (currentRol.Equals (Rol.Tank)) {
 				qIA.Agro (round [unitTurn]);
 
-				//					matchManagment.agro.SetActive (true);
-				//					GameObject agroIcon = Instantiate (matchManagment.agro);
-				//					matchManagment.agro.SetActive (false);
-				//
-				//					agroIcon.transform.position = matchManagment.GameObjectFromUnit(currentUnit).transform.position + Vector3.up * 2;
-				//					agroIcon.transform.SetParent (matchManagment.GameObjectFromUnit(currentUnit).transform);
-				//					matchManagment.team_2_Agro = currentUnit;
-				//					matchManagment.team_2_AgroCount = 5;
+				agro.SetActive (true);
+				GameObject agroIcon = Instantiate (agro);
+				agro.SetActive (false);
+				
+				agroIcon.transform.position = GameObjectFromUnit(round[unitTurn]).transform.position + Vector3.up * 2;
+				agroIcon.transform.SetParent (GameObjectFromUnit(round[unitTurn]).transform);
+				team_2_Agro = round[unitTurn];
+				team_2_AgroCount = 5;
 
+				Debug.Log ("agro");
 
 			} else if (currentRol.Equals (Rol.Mele)) {
 				qIA.Area (round [unitTurn], round [unitTurn].HabilityRange);
 
+				Debug.Log ("area");
+
+
 			} else if (currentRol.Equals (Rol.Distance)) {
 				qIA.Focus (round [unitTurn], round [unitTurn].HabilityRange);
+
+				Debug.Log ("focus");
+
 
 				//					focusedUnit.Focused = true;
 				//					focusedUnit.FocusedCount = 6;
@@ -221,7 +232,9 @@ public class MatchManagment : MonoBehaviour
 			break;
 
 		case 2:
-			objectiveUnit = team_1_unitList [UnityEngine.Random.Range (0, team_1_unitList.Count)];
+			Debug.Log ("me acerco");
+
+			objectiveUnit = team_1_unitList [UnityEngine.Random.Range (0, team_1_unitList.Count - 1)];
 			qIA.GoNearer (round [unitTurn], objectiveUnit);
 
 			unitInScene = GameObjectFromUnit (round [unitTurn]);
@@ -229,8 +242,10 @@ public class MatchManagment : MonoBehaviour
 			break;
 
 		case 3:
-			
-			objectiveUnit = team_1_unitList [UnityEngine.Random.Range (0, team_1_unitList.Count)];
+
+			Debug.Log ("me alejo");
+
+			objectiveUnit = team_1_unitList [UnityEngine.Random.Range (0, team_1_unitList.Count - 1)];
 			qIA.GoFarther (round [unitTurn], objectiveUnit);
 
 			unitInScene = GameObjectFromUnit (round [unitTurn]);
@@ -238,6 +253,8 @@ public class MatchManagment : MonoBehaviour
 			break;
 			
 		case 4:
+			Debug.Log ("no hago nada");
+
 			break;
 
 		}

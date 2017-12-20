@@ -6,7 +6,7 @@ namespace AssemblyCSharp
 {
 	public class Healer : Unit
 	{
-		static int life = 90;
+		static int life = 180;
 		static int damage = 5;
 		static int velocity = 15;
 		static int movement = 2;

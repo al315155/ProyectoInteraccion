@@ -57,7 +57,7 @@ namespace AssemblyCSharp
 			List<string> units = new List<string> ();
 			if (this.type.Equals (GameType.Team_vs_Team) || this.type.Equals (GameType.One_Kill)) {
 				//Los miembros son 6
-				units.Add ("Healer");
+				units.Add ("Distance Damage");
 				units.Add ("Tank");
 				units.Add ("Tank");
 				units.Add ("Distance Damage");

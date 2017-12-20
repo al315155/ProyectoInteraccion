@@ -1,21 +1,25 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Game Managment\GameMode.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Game Managment\MatchManagment.cs">
     <Files>
-      <File FileName="Assets\Scripts\IAvsIA\QLearningGame.cs" Line="36" Column="2" />
-      <File FileName="Assets\Scripts\IAvsIA\IAvsIA.cs" Line="77" Column="12" />
-      <File FileName="Assets\Scripts\IAvsIA\IAActions.cs" Line="145" Column="4" />
-      <File FileName="Assets\Scripts\Game Managment\UnitFunctions.cs" Line="15" Column="24" />
-      <File FileName="Assets\Scripts\IAvsIA\Functions.cs" Line="110" Column="39" />
-      <File FileName="Assets\Scripts\IAvsIA\QSceneManagment.cs" Line="182" Column="1" />
-      <File FileName="Assets\Scripts\Game Managment\QMatrix.cs" Line="11" Column="1" />
-      <File FileName="Assets\Scripts\IAvsIA\IAActionsInGame.cs" Line="8" Column="15" />
-      <File FileName="Assets\Scripts\IAvsIA\States.cs" Line="24" Column="11" />
+      <File FileName="Assets\Scripts\IAvsIA\QLearningGame.cs" Line="225" Column="5" />
+      <File FileName="Assets\Scripts\IAvsIA\IAvsIA.cs" Line="6" Column="3" />
+      <File FileName="Assets\Scripts\IAvsIA\IAActions.cs" Line="260" Column="5" />
+      <File FileName="Assets\Scripts\Game Managment\UnitFunctions.cs" Line="268" Column="36" />
+      <File FileName="Assets\Scripts\IAvsIA\Functions.cs" Line="830" Column="1" />
+      <File FileName="Assets\Scripts\IAvsIA\QSceneManagment.cs" Line="259" Column="1" />
+      <File FileName="Assets\Scripts\Game Managment\QMatrix.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\IAvsIA\IAActionsInGame.cs" Line="22" Column="36" />
+      <File FileName="Assets\Scripts\IAvsIA\States.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\IAvsIA\CubeOverManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Game Managment\MatchManagment.cs" Line="345" Column="18" />
-      <File FileName="Assets\Scripts\Game Managment\GameMode.cs" Line="60" Column="26" />
+      <File FileName="Assets\Scripts\Game Managment\MatchManagment.cs" Line="256" Column="28" />
+      <File FileName="Assets\Scripts\Game Managment\GameMode.cs" Line="79" Column="23" />
       <File FileName="Assets\Scripts\Game Managment\MenuManagment.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Unit\Unit.cs" Line="44" Column="24" />
+      <File FileName="Assets\Scripts\Unit\Unit.cs" Line="128" Column="25" />
+      <File FileName="Assets\Scripts\Unit\DistDamage.cs" Line="14" Column="24" />
+      <File FileName="Assets\Scripts\Unit\Healer.cs" Line="9" Column="24" />
+      <File FileName="Assets\Scripts\Unit\MeleDamage.cs" Line="15" Column="23" />
+      <File FileName="Assets\Scripts\Unit\Tank.cs" Line="7" Column="24" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

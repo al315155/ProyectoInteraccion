@@ -11,13 +11,13 @@ public class UnitFunctions : MonoBehaviour {
 
 	void Start(){
 		matchManagment = GetComponent<MatchManagment> ();
-		if (matchManagment == null) {
-			Debug.Log ("entro");
-			qLearning = GetComponent<QLearningGame> ();
-			map = qLearning.GetMap ();
-		} else {
+//		if (matchManagment == null) {
+//			Debug.Log ("entro");
+//			qLearning = GetComponent<QLearningGame> ();
+//			map = qLearning.GetMap ();
+//		} else {
 			map = matchManagment.map;
-		}
+//		}
 	}
 
 	private Vector2 worldToMap(GameObject obj){
@@ -228,7 +228,7 @@ public class UnitFunctions : MonoBehaviour {
 								float probability = UnityEngine.Random.Range (0, 100);
 								if (probability > (100 - unit.Agility)) {
 									//acierto el área en esta unidad
-									int value = UnityEngine.Random.Range ((int)currentUnit.GetArea (unit).x, (int)currentUnit.GetArea (unit).y);
+									int value = UnityEngine.Random.Range ((int)currentUnit.GetArea (unit).x, (int)currentUnit.GetArea (unit).y-1);
 									//critico??
 
 									probability = UnityEngine.Random.Range (0, 100);
@@ -262,7 +262,7 @@ public class UnitFunctions : MonoBehaviour {
 								float probability = UnityEngine.Random.Range (0, 100);
 								if (probability > (100 - unit.Agility)) {
 									//acierto el área en esta unidad
-									int value = UnityEngine.Random.Range ((int)currentUnit.GetArea (unit).x, (int)currentUnit.GetArea (unit).y);
+									int value = UnityEngine.Random.Range ((int)currentUnit.GetArea (unit).x, (int)currentUnit.GetArea (unit).y-1);
 									//critico??
 
 									probability = UnityEngine.Random.Range (0, 100);

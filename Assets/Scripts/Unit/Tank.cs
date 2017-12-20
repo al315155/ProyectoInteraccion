@@ -4,7 +4,7 @@ namespace AssemblyCSharp
 {
 	public class Tank : Unit
 	{
-		static int life = 200;
+		static int life = 400;
 		static int damage = 20;
 		static int velocity = 10;
 		static int movement = 1;

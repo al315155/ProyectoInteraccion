@@ -9,8 +9,14 @@ public class IAActionsInGame : MonoBehaviour
 	List<Unit> myTeam;
 	List<Unit> enemyTeam;
 
-	void Start(){
+	void Awake(){
 		game = GameObject.Find ("Scene Manager").GetComponent<MatchManagment> ();
+		map = game.map;
+		myTeam = game.team_2_unitList;
+		enemyTeam = game.team_1_unitList;
+	}
+
+	void Update(){
 		map = game.map;
 		myTeam = game.team_2_unitList;
 		enemyTeam = game.team_1_unitList;
@@ -20,7 +26,7 @@ public class IAActionsInGame : MonoBehaviour
 		List<Unit> enemiesAtRange = QSceneManagment.EnemiesInside_BasicRange (map, attacker, enemyTeam, range);
 
 		if (enemiesAtRange.Count > 0) {
-			Unit victim = enemiesAtRange [Random.Range (0, enemiesAtRange.Count)];
+			Unit victim = enemiesAtRange [Random.Range (0, enemiesAtRange.Count-1)];
 
 			float probability = UnityEngine.Random.Range (0, 100);
 			if (probability > (100 - victim.Agility)) {
@@ -80,7 +86,7 @@ public class IAActionsInGame : MonoBehaviour
 		List<Unit> enemiesAtRange = QSceneManagment.EnemiesInside_BasicRange (map, distance, enemyTeam, range);
 
 		// ¿A quién priorizo, a quien tiene menos vida?
-		Unit victim = enemiesAtRange[Random.Range(0, enemiesAtRange.Count)];
+		Unit victim = enemiesAtRange[Random.Range(0, enemiesAtRange.Count-1)];
 
 		float probability = UnityEngine.Random.Range (0, 100);
 		if (probability > (100 - victim.Agility)) {
@@ -123,7 +129,7 @@ public class IAActionsInGame : MonoBehaviour
 			if (probability < (100 - unit.Agility)) {
 				//acierto el área en esta unidad
 				Debug.Log ("acierto area");
-				int value = UnityEngine.Random.Range ((int)mele.GetArea (unit).x, (int)mele.GetArea (unit).y);
+				int value = UnityEngine.Random.Range ((int)mele.GetArea (unit).x, (int)mele.GetArea (unit).y-1);
 				//critico??
 
 				probability = UnityEngine.Random.Range (0, 100);
