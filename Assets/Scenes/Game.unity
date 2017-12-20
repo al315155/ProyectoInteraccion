@@ -1232,6 +1232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43069b81f771b93478a2eb7c2066b09d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  texts: []
   focused: {fileID: 1461875430}
   agro: {fileID: 581316441}
   target: {fileID: 644917057}

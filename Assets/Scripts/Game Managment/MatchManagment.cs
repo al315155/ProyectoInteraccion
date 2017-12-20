@@ -13,16 +13,11 @@ using UnityEngine.EventSystems;
 public class MatchManagment : MonoBehaviour
 {	
 
-
-
-
 	States qStates;
 	IAActionsInGame qIA;
 	QMatrix qMatrix;
 
-
-
-
+	public List<Text> texts;
 
 	// GAME MANAGER --------------------------------------------------
 	private GameManager gameManager;

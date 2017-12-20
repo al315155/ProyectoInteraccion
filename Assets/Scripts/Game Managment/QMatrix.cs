@@ -10,6 +10,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class QMatrix : MonoBehaviour
 {
+	MatchManagment match;
+
 	public float[,] QMatrix_Begginer_A_Tank;
 	public float[,] QMatrix_Begginer_A_Healer;
 	public float[,] QMatrix_Begginer_A_Distance;
@@ -62,6 +64,11 @@ public class QMatrix : MonoBehaviour
 
 	void Awake ()
 	{
+		if (GameObject.Find ("Scene Managment") == null) {
+			match = null;
+		}
+
+
 		Route_QMatrix_Begginer_A_Tank 			= Application.persistentDataPath + "/Begginer-A-Tank.text.bytes";
 		Route_QMatrix_Begginer_A_Healer 		= Application.persistentDataPath + "/Begginer-A-Healer.text.bytes";
 		Route_QMatrix_Begginer_A_Distance 		= Application.persistentDataPath + "/Begginer-A-Distance.text.bytes";
@@ -117,12 +124,58 @@ public class QMatrix : MonoBehaviour
 			Q = FromArray2Matrix (data.Data, f, c);
 			file.Close ();
 		} else {
-			Debug.Log ("inicializo matriZ");
-			Q = new float[f, c];
-			for (int i = 0; i < f; i++) {
-				for (int j = 0; j < c; j++) {
-					Q [i, j] = 0f;
+
+			if (match == null) {
+				Debug.Log ("inicializo matriZ");
+				Q = new float[f, c];
+				for (int i = 0; i < f; i++) {
+					for (int j = 0; j < c; j++) {
+						Q [i, j] = 0f;
+					}
 				}
+			} else {
+
+				if (route.Equals (Route_QMatrix_Begginer_B_Tank)) {
+
+					Route_QMatrix_Begginer_B_Tank = Application.persistentDataPath + "/Assets/Scripts/QMatrix/Begginer-B-Tank.text.bytes";
+
+					BinaryFormatter bf = new BinaryFormatter ();
+					FileStream file = File.Open (route, FileMode.Open);
+					KeepMatrixData data = (KeepMatrixData) bf.Deserialize (file);
+					Q = FromArray2Matrix (data.Data, f, c);
+					file.Close ();
+
+				} else if (route.Equals (Route_QMatrix_Begginer_B_Healer)) {
+
+					Route_QMatrix_Begginer_B_Healer = Application.persistentDataPath + "/Assets/Scripts/QMatrix/Begginer-B-Healer.text.bytes";
+
+					BinaryFormatter bf = new BinaryFormatter ();
+					FileStream file = File.Open (route, FileMode.Open);
+					KeepMatrixData data = (KeepMatrixData) bf.Deserialize (file);
+					Q = FromArray2Matrix (data.Data, f, c);
+					file.Close ();
+
+				} else if (route.Equals (Route_QMatrix_Begginer_B_Mele)) {
+
+					Route_QMatrix_Begginer_B_Mele = Application.persistentDataPath + "/Assets/Scripts/QMatrix/Begginer-B-Mele.text.bytes";
+
+					BinaryFormatter bf = new BinaryFormatter ();
+					FileStream file = File.Open (route, FileMode.Open);
+					KeepMatrixData data = (KeepMatrixData) bf.Deserialize (file);
+					Q = FromArray2Matrix (data.Data, f, c);
+					file.Close ();
+
+				} else {
+
+					Route_QMatrix_Begginer_B_Distance = Application.persistentDataPath + "/Assets/Scripts/QMatrix/Begginer-B-Distance.text.bytes";
+
+					BinaryFormatter bf = new BinaryFormatter ();
+					FileStream file = File.Open (route, FileMode.Open);
+					KeepMatrixData data = (KeepMatrixData) bf.Deserialize (file);
+					Q = FromArray2Matrix (data.Data, f, c);
+					file.Close ();
+				}
+
 			}
 		}
 
